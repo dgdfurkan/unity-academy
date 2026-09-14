@@ -35,6 +35,15 @@ export function routeKeyOf(pathname: string): RouteKey | null {
     const paths = ROUTES[key];
     if (paths.tr === withoutLocale || paths.en === withoutLocale) return key;
   }
+
+  // Alt yollar üst bölümün sekmesini aktif tutar: /ogren/m1-l1 → learn.
+  for (const key of Object.keys(ROUTES) as RouteKey[]) {
+    const paths = ROUTES[key];
+    if (paths.tr === "/" ) continue;
+    if (withoutLocale.startsWith(`${paths.tr}/`) || withoutLocale.startsWith(`${paths.en}/`)) {
+      return key;
+    }
+  }
   return null;
 }
 

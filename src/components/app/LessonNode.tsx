@@ -1,15 +1,18 @@
 "use client";
 
-import { Check, Lock, Play } from "lucide-react";
+import Link from "next/link";
+import { Check, Lock, PenLine, Play } from "lucide-react";
 import { m, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
-export type NodeState = "done" | "current" | "locked";
+/** `soon`: ders henüz yazılmadı. Kilitli değil, sadece içeriği yok. */
+export type NodeState = "done" | "current" | "locked" | "soon";
 
 export type NodeLabels = {
   done: string;
   current: string;
   locked: string;
+  soon: string;
   lockedHint: string;
 };
 
@@ -28,17 +31,21 @@ export function LessonNode({
   title,
   state,
   isLast,
+  href,
   labels,
 }: {
   index: number;
   title: string;
   state: NodeState;
   isLast: boolean;
+  /** Ders sayfasının adresi. Kilitli düğümde tıklanmaz. */
+  href: string;
   labels: NodeLabels;
 }) {
   const reduced = useReducedMotion();
   const locked = state === "locked";
   const hintId = `lesson-hint-${index}`;
+  const MotionLink = m.create(Link);
 
   return (
     <li className="relative">
@@ -55,9 +62,13 @@ export function LessonNode({
         />
       )}
 
-      <m.button
-        type="button"
-        disabled={locked}
+      <MotionLink
+        href={href}
+        aria-disabled={locked || undefined}
+        tabIndex={locked ? -1 : undefined}
+        onClick={(event) => {
+          if (locked) event.preventDefault();
+        }}
         aria-describedby={locked ? hintId : undefined}
         initial={reduced ? false : { opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -85,6 +96,7 @@ export function LessonNode({
             "relative grid shrink-0 place-items-center rounded-full",
             state === "done" && "bg-mint text-white",
             state === "current" && "bg-accent text-on-accent",
+            state === "soon" && "bg-surface-2 text-text-subtle ring-1 ring-border-strong",
             locked && "bg-surface-2 text-text-subtle ring-1 ring-border",
           )}
           style={{ width: RING, height: RING }}
@@ -99,6 +111,8 @@ export function LessonNode({
             <Check className="relative size-6" strokeWidth={3} />
           ) : state === "current" ? (
             <Play className="relative size-5 translate-x-px" strokeWidth={2.75} fill="currentColor" />
+          ) : state === "soon" ? (
+            <PenLine className="relative size-[18px]" strokeWidth={2} />
           ) : (
             <Lock className="relative size-[18px]" strokeWidth={2} />
           )}
@@ -119,13 +133,20 @@ export function LessonNode({
               "mt-0.5 block text-[12.5px] font-medium",
               state === "done" && "text-mint-text",
               state === "current" && "text-accent-text",
+              state === "soon" && "text-text-subtle",
               locked && "text-text-subtle",
             )}
           >
-            {state === "done" ? labels.done : state === "current" ? labels.current : labels.locked}
+            {state === "done"
+              ? labels.done
+              : state === "current"
+                ? labels.current
+                : state === "soon"
+                  ? labels.soon
+                  : labels.locked}
           </span>
         </span>
-      </m.button>
+      </MotionLink>
 
       {locked ? (
         <span id={hintId} className="sr-only">

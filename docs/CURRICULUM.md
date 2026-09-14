@@ -57,16 +57,16 @@ Tek tip soru yok. Her tipin öğrettiği şey farklı.
 | Tip | Ne yapar | Ne öğretir | Nerede |
 | --- | --- | --- | --- |
 | `predict` | Kodu gösterir, çalıştırmadan sonucu sorar | Zihindeki modeli sınar | Her derste |
-| `inspector` | Sahte bir Inspector; değeri değiştir, sonucu gör | Serileştirme ve `[SerializeField]` | M1, M3, M4 |
-| `spot-bug` | Bozuk satırı tıklat | Kod okuma | M1, M2, M7 |
-| `fill-blank` | Kelime havuzundan boşluğu doldur | Söz dizimi | M1, M2 |
-| `order-lines` | Satırları ya da olayları sıraya diz | `Awake` → `OnEnable` → `Start` sırası | M2, M5 |
+| `inspector` | Sahte bir Inspector; değeri değiştir, sonucu gör | Serileştirme ve `[SerializeField]` | M2, M4, M5 |
+| `spot-bug` | Bozuk satırı tıklat | Kod okuma | M2, M3, M8 |
+| `fill-blank` | Kelime havuzundan boşluğu doldur | Söz dizimi | M2, M3 |
+| `order-lines` | Satırları ya da olayları sıraya diz | `Awake` → `OnEnable` → `Start` sırası | M3, M6 |
 | `match` | Kavramı karşılığıyla eşleştir | Terim dağarcığı | Tümü, tekrarlarda |
 | `live-code` | Gerçek C# yaz, çalıştır, kontrol et | Üretim | Her modülde |
-| `scenario` | Duruma göre doğru aracı seç | Karar verme | M2, M4, M6 |
-| `scene-tweak` | 3B sahnede değeri değiştir, sonucu gözle | Uzamsal ve fiziksel sezgi | M3, M4 |
-| `perf-audit` | Sorunlu satırları işaretle | Performans gözü | M7 |
-| `refactor` | Çalışan ama kötü kodu düzelt | SOLID | M6 |
+| `scenario` | Duruma göre doğru aracı seç | Karar verme | M3, M5, M7 |
+| `scene-tweak` | 3B sahnede değeri değiştir, sonucu gözle | Uzamsal ve fiziksel sezgi | M4, M5 |
+| `perf-audit` | Sorunlu satırları işaretle | Performans gözü | M8 |
+| `refactor` | Çalışan ama kötü kodu düzelt | SOLID | M7 |
 | `rapid` | Hızlı doğru-yanlış turu | Geri getirme | Tekrar oturumları |
 
 Tasarım kuralları:
@@ -83,7 +83,7 @@ Tasarım kuralları:
 
 Süreler çekirdek anlatım içindir; alıştırmalar hariç.
 
-### Modül 0 — Başlangıç (3 ders)
+### Modül 1 — Başlangıç (3 ders)
 
 | # | Ders | Kazanım | Terimler | Tipler | Dk |
 | --- | --- | --- | --- | --- | --- |
@@ -91,7 +91,7 @@ Süreler çekirdek anlatım içindir; alıştırmalar hariç.
 | 02 | Editör turu | Altı pencerenin ne işe yaradığını bilir | `Scene`, `Game`, `Hierarchy`, `Inspector`, `Project`, `Console` | match, scenario | 15 |
 | 03 | Kod editörü seçmek | Rider, Visual Studio ve VS Code arasında seçim yapar, kurar | `IntelliSense`, `Debugger`, `Breakpoint` | scenario, match | 12 |
 
-### Modül 1 — Aklında kalan C# (5 ders)
+### Modül 2 — Aklında Kalan C# (5 ders)
 
 | # | Ders | Kazanım | Terimler | Tipler | Dk |
 | --- | --- | --- | --- | --- | --- |
@@ -101,7 +101,7 @@ Süreler çekirdek anlatım içindir; alıştırmalar hariç.
 | 07 | Koşullar ve döngüler | `if`, `for`, `foreach` yazar; sonsuz döngü tuzağını bilir | `if`, `else`, `for`, `foreach`, `while` | predict, spot-bug, live-code | 20 |
 | 08 | Metotlar ve sınıflar | Parametre, dönüş tipi ve `void` ayrımını yapar | `void`, `return`, `parameter`, `field`, `property` | fill-blank, live-code, spot-bug | 22 |
 
-### Modül 2 — Yaşam döngüsü (4 ders)
+### Modül 3 — Yaşam Döngüsü (4 ders)
 
 | # | Ders | Kazanım | Terimler | Tipler | Dk |
 | --- | --- | --- | --- | --- | --- |
@@ -110,7 +110,7 @@ Süreler çekirdek anlatım içindir; alıştırmalar hariç.
 | 11 | Update ve kare hızı | `Time.deltaTime` olmadan kodun neden bozulduğunu gösterir | `Update`, `Time.deltaTime`, `Time.time` | predict, live-code, scene-tweak | 22 |
 | 12 | FixedUpdate ve LateUpdate | Fiziği `FixedUpdate`'e, kamerayı `LateUpdate`'e koyar | `FixedUpdate`, `LateUpdate`, `Time.fixedDeltaTime` | scenario, order-lines, live-code | 22 |
 
-### Modül 3 — Sahne ve bileşenler (4 ders)
+### Modül 4 — Sahne ve Bileşenler (4 ders)
 
 | # | Ders | Kazanım | Terimler | Tipler | Dk |
 | --- | --- | --- | --- | --- | --- |
@@ -119,7 +119,7 @@ Süreler çekirdek anlatım içindir; alıştırmalar hariç.
 | 15 | Prefab üretmek | Prefab yapar, örneklerini toplu günceller, override'ı anlar | `Prefab`, `Variant`, `Override`, `Apply` | scenario, match | 18 |
 | 16 | Instantiate ve Destroy | Çalışma anında nesne üretir ve temizler | `Instantiate`, `Destroy`, `DontDestroyOnLoad` | live-code, predict | 20 |
 
-### Modül 4 — Fizik (4 ders)
+### Modül 5 — Fizik (4 ders)
 
 | # | Ders | Kazanım | Terimler | Tipler | Dk |
 | --- | --- | --- | --- | --- | --- |
@@ -128,7 +128,7 @@ Süreler çekirdek anlatım içindir; alıştırmalar hariç.
 | 19 | Raycast ile nesne bulmak | Işın atar, `RaycastHit` okur, mesafe sınırlar | `Physics.Raycast`, `RaycastHit`, `Ray`, `maxDistance` | scene-tweak, live-code, predict | 24 |
 | 20 | Layer ve collision matrix | Neyin neyle çarpışacağını layer ile ayarlar | `Layer`, `LayerMask`, `Collision Matrix` | inspector, scenario | 18 |
 
-### Modül 5 — Girdi ve oyun döngüsü (3 ders)
+### Modül 6 — Girdi ve Oyun Döngüsü (3 ders)
 
 | # | Ders | Kazanım | Terimler | Tipler | Dk |
 | --- | --- | --- | --- | --- | --- |
@@ -136,7 +136,7 @@ Süreler çekirdek anlatım içindir; alıştırmalar hariç.
 | 22 | Oyun durumu | Başlangıç, oynanış ve bitişi tek yerden yönetir | `enum`, `state`, `GameManager` | order-lines, refactor | 22 |
 | 23 | Kayıt ve yükleme | İlerlemeyi saklar, geri yükler, bozuk veriye dayanır | `PlayerPrefs`, `JsonUtility`, `Serialization` | live-code, spot-bug | 22 |
 
-### Modül 6 — Üretim desenleri (3 ders)
+### Modül 7 — Üretim Desenleri (3 ders)
 
 | # | Ders | Kazanım | Terimler | Tipler | Dk |
 | --- | --- | --- | --- | --- | --- |
@@ -144,14 +144,14 @@ Süreler çekirdek anlatım içindir; alıştırmalar hariç.
 | 25 | ScriptableObject ile veri | Veriyi sahneden ayırır, dengeleme yapar | `ScriptableObject`, `CreateAssetMenu`, `Asset` | inspector, live-code | 24 |
 | 26 | Event ve observer | Sistemleri birbirine bağlamadan haberleştirir | `event`, `Action`, `UnityEvent`, `subscribe` | refactor, spot-bug, live-code | 26 |
 
-### Modül 7 — Telefonda performans (2 ders)
+### Modül 8 — Telefonda Performans (2 ders)
 
 | # | Ders | Kazanım | Terimler | Tipler | Dk |
 | --- | --- | --- | --- | --- | --- |
 | 27 | Update içine ne yazılmaz | `GetComponent`, `Find` ve `Camera.main` çağrılarını döngüden çıkarır | `Update`, `GameObject.Find`, `Camera.main`, `cache` | perf-audit, refactor, predict | 24 |
 | 28 | Pooling, allocation ve profil | Nesne havuzu kurar, çöp üretimini ölçer, `Profiler` okur | `Object Pooling`, `Allocation`, `GC`, `Draw Call`, `Profiler` | perf-audit, live-code | 26 |
 
-### Modül 8 — Araçlar ve yayın (2 ders)
+### Modül 9 — Araçlar ve Yayın (2 ders)
 
 | # | Ders | Kazanım | Terimler | Tipler | Dk |
 | --- | --- | --- | --- | --- | --- |
@@ -313,7 +313,8 @@ Beşerli gruplar. Her grup bitince o beş ders uçtan uca oynanabilir olacak.
 
 | Grup | Dersler | Neden bu sıra |
 | --- | --- | --- |
-| 1 | 01-08 | Ders motoru ve dokuz alıştırma tipi; ayrıntısı `docs/LESSONS-01-08.md` |
+| 1a | 01-03 | Ders motoru, `choice`, `match` ve `spot` tipleri. **Tamamlandı** |
+| 1b | 04-08 | `fill-blank`, `order-lines`, `inspector` ve `live-code`; ayrıntısı `docs/LESSONS-01-08.md` |
 | 2 | 09-13 | Yaşam döngüsü; `scene-tweak` tipini açar |
 | 3 | 14-18 | Sahne ve fiziğin ilk yarısı, en çok görsel gerektiren grup |
 | 4 | 19-23 | Fiziğin kalanı, girdi ve oyun döngüsü |

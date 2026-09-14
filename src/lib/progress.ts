@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+export { lessonId } from "./lesson-id";
+
 export type Progress = {
   /** Tamamlanan derslerin kimlikleri: `m1-l2` biçiminde. */
   completed: string[];
@@ -21,20 +23,6 @@ export const EMPTY_PROGRESS: Progress = {
 /** İlerleme kullanıcı başına ayrı tutulur, aynı tarayıcıdaki hesaplar karışmaz. */
 const keyFor = (userId: string) => `ua.progress.${userId}`;
 
-export function lessonId(moduleIndex: number, lessonIndex: number) {
-  return `m${moduleIndex + 1}-l${lessonIndex + 1}`;
-}
-
-/** Deneme öğrencisi dolu başlar, tasarım boş ekranla değerlendirilmesin. */
-const SEEDED: Record<string, Progress> = {
-  "seed-student": {
-    completed: ["m1-l1", "m1-l2", "m1-l3", "m1-l4", "m2-l1", "m2-l2"],
-    xp: 120,
-    streakDays: 4,
-    reviewDue: 2,
-  },
-};
-
 export function readProgress(userId: string): Progress {
   try {
     const raw = localStorage.getItem(keyFor(userId));
@@ -42,7 +30,7 @@ export function readProgress(userId: string): Progress {
   } catch {
     // okuma engellendi, boş ilerlemeyle devam
   }
-  return SEEDED[userId] ?? EMPTY_PROGRESS;
+  return EMPTY_PROGRESS;
 }
 
 /**

@@ -695,3 +695,24 @@
     transform: translate3d(0, -10px, 0) scale(0.7);
   }
 }
+
+/* Yanlış eşleştirmede kısa bir sarsıntı. Tek seferlik, dikkat dağıtmıyor. */
+@utility animate-shake {
+  animation: shake 0.4s var(--ease-out);
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(-5px, 0, 0);
+  }
+  45% {
+    transform: translate3d(4px, 0, 0);
+  }
+  70% {
+    transform: translate3d(-2px, 0, 0);
+  }
+}

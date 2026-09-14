@@ -93,15 +93,19 @@ export function StatTile({
         <Icon className={cn("size-[18px] sm:size-5", t.icon)} strokeWidth={2.2} />
       </span>
 
+      {/* Bir <dl> içinde duruyor: etiket <dt>, değer <dd> olmak zorunda,
+          yoksa ekran okuyucu ikisini ilişkilendiremiyor. */}
       <div className="relative min-w-0">
-        <p className="truncate text-[12px] font-medium text-text-subtle sm:text-[12.5px]">{label}</p>
-        <p className="font-display text-[20px] font-semibold leading-tight tracking-[-0.015em] text-text tabular-nums sm:text-[22px]">
+        <dt className="truncate text-[12px] font-medium text-text-subtle sm:text-[12.5px]">
+          {label}
+        </dt>
+        <dd className="font-display text-[20px] font-semibold leading-tight tracking-[-0.015em] text-text tabular-nums sm:text-[22px]">
           {shown}
           {suffix ? <span className="text-text-subtle"> {suffix}</span> : null}
           {unit ? (
             <span className="ml-1 font-sans text-[12px] font-medium text-text-subtle">{unit}</span>
           ) : null}
-        </p>
+        </dd>
       </div>
     </div>
   );

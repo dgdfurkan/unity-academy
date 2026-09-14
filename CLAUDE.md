@@ -102,6 +102,16 @@ Ek kesme işaretiyle bağlanır: `Update`'in içinde, `Rigidbody`'ye, `Prefab`'�
 `design-system`, kod incelerken `code-reviewer`, metin yazarken `content-humanizer` ve
 `copy-editing` devreye girer.
 
+## Ders içeriği
+
+- Ders metinleri `src/content/lessons/` altında, iki dil yan yana (`{ tr, en }`).
+  Yapı pariteyi zorunlu tutuyor: bir dilde eksik bırakınca derleme kırılıyor.
+- Yazılmamış ders gizlenmiyor. Yolda "Yakında" olarak görünüyor ve sayfası
+  durumu açıkça söylüyor. Kilitli ders ile yazılmamış ders ayrı durumlar.
+- Alıştırmalarda yanlış şıklar rastgele değil: her biri bir yanlış anlamayı
+  temsil eder ve seçilince onu düzelten geri bildirim çıkar.
+- Öğrenci ilerlemesi uydurulmaz. Herkes sıfırdan başlar.
+
 ## Çalışma biçimi
 
 - Birden çok dosyayı etkileyen değişiklikten önce plan sunulur, onay beklenir.

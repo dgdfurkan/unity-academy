@@ -1,6 +1,6 @@
 # İlk Beş Saat: Ders 01-08
 
-Modül 0 (Başlangıç) ve Modül 1 (Aklında Kalan C#). Çekirdek anlatım 133 dakika,
+Modül 1 (Başlangıç) ve Modül 2 (Aklında Kalan C#). Çekirdek anlatım 133 dakika,
 alıştırmalarla birlikte yaklaşık 5 saat.
 
 Bu dosya derslerin nasıl işleneceğini adım adım tutuyor: kanca cümlesi, tahmin
@@ -662,7 +662,7 @@ Verilen 40 satırlık `Update` üç metoda bölünür: `ReadInput`, `MovePlayer`
 Ders 08 bitince öğrenci şunu yapabilir: bir script yazar, `GameObject`'e ekler,
 Inspector'dan ayarlar, koşul ve döngü kurar, tekrar eden kodu metoda çıkarır.
 
-Henüz yapamadığı: nesneyi hareket ettirmek. O, Modül 2'nin işi ve bir sonraki
+Henüz yapamadığı: nesneyi hareket ettirmek. O, Modül 3'ün işi ve bir sonraki
 grupta geliyor.
 
 ### Bu grubun ürettiği tekrar kavramları

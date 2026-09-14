@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { Flame, Play, RotateCcw, Sparkles } from "lucide-react";
 import { m, useReducedMotion } from "motion/react";
 import { LessonNode, type NodeState } from "@/components/app/LessonNode";
@@ -8,7 +10,9 @@ import { StatTile } from "@/components/app/StatTile";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { Button } from "@/components/ui/Button";
 import { getDictionary, type Locale } from "@/i18n";
+import { hasLesson } from "@/content/lessons";
 import { lessonId, useProgress } from "@/lib/progress";
+import { route } from "@/lib/routes";
 
 
 export function LearnPath({ locale }: { locale: Locale }) {
@@ -19,6 +23,7 @@ export function LearnPath({ locale }: { locale: Locale }) {
   const reduced = useReducedMotion();
 
   const modules = dict.curriculum.items;
+  const learnHref = route("learn", locale);
 
   // Sıradaki ders: tamamlanmamış ilk ders. Hepsi bitmişse null.
   const flat = modules.flatMap((mod, mi) =>
@@ -28,8 +33,10 @@ export function LearnPath({ locale }: { locale: Locale }) {
 
   const stateOf = (id: string): NodeState => {
     if (progress.completed.includes(id)) return "done";
-    if (next?.id === id) return "current";
-    return "locked";
+    if (next?.id === id) return hasLesson(id) ? "current" : "soon";
+    // Yazılmamış ders kilitli değil, sadece içeriği yok. İkisini ayırmak
+    // öğrenciye "sen ilerlemedin" ile "biz yazmadık" farkını gösteriyor.
+    return hasLesson(id) ? "locked" : "soon";
   };
 
   return (
@@ -75,9 +82,11 @@ export function LearnPath({ locale }: { locale: Locale }) {
                 {t.moduleLabel} {next.moduleIndex + 1} · {modules[next.moduleIndex]?.title}
               </p>
             </div>
-            <Button size="lg" className="w-full shrink-0 sm:w-auto">
-              <Play className="size-4" strokeWidth={2.25} aria-hidden="true" />
-              {progress.completed.length === 0 ? t.startButton : t.continueButton}
+            <Button size="lg" asChild className="w-full shrink-0 sm:w-auto">
+              <Link href={`${learnHref}${next.id}/`}>
+                <Play className="size-4" strokeWidth={2.25} aria-hidden="true" />
+                {progress.completed.length === 0 ? t.startButton : t.continueButton}
+              </Link>
             </Button>
           </div>
         </m.section>
@@ -115,10 +124,12 @@ export function LearnPath({ locale }: { locale: Locale }) {
                     title={title}
                     isLast={li === mod.lessons.length - 1}
                     state={stateOf(lessonId(mi, li))}
+                    href={`${learnHref}${lessonId(mi, li)}/`}
                     labels={{
                       done: t.completed,
                       current: t.current,
                       locked: t.locked,
+                      soon: t.soon,
                       lockedHint: t.lockedHint,
                     }}
                   />
