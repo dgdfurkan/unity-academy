@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Check, Copy, Plus, Users, X } from "lucide-react";
+import { PageHeader } from "@/components/app/PageHeader";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
@@ -88,20 +89,18 @@ export function AdminStudents({ locale }: { locale: Locale }) {
 
   return (
     <div className="px-safe mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h1 className="font-display text-[1.7rem]/[1.15] font-semibold tracking-[-0.02em] text-text sm:text-[2.1rem]/[1.1]">
-            {t.title}
-          </h1>
-          <p className="mt-2 max-w-[34rem] text-[15px]/[1.6] text-text-muted">{t.lead}</p>
-        </div>
-        {!open ? (
-          <Button size="md" onClick={openForm} className="w-full shrink-0 sm:w-auto">
-            <Plus className="size-4" strokeWidth={2.25} aria-hidden="true" />
-            {t.newStudent}
-          </Button>
-        ) : null}
-      </header>
+      <PageHeader
+        title={t.title}
+        lead={t.lead}
+        action={
+          !open ? (
+            <Button size="md" onClick={openForm} className="w-full sm:w-auto">
+              <Plus className="size-4" strokeWidth={2.25} aria-hidden="true" />
+              {t.newStudent}
+            </Button>
+          ) : null
+        }
+      />
 
       {/* ---------- Açılan hesabın bilgileri ---------- */}
       {created ? (

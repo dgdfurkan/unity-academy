@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Info } from "lucide-react";
+import { AppBackground } from "@/components/app/AppBackground";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
@@ -65,8 +66,9 @@ export function SignInForm({ locale }: { locale: Locale }) {
   }
 
   return (
-    <div className="px-safe pt-safe pb-safe flex min-h-dvh flex-col bg-bg">
-      <header className="mx-auto flex h-16 w-full max-w-lg items-center justify-between px-5">
+    <div className="px-safe pt-safe pb-safe relative flex min-h-dvh flex-col bg-bg">
+      <AppBackground />
+      <header className="mx-auto flex h-[72px] w-full max-w-lg items-center justify-between px-5">
         <Link href={route("home", locale)} className="-mx-2 flex h-11 items-center rounded-md px-2">
           <Wordmark />
         </Link>
@@ -112,7 +114,7 @@ export function SignInForm({ locale }: { locale: Locale }) {
             {errors.form ? (
               <p
                 role="alert"
-                className="rounded-md bg-danger-surface px-3.5 py-3 text-[13px] text-danger"
+                className="rounded-xl bg-danger-surface px-3.5 py-3 text-[13px] text-danger"
               >
                 {errors.form}
               </p>
@@ -127,7 +129,7 @@ export function SignInForm({ locale }: { locale: Locale }) {
 
           {/* Sunucu bağlanana kadar deneme hesapları burada duruyor.
               Firebase geldiğinde bu blok silinecek. */}
-          <section className="mt-8 rounded-2xl bg-surface p-4 shadow-sm">
+          <section className="mt-8 rounded-2xl bg-surface p-4 shadow-sm ring-1 ring-border">
             <h2 className="text-[13px] font-medium text-text">{t.demoTitle}</h2>
             <p className="mt-1 text-[13px]/[1.5] text-text-subtle">{t.demoBody}</p>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -144,7 +146,7 @@ export function SignInForm({ locale }: { locale: Locale }) {
             </div>
           </section>
 
-          <p className="mt-4 flex gap-2.5 rounded-md border border-border bg-surface px-3.5 py-3 text-[13px]/[1.55] text-text-subtle">
+          <p className="mt-4 flex gap-2.5 rounded-2xl bg-surface-2 px-3.5 py-3 text-[13px]/[1.55] text-text-subtle">
             <Info className="mt-px size-4 shrink-0" strokeWidth={1.75} aria-hidden="true" />
             {t.notice}
           </p>
@@ -177,7 +179,7 @@ function DemoButton({
     <button
       type="button"
       onClick={() => onPick(account)}
-      className="flex h-11 cursor-pointer items-center gap-2 rounded-md border border-border bg-surface-2 px-3 text-[13px] transition-colors duration-(--dur-instant) hover:border-border-strong hover:bg-surface-3"
+      className="flex h-11 cursor-pointer items-center gap-2 rounded-full bg-surface-2 px-4 text-[13px] ring-1 ring-border transition-colors duration-(--dur-instant) hover:bg-accent-soft hover:ring-accent/40"
     >
       <span className="font-medium text-text">{label}</span>
       <span className="font-mono text-text-subtle">{account.username}</span>

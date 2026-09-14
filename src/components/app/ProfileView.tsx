@@ -3,6 +3,7 @@
 import { useAuth } from "@/components/auth/AuthProvider";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { PageHeader } from "@/components/app/PageHeader";
 import { getDictionary, LOCALE_LABEL, type Locale } from "@/i18n";
 
 export function ProfileView({ locale }: { locale: Locale }) {
@@ -12,9 +13,7 @@ export function ProfileView({ locale }: { locale: Locale }) {
 
   return (
     <div className="px-safe mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
-      <h1 className="font-display text-[1.7rem]/[1.15] font-semibold tracking-[-0.02em] text-text sm:text-[2.1rem]/[1.1]">
-        {t.title}
-      </h1>
+      <PageHeader title={t.title} />
 
       <section className="mt-6 rounded-2xl bg-surface shadow-md">
         <h2 className="border-b border-border px-5 py-3.5 text-[13px] font-medium uppercase tracking-wide text-text-subtle">

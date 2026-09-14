@@ -2,6 +2,7 @@
 
 import { Check, Flame, Lock, Play, RotateCcw, Sparkles } from "lucide-react";
 import { m, useReducedMotion } from "motion/react";
+import { PageHeader } from "@/components/app/PageHeader";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { Button } from "@/components/ui/Button";
 import { getDictionary, type Locale } from "@/i18n";
@@ -37,17 +38,15 @@ export function LearnPath({ locale }: { locale: Locale }) {
     <div className="px-safe mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
       {/* ---------- Karşılama ve sayaçlar ---------- */}
       <header>
-        <h1 className="font-display text-[1.7rem]/[1.15] font-semibold tracking-[-0.02em] text-text sm:text-[2.1rem]/[1.1]">
-          {t.greeting}
-          {user ? `, ${user.name.split(" ")[0]}` : ""}
-        </h1>
+        <PageHeader title={`${t.greeting}${user ? `, ${user.name.split(" ")[0]}` : ""}`} />
 
         <dl className="mt-5 grid grid-cols-3 gap-2.5 sm:gap-3">
           <Stat
             icon={Flame}
             tone="warning"
-            label={`${t.streak} (${t.streakUnit})`}
+            label={t.streak}
             value={String(progress.streakDays)}
+            unit={t.streakUnit}
           />
           <Stat icon={Sparkles} tone="accent" label={t.xp} value={String(progress.xp)} />
           <Stat
@@ -153,11 +152,14 @@ function Stat({
   tone,
   label,
   value,
+  unit,
 }: {
   icon: typeof Flame;
   tone: keyof typeof TONE;
   label: string;
   value: string;
+  /** Sayının yanına küçük punto ile gelir; etikete sığmayınca kesiliyordu. */
+  unit?: string;
 }) {
   return (
     <div className="flex items-center gap-3 rounded-2xl bg-surface p-3 shadow-sm sm:p-3.5">
@@ -171,6 +173,9 @@ function Stat({
         <dt className="truncate text-[12px] font-medium text-text-subtle">{label}</dt>
         <dd className="font-display text-[19px] font-semibold tabular-nums leading-tight tracking-[-0.01em] text-text">
           {value}
+          {unit ? (
+            <span className="ml-1 font-sans text-[12px] font-medium text-text-subtle">{unit}</span>
+          ) : null}
         </dd>
       </div>
     </div>

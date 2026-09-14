@@ -44,7 +44,7 @@ export function Landing({ locale }: { locale: Locale }) {
 
       <main id="main">
         {/* ═══════════════════ Hero ═══════════════════ */}
-        <section className="px-safe relative overflow-hidden pb-16 pt-12 sm:pb-24 sm:pt-16">
+        <section className="px-safe relative overflow-hidden pb-16 pt-10 sm:pb-24 sm:pt-14">
           <WaveLines className="top-0 h-[420px] text-border" />
           <div
             aria-hidden="true"
@@ -153,7 +153,7 @@ export function Landing({ locale }: { locale: Locale }) {
         </section>
 
         {/* ═══════════════════ Koyu bant: nasıl işliyor ═══════════════════ */}
-        <section id="how" className="px-safe scroll-mt-24 pb-8">
+        <section id="how" className="px-safe scroll-mt-28 pb-8">
           <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
             <Reveal>
               <div className="relative overflow-hidden rounded-2xl bg-ink px-6 py-10 sm:px-10 sm:py-12">
@@ -448,7 +448,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="px-safe scroll-mt-24 py-12 sm:py-16">
+    <section id={id} className="px-safe scroll-mt-28 py-12 sm:py-16">
       <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
         <Reveal>
           <header className={centered ? "mb-9 text-center" : "mb-9 max-w-[38rem]"}>

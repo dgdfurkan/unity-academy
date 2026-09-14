@@ -6,6 +6,7 @@ import { BookOpen, ClipboardList, LogOut, TrendingUp, User, Users } from "lucide
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { AppBackground } from "@/components/app/AppBackground";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { LogoMark, Wordmark } from "@/components/ui/Logo";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -52,8 +53,9 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
 
   return (
     <div className="min-h-dvh bg-bg">
+      <AppBackground />
       {/* --------- Masaüstü kenar çubuğu --------- */}
-      <aside className="pl-safe fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border bg-surface lg:flex">
+      <aside className="pl-safe fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border bg-surface/70 backdrop-blur-xl lg:flex">
         <div className="flex h-16 items-center px-5">
           <Link href={home} className="-mx-2 flex h-11 items-center rounded-md px-2">
             <Wordmark />
@@ -97,8 +99,8 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
       </aside>
 
       {/* --------- Telefon ve tablet üst çubuğu --------- */}
-      <header className="pt-safe px-safe sticky top-0 z-30 border-b border-border bg-bg/85 backdrop-blur-xl lg:hidden">
-        <div className="flex h-14 items-center justify-between px-4">
+      <header className="pt-safe px-safe sticky top-0 z-30 bg-bg/80 backdrop-blur-xl lg:hidden">
+        <div className="mx-auto flex h-16 max-w-lg items-center justify-between px-4">
           <Link
             href={home}
             aria-label={dict.nav.home}
@@ -122,16 +124,16 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
       </header>
 
       {/* Alt çubuğun arkasına içerik girmesin diye taban boşluğu bırakılıyor. */}
-      <main id="main" className="scroll-pb-nav pb-28 lg:ml-64 lg:pb-12">
+      <main id="main" className="scroll-pb-nav relative pb-32 lg:ml-64 lg:pb-12">
         {children}
       </main>
 
       {/* --------- Telefon ve tablet alt gezintisi --------- */}
       <nav
         aria-label={dict.app.menu}
-        className="pb-safe px-safe fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 backdrop-blur-xl lg:hidden"
+        className="pb-safe px-safe fixed inset-x-0 bottom-0 z-30 px-3 pb-3 lg:hidden"
       >
-        <ul className="mx-auto flex max-w-lg items-stretch">
+        <ul className="mx-auto flex max-w-lg items-stretch rounded-full bg-surface/90 px-1.5 shadow-lg ring-1 ring-border backdrop-blur-xl">
           {nav.map(({ key, icon: Icon }) => {
             const active = activeKey === key;
             return (
@@ -140,7 +142,7 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
                   href={route(key, locale)}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex h-16 flex-col items-center justify-center gap-1 rounded-2xl",
+                    "flex h-16 flex-col items-center justify-center gap-1 rounded-full",
                     "transition-colors duration-(--dur-instant)",
                     active ? "text-accent-text" : "text-text-subtle hover:text-text",
                   )}

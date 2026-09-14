@@ -387,3 +387,183 @@
     animation-delay: 0ms !important;
   }
 }
+
+/* =========================================================================
+   7. Proje kapağı animasyonları
+   Hepsi transform ve opacity üzerinde; layout hesabı tetiklenmiyor.
+   Yalnızca kapak görünürken çalışır: kart ekrandan çıkınca duruyor,
+   arka planda boşuna kare harcamıyor.
+   ========================================================================= */
+
+@utility cover-anim {
+  animation-play-state: paused;
+}
+
+[data-play="true"] .cover-anim {
+  animation-play-state: running;
+}
+
+/* Sonsuz koşucu: zemin ve arka plan farklı hızda kayıyor, derinlik böyle çıkıyor. */
+@utility cover-scroll-near {
+  animation: cover-scroll-near 1.1s linear infinite;
+}
+@keyframes cover-scroll-near {
+  to {
+    transform: translate3d(0, 92px, 0);
+  }
+}
+
+@utility cover-scroll-far {
+  animation: cover-scroll-far 3.4s linear infinite;
+}
+@keyframes cover-scroll-far {
+  to {
+    transform: translate3d(-64px, 0, 0);
+  }
+}
+
+@utility cover-bob {
+  animation: cover-bob 0.62s ease-in-out infinite;
+}
+@keyframes cover-bob {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -9px, 0);
+  }
+}
+
+@utility cover-squash {
+  animation: cover-squash 0.62s ease-in-out infinite;
+}
+@keyframes cover-squash {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(0.94, 1.05);
+  }
+}
+
+/* Idle: çarklar döner, sayaç yükselir, jeton parlar. */
+@utility cover-spin {
+  animation: cover-spin 6s linear infinite;
+  transform-origin: center;
+}
+@keyframes cover-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@utility cover-spin-rev {
+  animation: cover-spin 8s linear infinite reverse;
+  transform-origin: center;
+}
+
+@utility cover-rise {
+  animation: cover-rise 2.6s ease-out infinite;
+}
+@keyframes cover-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  18% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+    transform: translate3d(0, -26px, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -40px, 0);
+  }
+}
+
+@utility cover-sheen {
+  animation: cover-sheen 2.8s ease-in-out infinite;
+}
+@keyframes cover-sheen {
+  0%,
+  62%,
+  100% {
+    opacity: 0.18;
+  }
+  75% {
+    opacity: 0.6;
+  }
+}
+
+/* Playable ad: parmak dokunur, halka açılır, blok yerine oturur. */
+@utility cover-tap {
+  animation: cover-tap 2.2s ease-in-out infinite;
+}
+@keyframes cover-tap {
+  0%,
+  60%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  70% {
+    transform: translate3d(0, 9px, 0);
+  }
+  82% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@utility cover-ring {
+  animation: cover-ring 2.2s ease-out infinite;
+  transform-origin: center;
+}
+@keyframes cover-ring {
+  0%,
+  66% {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+  72% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@utility cover-drop {
+  animation: cover-drop 2.2s cubic-bezier(0.34, 1.4, 0.64, 1) infinite;
+}
+@keyframes cover-drop {
+  0%,
+  70% {
+    transform: translate3d(0, -56px, 0);
+    opacity: 0;
+  }
+  76% {
+    opacity: 1;
+  }
+  88%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@utility cover-float {
+  animation: cover-float 3.2s ease-in-out infinite;
+}
+@keyframes cover-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -7px, 0);
+  }
+}

@@ -2,6 +2,7 @@
 
 import { Flame, Sparkles, Trophy } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { PageHeader } from "@/components/app/PageHeader";
 import { getDictionary, type Locale } from "@/i18n";
 import { lessonId, useProgress } from "@/lib/progress";
 
@@ -15,10 +16,7 @@ export function ProgressView({ locale }: { locale: Locale }) {
 
   return (
     <div className="px-safe mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
-      <h1 className="font-display text-[1.7rem]/[1.15] font-semibold tracking-[-0.02em] text-text sm:text-[2.1rem]/[1.1]">
-        {t.title}
-      </h1>
-      <p className="mt-2 text-[15px] text-text-muted">{t.lead}</p>
+      <PageHeader title={t.title} lead={t.lead} />
 
       <dl className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <Metric

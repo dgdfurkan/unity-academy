@@ -85,15 +85,15 @@ export const tr = {
     lead: "Üç tam proje. Her biri seni farklı bir şeyi öğrenmek zorunda bıraktığı için seçildi.",
     items: [
       {
-        title: "Endless runner",
+        title: "Endless Runner",
         body: "Girdi, karakter kontrolü, prosedürel zemin, object pooling ve ilk dakikadan sonra da ayakta kalan bir zorluk eğrisi.",
       },
       {
-        title: "Idle oyun",
+        title: "Idle Oyun",
         body: "Çevrimdışı ilerleme, büyük sayı matematiği, kayıt ve yükleme, büyüdükçe okunur kalan bir yükseltme döngüsü.",
       },
       {
-        title: "Playable ad",
+        title: "Playable Ad",
         body: "Reklam olarak yayınlanacak kadar küçük bir build: dar kapsam, hızlı açılış, tek net kanca ve ağların dayattığı sınırlar.",
       },
     ],

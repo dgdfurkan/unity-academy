@@ -79,15 +79,15 @@ export const en: Dictionary = {
     lead: "Three complete projects, each picked for what it forces you to learn.",
     items: [
       {
-        title: "Endless runner",
+        title: "Endless Runner",
         body: "Input, character control, procedural ground, object pooling, and a difficulty curve that survives past the first minute.",
       },
       {
-        title: "Idle game",
+        title: "Idle Game",
         body: "Offline progression, big-number math, save and load, and an upgrade loop that stays readable as it grows.",
       },
       {
-        title: "Playable ad",
+        title: "Playable Ad",
         body: "A build small enough to ship as an ad: tight scope, fast load, one clear hook, and the limits the networks impose.",
       },
     ],
