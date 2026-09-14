@@ -22,6 +22,7 @@ import {
   WireSphere,
 } from "@/components/art/Doodles";
 import { ProjectCover, type ProjectKey } from "@/components/art/ProjectCover";
+import { StatGlyph } from "@/components/art/StatGlyph";
 import { SceneCutout } from "@/components/art/SceneCutout";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { CodePanel } from "@/components/marketing/CodePanel";
@@ -120,16 +121,14 @@ export function Landing({ locale }: { locale: Locale }) {
                   <CurvedArrow className="absolute left-[42%] top-[38%] hidden w-16 -rotate-6 text-border-strong lg:block" />
                   <Reveal index={4}>
                     <Stat
-                      icon={Layers}
-                      tone="sky"
+                      kind="lessons"
                       value={dict.stats.lessons.value}
                       label={dict.stats.lessons.label}
                     />
                   </Reveal>
                   <Reveal index={5} className="lg:ml-14">
                     <Stat
-                      icon={Gauge}
-                      tone="mint"
+                      kind="projects"
                       value={dict.stats.projects.value}
                       label={dict.stats.projects.label}
                     />
@@ -383,32 +382,20 @@ function cnTile(featured: boolean) {
   ].join(" ");
 }
 
-const TONE = {
-  sky: "bg-sky/15 text-sky-text",
-  mint: "bg-mint/15 text-mint-text",
-} as const;
-
 function Stat({
-  icon: Icon,
-  tone,
+  kind,
   value,
   label,
 }: {
-  icon: LucideIcon;
-  tone: keyof typeof TONE;
+  kind: "lessons" | "projects";
   value: string;
   label: string;
 }) {
   return (
-    <div className="flex items-center gap-3.5">
-      <span
-        aria-hidden="true"
-        className={`grid size-12 shrink-0 place-items-center rounded-full ${TONE[tone]}`}
-      >
-        <Icon className="size-5" strokeWidth={2} />
-      </span>
+    <div className="flex items-center gap-4">
+      <StatGlyph kind={kind} />
       <div>
-        <p className="font-display text-[26px] font-semibold leading-none tracking-[-0.02em] text-text">
+        <p className="font-display text-[28px] font-semibold leading-none tracking-[-0.02em] text-text">
           {value}
         </p>
         <p className="mt-1.5 max-w-[12rem] text-[13.5px]/[1.45] text-text-muted">{label}</p>

@@ -3,7 +3,8 @@
 Unity ve C# öğreten interaktif kurs platformu. Açık bir ürün: birden çok öğrenci kayıt
 olur, modülleri kendi hızında ilerletir. Tek kişiye özel bir ders sayfası değil.
 Kapsam ve yol haritası için `docs/BRIEF.md`, arayüz kararları için `docs/DESIGN.md`,
-ders planı ve öğretim tasarımı için `docs/CURRICULUM.md`.
+ders planı ve öğretim tasarımı için `docs/CURRICULUM.md`, ilk grubun ayrıntılı
+tasarımı için `docs/LESSONS-01-08.md`.
 Bu dosya çalışma kurallarını tutar.
 
 ## Mimari kısıtlar
@@ -45,6 +46,9 @@ Bu dosya çalışma kurallarını tutar.
 - `prefers-reduced-motion` desteklenir.
 - WCAG 2.2 AA. Klavyeyle tam gezinti, yeterli kontrast, anlamlı ekran okuyucu çıktısı.
 - Renk, boşluk ve tipografi token üzerinden gelir. Bileşen içine sabit değer yazılmaz.
+- `px-safe`, `pt-safe`, `pb-safe` taban boşluğu bir değişkenden alır
+  (`px-safe [--gx:1rem]`). Aynı elemana `px-safe` ile `px-4` birlikte yazılmaz:
+  stylesheet'te sonra gelen diğerini eziyor ve boşluk sıfıra düşüyor.
 - Her `grid`'e taban sütun sayısı yazılır (`grid-cols-1`). Yalnızca `lg:grid-cols-*`
   yazılırsa mobildeki örtük sütun `auto` boyutlanır, içindeki en geniş öğenin
   min-content genişliğine şişer ve sayfayı viewport dışına taşırır. İki kez bu

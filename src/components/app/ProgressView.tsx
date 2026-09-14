@@ -3,6 +3,7 @@
 import { Flame, Sparkles, Trophy } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { PageHeader } from "@/components/app/PageHeader";
+import { StatTile } from "@/components/app/StatTile";
 import { getDictionary, type Locale } from "@/i18n";
 import { lessonId, useProgress } from "@/lib/progress";
 
@@ -15,27 +16,24 @@ export function ProgressView({ locale }: { locale: Locale }) {
   const totalLessons = modules.reduce((n, mod) => n + mod.lessons.length, 0);
 
   return (
-    <div className="px-safe mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
+    <div className="px-safe mx-auto w-full max-w-4xl py-6 [--gx:1rem] sm:py-10 sm:[--gx:1.5rem]">
       <PageHeader title={t.title} lead={t.lead} />
 
-      <dl className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <Metric
+      <dl className="mt-6 grid grid-cols-3 gap-2.5 sm:gap-3">
+        <StatTile
           icon={Trophy}
-          className="bg-mint/15 text-mint-text"
+          tone="lessons"
           label={t.lessonsCompleted}
-          value={`${progress.completed.length} / ${totalLessons}`}
+          value={progress.completed.length}
+          suffix={`/ ${totalLessons}`}
         />
-        <Metric
-          icon={Sparkles}
-          className="bg-accent-soft text-accent-text"
-          label={t.xpTotal}
-          value={String(progress.xp)}
-        />
-        <Metric
+        <StatTile icon={Sparkles} tone="points" label={t.xpTotal} value={progress.xp} />
+        <StatTile
           icon={Flame}
-          className="bg-sun/25 text-warm-text"
-          label={`${t.streakBest} (${dict.app.streakUnit})`}
-          value={`${progress.streakDays}`}
+          tone="streak"
+          label={t.streakBest}
+          value={progress.streakDays}
+          unit={dict.app.streakUnit}
         />
       </dl>
 
@@ -82,35 +80,6 @@ export function ProgressView({ locale }: { locale: Locale }) {
           );
         })}
       </ul>
-    </div>
-  );
-}
-
-function Metric({
-  icon: Icon,
-  className,
-  label,
-  value,
-}: {
-  icon: typeof Flame;
-  className: string;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="flex items-center gap-3.5 rounded-2xl bg-surface p-4 shadow-sm">
-      <span
-        aria-hidden="true"
-        className={`grid size-11 shrink-0 place-items-center rounded-full ${className}`}
-      >
-        <Icon className="size-5" strokeWidth={2} />
-      </span>
-      <div className="min-w-0">
-        <dt className="truncate text-[13px] text-text-subtle">{label}</dt>
-        <dd className="font-display text-[22px] font-semibold tabular-nums leading-tight tracking-[-0.015em] text-text">
-          {value}
-        </dd>
-      </div>
     </div>
   );
 }

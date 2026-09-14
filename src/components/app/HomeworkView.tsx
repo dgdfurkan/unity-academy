@@ -8,7 +8,7 @@ export function HomeworkView({ locale }: { locale: Locale }) {
   const t = getDictionary(locale).homeworkPage;
 
   return (
-    <div className="px-safe mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
+    <div className="px-safe mx-auto w-full max-w-4xl py-6 [--gx:1rem] sm:py-10 sm:[--gx:1.5rem]">
       <PageHeader title={t.title} lead={t.lead} />
 
       <div className="mt-8 flex flex-col items-center rounded-2xl border border-dashed border-border-strong bg-surface px-6 py-14 text-center">

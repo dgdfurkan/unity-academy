@@ -7,6 +7,7 @@ import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { AppBackground } from "@/components/app/AppBackground";
+import { BottomNav } from "@/components/app/BottomNav";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { LogoMark, Wordmark } from "@/components/ui/Logo";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -128,37 +129,16 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
         {children}
       </main>
 
-      {/* --------- Telefon ve tablet alt gezintisi --------- */}
-      <nav
-        aria-label={dict.app.menu}
-        className="pb-safe px-safe fixed inset-x-0 bottom-0 z-30 px-3 pb-3 lg:hidden"
-      >
-        <ul className="mx-auto flex max-w-lg items-stretch rounded-full bg-surface/90 px-1.5 shadow-lg ring-1 ring-border backdrop-blur-xl">
-          {nav.map(({ key, icon: Icon }) => {
-            const active = activeKey === key;
-            return (
-              <li key={key} className="flex-1">
-                <Link
-                  href={route(key, locale)}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "flex h-16 flex-col items-center justify-center gap-1 rounded-full",
-                    "transition-colors duration-(--dur-instant)",
-                    active ? "text-accent-text" : "text-text-subtle hover:text-text",
-                  )}
-                >
-                  <Icon
-                    className="size-[22px]"
-                    strokeWidth={active ? 2.15 : 1.75}
-                    aria-hidden="true"
-                  />
-                  <span className="text-[11px] font-medium">{label(key)}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+      <BottomNav
+        items={nav.map(({ key, icon }) => ({
+          key,
+          href: route(key, locale),
+          label: label(key),
+          icon,
+        }))}
+        activeKey={activeKey}
+        label={dict.app.menu}
+      />
     </div>
   );
 }

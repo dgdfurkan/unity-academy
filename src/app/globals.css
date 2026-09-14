@@ -247,21 +247,26 @@
    Çentik ve ana ekran çubuğu. Sabit her öğe bunlardan birini kullanır.
    ========================================================================= */
 
-@utility pt-safe {
-  padding-top: env(safe-area-inset-top, 0px);
-}
-@utility pb-safe {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+/* Güvenli alan yardımcıları TOPLAR, ezmez.
+   Önceden `px-safe` ile `px-4`'ü aynı elemana yazınca stylesheet'te sonra gelen
+   `px-safe` kazanıyor ve boşluğu env() değerine, yani çoğu cihazda sıfıra
+   indiriyordu. Artık taban boşluk bir değişkenden geliyor ve çentik payı
+   üstüne ekleniyor. Kullanımı: `px-safe [--gx:1rem] sm:[--gx:1.5rem]`. */
+@utility px-safe {
+  padding-left: calc(var(--gx, 0px) + env(safe-area-inset-left, 0px));
+  padding-right: calc(var(--gx, 0px) + env(safe-area-inset-right, 0px));
 }
 @utility pl-safe {
-  padding-left: env(safe-area-inset-left, 0px);
+  padding-left: calc(var(--gx, 0px) + env(safe-area-inset-left, 0px));
 }
 @utility pr-safe {
-  padding-right: env(safe-area-inset-right, 0px);
+  padding-right: calc(var(--gx, 0px) + env(safe-area-inset-right, 0px));
 }
-@utility px-safe {
-  padding-left: env(safe-area-inset-left, 0px);
-  padding-right: env(safe-area-inset-right, 0px);
+@utility pt-safe {
+  padding-top: calc(var(--gt, 0px) + env(safe-area-inset-top, 0px));
+}
+@utility pb-safe {
+  padding-bottom: calc(var(--gb, 0px) + env(safe-area-inset-bottom, 0px));
 }
 @utility mt-safe {
   margin-top: env(safe-area-inset-top, 0px);
@@ -565,5 +570,128 @@
   }
   50% {
     transform: translate3d(0, -7px, 0);
+  }
+}
+
+/* Sıradaki dersin halkası. Ekrandaki tek döngüsel hareket; gözü
+   "buradan devam et" noktasına çekiyor. */
+@utility animate-node-pulse {
+  animation: node-pulse 2.4s var(--ease-out) infinite;
+}
+
+@keyframes node-pulse {
+  0% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.45);
+  }
+}
+
+/* =========================================================================
+   8. Sayaç işaretleri
+   Hero'daki iki rakamın yanındaki döngü. Yalnızca görünürken çalışır.
+   ========================================================================= */
+
+@utility glyph-anim {
+  animation-play-state: paused;
+  animation-duration: 3.2s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+
+[data-play="true"] .glyph-anim {
+  animation-play-state: running;
+}
+
+@utility glyph-stack {
+  animation-name: glyph-stack;
+  animation-timing-function: var(--ease-out);
+}
+@keyframes glyph-stack {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  14%,
+  74% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  88%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+@utility glyph-check {
+  animation-name: glyph-check;
+  animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes glyph-check {
+  0%,
+  4% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  18%,
+  72% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  86%,
+  100% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@utility glyph-drop {
+  animation-name: glyph-drop;
+  animation-timing-function: cubic-bezier(0.34, 1.5, 0.64, 1);
+}
+@keyframes glyph-drop {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -18px, 0);
+  }
+  10% {
+    opacity: 1;
+  }
+  26%,
+  76% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+@utility glyph-pop {
+  animation-name: glyph-pop;
+  animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes glyph-pop {
+  0%,
+  6% {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scale(0.3);
+  }
+  22%,
+  70% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  86%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -10px, 0) scale(0.7);
   }
 }

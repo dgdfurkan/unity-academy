@@ -158,6 +158,81 @@ Süreler çekirdek anlatım içindir; alıştırmalar hariç.
 | 29 | Package Manager ve DOTween | Paket ekler, bağımlılığın maliyetini ölçer, tween yazar | `Package Manager`, `DOTween`, `Tween`, `Ease` | scenario, live-code | 22 |
 | 30 | Build ayarları ve yayın | Android ve iOS hedefine build alır, reklam ve analytics'i yerleştirir | `Build Settings`, `Player Settings`, `IL2CPP`, `SDK` | scenario, match | 24 |
 
+## 4b. Ders ortasında başka bir şey anlatmak gerekirse
+
+Ders anlatırken sık sık başka bir konuya sapmak gerekiyor. `Rigidbody` anlatırken
+`Vector3`'e değinmek, `Update` anlatırken `float`'ı hatırlatmak gibi. Bunu her
+seferinde yeni ders açarak çözemeyiz: müfredat şişer ve sıra bozulur.
+
+Üç mekanizma var. Hangisinin kullanılacağı sapmanın büyüklüğüne göre seçilir.
+
+### Yan Not (`aside`)
+
+Bir iki paragraflık, akışı bölmeyen ek. Metnin yanında katlanabilir bir kutu
+olarak durur, varsayılan olarak kapalıdır. Tıklayan açar, açmayan devam eder.
+
+Ne zaman: kavram bir cümleyle geçiştirilebilir ama merak edecek biri olabilir.
+Örnek: `Update` dersinde "peki `Time.time` ne işe yarar" sorusu.
+
+Puan üretmez, ilerlemeyi etkilemez, tekrar kuyruğuna girmez.
+
+### Ara Bilgi (`interlude`)
+
+Ders akışına giren tam bir adım: kısa anlatım artı tek bir alıştırma. Adım
+atlanamaz, çünkü devamı ona dayanıyor.
+
+Ne zaman: kavram olmadan dersin geri kalanı anlaşılmıyor ama kendi başına bir
+ders olacak kadar büyük değil.
+Örnek: `Rigidbody` dersinde `Vector3` ve eksenler. 3-4 dakika, bir `predict`.
+
+Puan üretir (10), tekrar kuyruğuna girer, ama ayrı bir ders olarak sayılmaz;
+ilerleme çubuğunda ana dersin parçasıdır.
+
+### Sapma Dersi (`detour`)
+
+Kendi başına bir ders. Yolda ana hattın yanında, girintili ve farklı renkte
+görünür. Sırası gelmeden de açılabilir; kilidi ana dersin kilidine bağlı.
+
+Ne zaman: kavram birden çok dersin ön koşulu, yani bir kez öğretip birçok yerden
+işaret etmek gerekiyor.
+Örnek: "Vector3 ve Eksenler", "Kordinat Uzayı: world, local, screen",
+"Konsol Hatalarını Okumak", "null Nedir, NullReferenceException Neden Çıkar".
+
+Puan üretir (15), tekrar kuyruğuna girer, modül ilerlemesine sayılır ama modülün
+zorunlu ders sayısını artırmaz: öğrenci atlarsa modül yine tamamlanır.
+
+### Seçim kuralı
+
+| Sapmanın süresi | Ana dersin devamı ona bağlı mı | Ne kullanılır |
+| --- | --- | --- |
+| 1 dakikadan az | Hayır | `aside` |
+| 2-5 dakika | Evet | `interlude` |
+| 5 dakikadan uzun | Fark etmez | `detour` |
+| Birden çok dersin ön koşulu | Evet | `detour` |
+
+### Çapraz bağlantı
+
+Her ders, kullandığı kavramları `requires` alanında listeler. Öğrenci bir kavramı
+hiç görmediyse ders başında "Bu ders şunu varsayıyor" satırı çıkar ve ilgili
+`detour`'a bağlantı verir. Kavram zaten öğrenilmişse satır görünmez.
+
+Bu, müfredatı doğrusal olmaktan çıkarıp bir grafa çeviriyor; sıra korunuyor ama
+eksik ön koşul sessizce geçilmiyor.
+
+### Planlanan sapma dersleri
+
+Bunlar 30 dersin dışında sayılır ve gerektikçe yazılır.
+
+| Sapma | Nereden çağrılır |
+| --- | --- |
+| Vector3 ve Eksenler | 14, 17, 19 |
+| Koordinat Uzayı: world, local, screen | 14, 21 |
+| Konsol Hatalarını Okumak | 09, 13 |
+| null ve NullReferenceException | 13, 16 |
+| Açı, Derece ve Quaternion | 14 |
+| Delta Zaman Matematiği | 11, 17 |
+| C# Koleksiyonları: List ve Dictionary | 22, 28 |
+
 ## 5. Puanlama
 
 Puan, harcanan zamanı değil öğrenilen şeyi ödüllendirir.
@@ -238,12 +313,12 @@ Beşerli gruplar. Her grup bitince o beş ders uçtan uca oynanabilir olacak.
 
 | Grup | Dersler | Neden bu sıra |
 | --- | --- | --- |
-| 1 | 01-05 | Ders motorunu ve ilk üç alıştırma tipini kurar |
-| 2 | 06-10 | `inspector` ve `order-lines` tiplerini ekler |
-| 3 | 11-15 | `scene-tweak` ile 3B modülü devreye alır |
-| 4 | 16-20 | Fizik sahneleri, en çok görsel gerektiren grup |
-| 5 | 21-25 | `refactor` tipi ve proje teslimi |
-| 6 | 26-30 | `perf-audit` ve yayın; kurs tamamlanır |
+| 1 | 01-08 | Ders motoru ve dokuz alıştırma tipi; ayrıntısı `docs/LESSONS-01-08.md` |
+| 2 | 09-13 | Yaşam döngüsü; `scene-tweak` tipini açar |
+| 3 | 14-18 | Sahne ve fiziğin ilk yarısı, en çok görsel gerektiren grup |
+| 4 | 19-23 | Fiziğin kalanı, girdi ve oyun döngüsü |
+| 5 | 24-27 | Üretim desenleri ve performans; `refactor` ile `perf-audit` |
+| 6 | 28-30 | Profil okuma, araçlar ve yayın; kurs tamamlanır |
 
 Her gruptan önce o gruptaki yeni alıştırma tipi bileşeni yazılır, sonra içerik
 doldurulur. İçerik önce yazılıp tip sonra yapılırsa içerik iki kez elden geçiyor.

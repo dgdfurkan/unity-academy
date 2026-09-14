@@ -1,17 +1,15 @@
 "use client";
 
-import { Check, Flame, Lock, Play, RotateCcw, Sparkles } from "lucide-react";
+import { Flame, Play, RotateCcw, Sparkles } from "lucide-react";
 import { m, useReducedMotion } from "motion/react";
+import { LessonNode, type NodeState } from "@/components/app/LessonNode";
 import { PageHeader } from "@/components/app/PageHeader";
+import { StatTile } from "@/components/app/StatTile";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { Button } from "@/components/ui/Button";
 import { getDictionary, type Locale } from "@/i18n";
 import { lessonId, useProgress } from "@/lib/progress";
-import { cn } from "@/lib/utils";
 
-type NodeState = "done" | "current" | "locked";
-
-const XP_PER_LESSON = 20;
 
 export function LearnPath({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
@@ -35,26 +33,21 @@ export function LearnPath({ locale }: { locale: Locale }) {
   };
 
   return (
-    <div className="px-safe mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
+    <div className="px-safe mx-auto w-full max-w-4xl py-6 [--gx:1rem] sm:py-10 sm:[--gx:1.5rem]">
       {/* ---------- Karşılama ve sayaçlar ---------- */}
       <header>
         <PageHeader title={`${t.greeting}${user ? `, ${user.name.split(" ")[0]}` : ""}`} />
 
-        <dl className="mt-5 grid grid-cols-3 gap-2.5 sm:gap-3">
-          <Stat
+        <dl className="mt-6 grid grid-cols-3 gap-2.5 sm:gap-3">
+          <StatTile
             icon={Flame}
-            tone="warning"
+            tone="streak"
             label={t.streak}
-            value={String(progress.streakDays)}
+            value={progress.streakDays}
             unit={t.streakUnit}
           />
-          <Stat icon={Sparkles} tone="accent" label={t.xp} value={String(progress.xp)} />
-          <Stat
-            icon={RotateCcw}
-            tone="info"
-            label={t.review}
-            value={progress.reviewDue > 0 ? `${progress.reviewDue}` : "0"}
-          />
+          <StatTile icon={Sparkles} tone="points" label={t.xp} value={progress.xp} />
+          <StatTile icon={RotateCcw} tone="review" label={t.review} value={progress.reviewDue} />
         </dl>
       </header>
 
@@ -116,7 +109,7 @@ export function LearnPath({ locale }: { locale: Locale }) {
 
               <ol className="relative mt-5 flex flex-col gap-3">
                 {mod.lessons.map((title, li) => (
-                  <PathNode
+                  <LessonNode
                     key={title}
                     index={li}
                     title={title}
@@ -136,127 +129,5 @@ export function LearnPath({ locale }: { locale: Locale }) {
         })}
       </div>
     </div>
-  );
-}
-
-/* ------------------------------ parçalar ------------------------------ */
-
-const TONE = {
-  warning: "bg-sun/25 text-warm-text",
-  accent: "bg-accent-soft text-accent-text",
-  info: "bg-sky/15 text-sky-text",
-} as const;
-
-function Stat({
-  icon: Icon,
-  tone,
-  label,
-  value,
-  unit,
-}: {
-  icon: typeof Flame;
-  tone: keyof typeof TONE;
-  label: string;
-  value: string;
-  /** Sayının yanına küçük punto ile gelir; etikete sığmayınca kesiliyordu. */
-  unit?: string;
-}) {
-  return (
-    <div className="flex items-center gap-3 rounded-2xl bg-surface p-3 shadow-sm sm:p-3.5">
-      <span
-        aria-hidden="true"
-        className={cn("grid size-10 shrink-0 place-items-center rounded-full", TONE[tone])}
-      >
-        <Icon className="size-[18px]" strokeWidth={2} />
-      </span>
-      <div className="min-w-0">
-        <dt className="truncate text-[12px] font-medium text-text-subtle">{label}</dt>
-        <dd className="font-display text-[19px] font-semibold tabular-nums leading-tight tracking-[-0.01em] text-text">
-          {value}
-          {unit ? (
-            <span className="ml-1 font-sans text-[12px] font-medium text-text-subtle">{unit}</span>
-          ) : null}
-        </dd>
-      </div>
-    </div>
-  );
-}
-
-function PathNode({
-  index,
-  title,
-  state,
-  isLast,
-  labels,
-}: {
-  index: number;
-  title: string;
-  state: NodeState;
-  isLast: boolean;
-  labels: { done: string; current: string; locked: string; lockedHint: string };
-}) {
-  const locked = state === "locked";
-
-  return (
-    <li className="relative">
-      {/* Düğümleri birleştiren çizgi. Son düğümden sonra bağlanacak bir şey yok. */}
-      {isLast ? null : (
-        <span
-          aria-hidden="true"
-          className="absolute left-[27px] top-[3.9rem] h-3 w-0.5 rounded-full bg-border-strong"
-        />
-      )}
-      <button
-        type="button"
-        disabled={locked}
-        aria-describedby={locked ? `locked-${index}` : undefined}
-        className={cn(
-          "group flex w-full items-center gap-3.5 rounded-2xl border-2 px-3.5 py-3 text-left",
-          "transition-colors duration-(--dur-fast)",
-          locked
-            ? "cursor-not-allowed border-transparent bg-surface/55"
-            : "cursor-pointer border-transparent bg-surface shadow-sm hover:-translate-y-px hover:shadow-md motion-reduce:hover:translate-y-0",
-          state === "current" && "border-accent bg-surface shadow-md",
-        )}
-      >
-        <span
-          className={cn(
-            "grid size-11 shrink-0 place-items-center rounded-full border",
-            state === "done" && "border-transparent bg-mint text-white",
-            state === "current" && "border-transparent bg-accent text-on-accent",
-            locked && "border-transparent bg-surface-2 text-text-subtle",
-          )}
-        >
-          {state === "done" ? (
-            <Check className="size-5" strokeWidth={2.5} aria-hidden="true" />
-          ) : state === "current" ? (
-            <Play className="size-[18px]" strokeWidth={2.5} aria-hidden="true" />
-          ) : (
-            <Lock className="size-[17px]" strokeWidth={1.75} aria-hidden="true" />
-          )}
-        </span>
-
-        <span className="min-w-0 flex-1">
-          <span
-            className={cn(
-              "block text-[14.5px] font-medium tracking-[-0.005em]",
-              locked ? "text-text-subtle" : "text-text",
-            )}
-          >
-            {title}
-          </span>
-          {/* Durum yalnızca renkle taşınmaz, metinle de yazılır. */}
-          <span className="mt-0.5 block text-[12.5px] text-text-subtle">
-            {state === "done" ? labels.done : state === "current" ? labels.current : labels.locked}
-          </span>
-        </span>
-      </button>
-
-      {locked ? (
-        <span id={`locked-${index}`} className="sr-only">
-          {labels.lockedHint}
-        </span>
-      ) : null}
-    </li>
   );
 }
