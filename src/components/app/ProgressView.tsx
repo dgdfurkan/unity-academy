@@ -1,13 +1,15 @@
 "use client";
 
 import { Flame, Sparkles, Trophy } from "lucide-react";
+import { useAuth } from "@/components/auth/AuthProvider";
 import { getDictionary, type Locale } from "@/i18n";
 import { lessonId, useProgress } from "@/lib/progress";
 
 export function ProgressView({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
   const t = dict.progressPage;
-  const { progress } = useProgress();
+  const { user } = useAuth();
+  const { progress } = useProgress(user?.id);
   const modules = dict.curriculum.items;
   const totalLessons = modules.reduce((n, mod) => n + mod.lessons.length, 0);
 

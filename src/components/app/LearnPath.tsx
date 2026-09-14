@@ -16,7 +16,7 @@ export function LearnPath({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
   const t = dict.app;
   const { user } = useAuth();
-  const { progress, loaded } = useProgress();
+  const { progress, loaded } = useProgress(user?.id);
   const reduced = useReducedMotion();
 
   const modules = dict.curriculum.items;

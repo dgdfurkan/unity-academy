@@ -1,4 +1,5 @@
 import { DEFAULT_LOCALE, type Locale } from "@/i18n/config";
+import type { Role } from "@/lib/auth/types";
 
 /**
  * Yollar dile göre değişir: Türkçe kullanıcıya /sign-in göstermenin anlamı yok.
@@ -8,11 +9,11 @@ import { DEFAULT_LOCALE, type Locale } from "@/i18n/config";
 export const ROUTES = {
   home: { tr: "/", en: "/" },
   signIn: { tr: "/giris", en: "/sign-in" },
-  signUp: { tr: "/kayit", en: "/sign-up" },
   learn: { tr: "/ogren", en: "/learn" },
   progress: { tr: "/ilerleme", en: "/progress" },
   homework: { tr: "/odevler", en: "/homework" },
   profile: { tr: "/profil", en: "/profile" },
+  students: { tr: "/yonetim", en: "/admin" },
 } as const;
 
 export type RouteKey = keyof typeof ROUTES;
@@ -35,4 +36,9 @@ export function routeKeyOf(pathname: string): RouteKey | null {
     if (paths.tr === withoutLocale || paths.en === withoutLocale) return key;
   }
   return null;
+}
+
+/** Giriş sonrası varılacak ekran role göre değişir. */
+export function homeFor(role: Role, locale: Locale): string {
+  return route(role === "instructor" ? "students" : "learn", locale);
 }

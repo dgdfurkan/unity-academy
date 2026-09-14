@@ -11,52 +11,39 @@ import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Wordmark } from "@/components/ui/Logo";
 import { getDictionary, type Locale } from "@/i18n";
-import { AuthError, auth } from "@/lib/auth";
-import { route } from "@/lib/routes";
+import { AuthError, auth, DEMO_ACCOUNTS } from "@/lib/auth";
+import { homeFor, route } from "@/lib/routes";
 
-type Mode = "signIn" | "signUp";
-type Errors = Partial<Record<"name" | "email" | "password" | "form", string>>;
+type Errors = Partial<Record<"username" | "password" | "form", string>>;
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-export function AuthForm({ mode, locale }: { mode: Mode; locale: Locale }) {
+export function SignInForm({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
   const t = dict.auth;
   const router = useRouter();
   const { user, loading } = useAuth();
 
-  const [values, setValues] = useState({ name: "", email: "", password: "" });
+  const [values, setValues] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState<Errors>({});
   const [busy, setBusy] = useState(false);
 
-  const isSignUp = mode === "signUp";
-
-  // Giriş yapmış kullanıcı bu ekranda durmaz.
+  // Giriş yapmış kullanıcı bu ekranda durmaz, rolüne göre yönlenir.
   useEffect(() => {
-    if (!loading && user) router.replace(route("learn", locale));
+    if (!loading && user) router.replace(homeFor(user.role, locale));
   }, [loading, user, router, locale]);
-
-  function validate(): Errors {
-    const next: Errors = {};
-    if (isSignUp && !values.name.trim()) next.name = t.errors.nameRequired;
-    if (!values.email.trim()) next.email = t.errors.emailRequired;
-    else if (!EMAIL_PATTERN.test(values.email.trim())) next.email = t.errors.emailInvalid;
-    if (!values.password) next.password = t.errors.passwordRequired;
-    else if (isSignUp && values.password.length < 8) next.password = t.errors.passwordShort;
-    return next;
-  }
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
-    const found = validate();
+
+    const found: Errors = {};
+    if (!values.username.trim()) found.username = t.errors.usernameRequired;
+    if (!values.password) found.password = t.errors.passwordRequired;
     setErrors(found);
     if (Object.keys(found).length > 0) return;
 
     setBusy(true);
     try {
-      if (isSignUp) await auth.signUp(values.name, values.email, values.password);
-      else await auth.signIn(values.email, values.password);
-      router.replace(route("learn", locale));
+      const signedIn = await auth.signIn(values.username, values.password);
+      router.replace(homeFor(signedIn.role, locale));
     } catch (error) {
       setErrors({
         form: error instanceof AuthError ? t.errors[error.code] : t.errors.wrongCredentials,
@@ -72,6 +59,11 @@ export function AuthForm({ mode, locale }: { mode: Mode; locale: Locale }) {
     setErrors((e) => ({ ...e, [key]: undefined, form: undefined }));
   };
 
+  function fill(account: { username: string; password: string }) {
+    setValues({ username: account.username, password: account.password });
+    setErrors({});
+  }
+
   return (
     <div className="px-safe pt-safe pb-safe flex min-h-dvh flex-col bg-bg">
       <header className="mx-auto flex h-16 w-full max-w-lg items-center justify-between px-5">
@@ -84,73 +76,75 @@ export function AuthForm({ mode, locale }: { mode: Mode; locale: Locale }) {
         </div>
       </header>
 
-      <main id="main" className="mx-auto flex w-full max-w-lg flex-1 flex-col justify-center px-5 py-10">
+      <main
+        id="main"
+        className="mx-auto flex w-full max-w-lg flex-1 flex-col justify-center px-5 py-10"
+      >
         <div className="animate-rise">
           <h1 className="text-[1.75rem]/[1.2] font-semibold tracking-[-0.025em] text-text">
-            {isSignUp ? t.signUpTitle : t.signInTitle}
+            {t.signInTitle}
           </h1>
-          <p className="mt-2 text-[15px]/[1.6] text-text-muted">
-            {isSignUp ? t.signUpLead : t.signInLead}
-          </p>
+          <p className="mt-2 text-[15px]/[1.6] text-text-muted">{t.signInLead}</p>
 
           <form onSubmit={onSubmit} noValidate className="mt-8 flex flex-col gap-4">
-            {isSignUp ? (
-              <Field
-                label={t.name}
-                name="name"
-                autoComplete="name"
-                value={values.name}
-                onChange={set("name")}
-                error={errors.name}
-              />
-            ) : null}
-
             <Field
-              label={t.email}
-              name="email"
-              type="email"
-              inputMode="email"
-              autoComplete="email"
-              value={values.email}
-              onChange={set("email")}
-              error={errors.email}
+              label={t.username}
+              name="username"
+              autoComplete="username"
+              autoCapitalize="none"
+              spellCheck={false}
+              value={values.username}
+              onChange={set("username")}
+              error={errors.username}
             />
 
             <Field
               label={t.password}
               name="password"
               type="password"
-              autoComplete={isSignUp ? "new-password" : "current-password"}
+              autoComplete="current-password"
               value={values.password}
               onChange={set("password")}
-              hint={isSignUp ? t.passwordHint : undefined}
               error={errors.password}
               revealLabels={{ show: t.showPassword, hide: t.hidePassword }}
             />
 
             {errors.form ? (
-              <p role="alert" className="rounded-md bg-danger-surface px-3.5 py-3 text-[13px] text-danger">
+              <p
+                role="alert"
+                className="rounded-md bg-danger-surface px-3.5 py-3 text-[13px] text-danger"
+              >
                 {errors.form}
               </p>
             ) : null}
 
             <Button type="submit" size="lg" disabled={busy} className="mt-2 w-full">
-              {busy ? t.working : isSignUp ? t.submitSignUp : t.submitSignIn}
+              {busy ? t.working : t.submitSignIn}
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-[14px] text-text-muted">
-            {isSignUp ? t.hasAccount : t.noAccount}{" "}
-            <Link
-              href={route(isSignUp ? "signIn" : "signUp", locale)}
-              className="rounded-sm font-medium text-accent-text underline-offset-4 hover:underline"
-            >
-              {isSignUp ? t.toSignIn : t.toSignUp}
-            </Link>
-          </p>
+          <p className="mt-6 text-center text-[14px] text-text-muted">{t.noAccountNote}</p>
 
-          {/* Sunucu bağlanana kadar bu ekranın ne yaptığını gizlemiyoruz. */}
-          <p className="mt-8 flex gap-2.5 rounded-md border border-border bg-surface px-3.5 py-3 text-[13px]/[1.55] text-text-subtle">
+          {/* Sunucu bağlanana kadar deneme hesapları burada duruyor.
+              Firebase geldiğinde bu blok silinecek. */}
+          <section className="mt-8 rounded-lg border border-border bg-surface p-4">
+            <h2 className="text-[13px] font-medium text-text">{t.demoTitle}</h2>
+            <p className="mt-1 text-[13px]/[1.5] text-text-subtle">{t.demoBody}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <DemoButton
+                label={t.demoStudent}
+                account={DEMO_ACCOUNTS.student}
+                onPick={fill}
+              />
+              <DemoButton
+                label={t.demoInstructor}
+                account={DEMO_ACCOUNTS.instructor}
+                onPick={fill}
+              />
+            </div>
+          </section>
+
+          <p className="mt-4 flex gap-2.5 rounded-md border border-border bg-surface px-3.5 py-3 text-[13px]/[1.55] text-text-subtle">
             <Info className="mt-px size-4 shrink-0" strokeWidth={1.75} aria-hidden="true" />
             {t.notice}
           </p>
@@ -167,5 +161,26 @@ export function AuthForm({ mode, locale }: { mode: Mode; locale: Locale }) {
         </Link>
       </footer>
     </div>
+  );
+}
+
+function DemoButton({
+  label,
+  account,
+  onPick,
+}: {
+  label: string;
+  account: { username: string; password: string };
+  onPick: (account: { username: string; password: string }) => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => onPick(account)}
+      className="flex h-11 cursor-pointer items-center gap-2 rounded-md border border-border bg-surface-2 px-3 text-[13px] transition-colors duration-(--dur-instant) hover:border-border-strong hover:bg-surface-3"
+    >
+      <span className="font-medium text-text">{label}</span>
+      <span className="font-mono text-text-subtle">{account.username}</span>
+    </button>
   );
 }

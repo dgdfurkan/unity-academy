@@ -39,8 +39,16 @@ yetişkin ve profesyonel bir beceri öğreniyor.
 
 | Rol | Yetki |
 | --- | --- |
-| Eğitmen (admin) | Müfredatı yönetir, öğrencileri ve ilerlemeyi görür, ödev atar ve değerlendirir |
-| Öğrenci | Kayıt olur, modülleri ilerletir, alıştırma ve ödev yapar, kendi ilerlemesini görür |
+| Eğitmen (admin) | Öğrenci hesaplarını açar, müfredatı yönetir, ilerlemeyi görür, ödev atar ve değerlendirir |
+| Öğrenci | Modülleri ilerletir, alıştırma ve ödev yapar, kendi ilerlemesini görür |
+
+Kayıt ekranı yok. Öğrenci kendi hesabını açamaz; hesabı eğitmen açar ve giriş bilgilerini
+öğrenciye iletir. Kapalı bir kurs olduğu için doğrusu bu: kimin katıldığı eğitmenin
+kararı.
+
+Giriş kullanıcı adı ve parola ile yapılır. Firebase Authentication kullanıcı adını
+doğrudan desteklemiyor, bu yüzden kayıtta e-posta da tutuluyor: oraya geçildiğinde
+kullanıcı adı önce hesaba çözülecek, arayüz tarafı değişmeyecek.
 
 ### Çekirdek özellikler
 

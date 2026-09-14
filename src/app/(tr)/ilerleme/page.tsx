@@ -3,7 +3,7 @@ import { ProgressView } from "@/components/app/ProgressView";
 
 export default function Page() {
   return (
-    <AppPage locale="tr">
+    <AppPage locale="tr" role="student">
       <ProgressView locale="tr" />
     </AppPage>
   );

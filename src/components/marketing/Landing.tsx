@@ -23,7 +23,7 @@ const BUILD_ICONS: LucideIcon[] = [Footprints, Coins, Boxes];
 
 export function Landing({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
-  const signUp = route("signUp", locale);
+  const signIn = route("signIn", locale);
 
   return (
     <>
@@ -64,7 +64,7 @@ export function Landing({ locale }: { locale: Locale }) {
               <Reveal index={3}>
                 <div className="mt-9 flex flex-wrap items-center gap-3">
                   <Button size="lg" asChild>
-                    <Link href={signUp}>
+                    <Link href={signIn}>
                       {dict.hero.ctaPrimary}
                       <ArrowRight className="size-4" strokeWidth={2.25} aria-hidden="true" />
                     </Link>
@@ -171,7 +171,7 @@ export function Landing({ locale }: { locale: Locale }) {
                   </p>
                   <div className="mt-8">
                     <Button size="lg" asChild>
-                      <Link href={signUp}>
+                      <Link href={signIn}>
                         {dict.cta.button}
                         <ArrowRight className="size-4" strokeWidth={2.25} aria-hidden="true" />
                       </Link>

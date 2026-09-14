@@ -22,6 +22,7 @@ export function ProfileView({ locale }: { locale: Locale }) {
         </h2>
         <dl className="divide-y divide-border">
           <Row label={t.name} value={user?.name ?? "—"} />
+          <Row label={t.username} value={user?.username ?? "—"} />
           <Row label={t.email} value={user?.email ?? "—"} />
           <Row
             label={t.role}

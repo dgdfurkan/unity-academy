@@ -1,5 +1,5 @@
-import { AuthForm } from "@/components/auth/AuthForm";
+import { SignInForm } from "@/components/auth/AuthForm";
 
 export default function Page() {
-  return <AuthForm mode="signIn" locale="en" />;
+  return <SignInForm locale="en" />;
 }

@@ -2,32 +2,48 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, ClipboardList, LogOut, TrendingUp, User } from "lucide-react";
+import { BookOpen, ClipboardList, LogOut, TrendingUp, User, Users } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import { useAuth } from "@/components/auth/AuthProvider";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { LogoMark, Wordmark } from "@/components/ui/Logo";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { getDictionary, type Locale } from "@/i18n";
 import { auth } from "@/lib/auth";
+import type { Role } from "@/lib/auth";
 import { route, routeKeyOf, type RouteKey } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
-const NAV: { key: RouteKey; icon: LucideIcon }[] = [
-  { key: "learn", icon: BookOpen },
-  { key: "progress", icon: TrendingUp },
-  { key: "homework", icon: ClipboardList },
-  { key: "profile", icon: User },
-];
+type NavItem = { key: RouteKey; icon: LucideIcon };
+
+/** Gezinti role göre değişir: eğitmen ders ilerletmiyor, öğrenci hesap açmıyor. */
+const NAV_BY_ROLE: Record<Role, NavItem[]> = {
+  student: [
+    { key: "learn", icon: BookOpen },
+    { key: "progress", icon: TrendingUp },
+    { key: "homework", icon: ClipboardList },
+    { key: "profile", icon: User },
+  ],
+  instructor: [
+    { key: "students", icon: Users },
+    { key: "profile", icon: User },
+  ],
+};
 
 export function AppShell({ locale, children }: { locale: Locale; children: ReactNode }) {
   const dict = getDictionary(locale);
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useAuth();
   const activeKey = routeKeyOf(pathname);
 
+  const role: Role = user?.role ?? "student";
+  const nav = NAV_BY_ROLE[role];
+  const home = route(role === "instructor" ? "students" : "learn", locale);
+
   const label = (key: RouteKey) =>
-    dict.app.nav[key as keyof typeof dict.app.nav] ?? key;
+    key === "students" ? dict.admin.nav.students : dict.app.nav[key as keyof typeof dict.app.nav];
 
   async function signOut() {
     await auth.signOut();
@@ -39,13 +55,13 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
       {/* --------- Masaüstü kenar çubuğu --------- */}
       <aside className="pl-safe fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r border-border bg-surface lg:flex">
         <div className="flex h-16 items-center px-5">
-          <Link href={route("learn", locale)} className="-mx-2 flex h-11 items-center rounded-md px-2">
+          <Link href={home} className="-mx-2 flex h-11 items-center rounded-md px-2">
             <Wordmark />
           </Link>
         </div>
 
         <nav className="flex flex-1 flex-col gap-1 px-3 py-2" aria-label={dict.app.menu}>
-          {NAV.map(({ key, icon: Icon }) => (
+          {nav.map(({ key, icon: Icon }) => (
             <Link
               key={key}
               href={route(key, locale)}
@@ -84,7 +100,7 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
       <header className="pt-safe px-safe sticky top-0 z-30 border-b border-border bg-bg/85 backdrop-blur-xl lg:hidden">
         <div className="flex h-14 items-center justify-between px-4">
           <Link
-            href={route("learn", locale)}
+            href={home}
             aria-label={dict.nav.home}
             className="-mx-2 flex h-11 items-center rounded-md px-2"
           >
@@ -116,7 +132,7 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
         className="pb-safe px-safe fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 backdrop-blur-xl lg:hidden"
       >
         <ul className="mx-auto flex max-w-lg items-stretch">
-          {NAV.map(({ key, icon: Icon }) => {
+          {nav.map(({ key, icon: Icon }) => {
             const active = activeKey === key;
             return (
               <li key={key} className="flex-1">

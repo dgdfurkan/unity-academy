@@ -19,8 +19,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const URL_ARG = process.argv[2] ?? "http://localhost:3000";
-// --auth: korumalı sayfaları denetlemek için sayfa açılmadan önce oturum yazar.
-const WITH_AUTH = process.argv.includes("--auth");
+// --auth[=student|instructor]: korumalı sayfaları denetlemek için sayfa
+// açılmadan önce oturum yazar.
+const AUTH_ARG = process.argv.find((a) => a.startsWith("--auth"));
+const AUTH_ROLE = AUTH_ARG?.split("=")[1] ?? (AUTH_ARG ? "student" : null);
 const OUT_DIR = ".audit";
 
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
@@ -62,8 +64,36 @@ const AUDIT = (minTarget) => `(() => {
     return cs.clipPath === "inset(50%)" || cs.clip === "rect(0px, 0px, 0px, 0px)";
   };
 
-  const label = (el) =>
-    (el.getAttribute("aria-label") || el.textContent || "").trim().slice(0, 40);
+  // Erişilebilir ad: aria-label, aria-labelledby, bağlı <label>, sarmalayan
+  // <label>, title ya da metin içeriği. Form alanlarının adı genellikle
+  // <label for> üzerinden gelir, yalnızca metne bakmak yanlış alarm üretir.
+  const label = (el) => {
+    const aria = el.getAttribute("aria-label");
+    if (aria?.trim()) return aria.trim().slice(0, 40);
+
+    const labelledBy = el.getAttribute("aria-labelledby");
+    if (labelledBy) {
+      const text = labelledBy
+        .split(/\s+/)
+        .map((refId) => document.getElementById(refId)?.textContent ?? "")
+        .join(" ")
+        .trim();
+      if (text) return text.slice(0, 40);
+    }
+
+    if (el.id) {
+      const bound = document.querySelector('label[for="' + CSS.escape(el.id) + '"]');
+      if (bound?.textContent?.trim()) return bound.textContent.trim().slice(0, 40);
+    }
+
+    const wrapping = el.closest("label");
+    if (wrapping?.textContent?.trim()) return wrapping.textContent.trim().slice(0, 40);
+
+    const title = el.getAttribute("title");
+    if (title?.trim()) return title.trim().slice(0, 40);
+
+    return (el.textContent || "").trim().slice(0, 40);
+  };
 
   for (const el of document.querySelectorAll("body *")) {
     const r = el.getBoundingClientRect();
@@ -205,9 +235,17 @@ const cdp = await Cdp.connect(target.webSocketDebuggerUrl);
 
 await cdp.send("Page.enable");
 
-if (WITH_AUTH) {
+if (AUTH_ROLE) {
+  const session = {
+    id: AUTH_ROLE === "instructor" ? "seed-instructor" : "seed-student",
+    name: AUTH_ROLE === "instructor" ? "Furkan Gündüz" : "Deniz Kaya",
+    username: AUTH_ROLE === "instructor" ? "admin" : "demo",
+    email: AUTH_ROLE === "instructor" ? "egitmen@unityacademy.dev" : "deniz@ornek.com",
+    role: AUTH_ROLE,
+    createdAt: "2026-01-06T09:00:00.000Z",
+  };
   await cdp.send("Page.addScriptToEvaluateOnNewDocument", {
-    source: `try{localStorage.setItem("ua.session",JSON.stringify({id:"audit",name:"Deniz Kaya",email:"deniz@ornek.com",role:"student"}));}catch(e){}`,
+    source: `try{localStorage.setItem("ua.session",${JSON.stringify(JSON.stringify(session))});}catch(e){}`,
   });
 }
 

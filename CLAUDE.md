@@ -12,6 +12,9 @@ Bu dosya çalışma kurallarını tutar.
 - Dinamik her şey tarayıcıdan Firebase SDK ile konuşur. Auth, Firestore, Storage.
 - Erişim kontrolü Security Rules ile kurulur. Arayüzde bir kontrolü gizlemek güvenlik
   değildir; kural yazılmadan koleksiyon açılmaz.
+- İki rol var: `instructor` ve `student`. Hesapları yalnızca eğitmen açar, açık kayıt yok.
+- Giriş kullanıcı adıyla yapılır. Firebase Authentication bunu doğrudan desteklemediği
+  için kullanıcı adı önce hesaba çözülür; `AuthClient` arayüzü bunu gizler.
 - Bu iki kısıt her teknik kararı bağlar. Bir çözüm bunlardan birini bozuyorsa çözüm değildir.
 
 ## Kod kuralları
