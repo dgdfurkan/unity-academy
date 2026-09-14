@@ -100,12 +100,22 @@ export const tr = {
   },
   curriculum: {
     title: "Müfredat",
-    lead: "Sekiz modül. Sıra, hızdan daha önemli.",
+    lead: "Dokuz modül, otuz ders. Sıra, hızdan daha önemli.",
     items: [
+      {
+        title: "Başlangıç",
+        body: "Unity ne yapar, editörün altı penceresi ne işe yarar ve hangi kod editörüyle çalışacaksın.",
+        lessons: [
+          "Unity nedir, ne değildir",
+          "Editör turu",
+          "Kod editörü seçmek",
+        ],
+      },
       {
         title: "Aklında kalan C#",
         body: "Tipler, erişim belirleyiciler ve SerializeField, Inspector'da ne değiştirdikleri gösterilerek anlatılır.",
         lessons: [
+          "C# nedir, Unity ile ilişkisi",
           "Değişkenler ve tipler",
           "public, private ve [SerializeField]",
           "Koşullar ve döngüler",
@@ -116,10 +126,10 @@ export const tr = {
         title: "Yaşam döngüsü",
         body: "Awake, OnEnable, Start, Update, FixedUpdate, LateUpdate. Hangisi ne için ve yanlış seçince ne kırılır.",
         lessons: [
-          "Awake ve Start",
+          "MonoBehaviour ve ilk script",
+          "Awake, OnEnable, Start",
           "Update ve kare hızı",
-          "FixedUpdate ve fizik adımı",
-          "OnEnable, OnDisable, LateUpdate",
+          "FixedUpdate ve LateUpdate",
         ],
       },
       {
@@ -143,13 +153,21 @@ export const tr = {
         ],
       },
       {
+        title: "Girdi ve oyun döngüsü",
+        body: "Dokunmatik girdi, oyun durumunun tek yerden yönetimi ve ilerlemeyi kaydedip geri yüklemek.",
+        lessons: [
+          "Dokunmatik girdi",
+          "Oyun durumu",
+          "Kayıt ve yükleme",
+        ],
+      },
+      {
         title: "Üretim desenleri",
         body: "Oyun koduna uygulanan SOLID, ScriptableObject, event yapıları ve sistemlerin birbirine dolanmasını engellemek.",
         lessons: [
           "Tek sorumluluk",
           "ScriptableObject ile veri",
           "Event ve observer",
-          "Bağımlılıkları ayırmak",
         ],
       },
       {
@@ -157,27 +175,15 @@ export const tr = {
         body: "Update içine asla ne yazılmaz, pooling, allocation, draw call ve tahmin yerine profil okumak.",
         lessons: [
           "Update içine ne yazılmaz",
-          "Object pooling",
-          "Allocation ve GC",
-          "Draw call ve batching",
+          "Pooling, allocation ve profil",
         ],
       },
       {
-        title: "Üçüncü parti araçlar",
-        body: "DOTween gibi paketleri eklemek, bir bağımlılığın sana neye mal olduğunu ölçmek ve ne zaman kendin yazacağını bilmek.",
+        title: "Araçlar ve yayın",
+        body: "Paket eklemek, bir bağımlılığın maliyetini ölçmek, mobil hedefe build almak ve yayına çıkmak.",
         lessons: [
-          "Package Manager",
-          "DOTween ile hareket",
-          "Bir bağımlılığın maliyeti",
-        ],
-      },
-      {
-        title: "Yayına çıkarmak",
-        body: "Build ayarları, mobil hedefler ve reklam ile analytics'in oyunu ele geçirmeden nasıl yerleştiği.",
-        lessons: [
-          "Build ayarları",
-          "Android ve iOS hedefleri",
-          "Reklam ve analytics",
+          "Package Manager ve DOTween",
+          "Build ayarları ve yayın",
         ],
       },
     ],

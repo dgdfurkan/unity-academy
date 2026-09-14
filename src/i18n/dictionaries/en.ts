@@ -94,12 +94,22 @@ export const en: Dictionary = {
   },
   curriculum: {
     title: "Curriculum",
-    lead: "Eight modules. The order matters more than the pace.",
+    lead: "Nine modules, thirty lessons. The order matters more than the pace.",
     items: [
       {
-        title: "C# that sticks",
-        body: "Types, access modifiers, and SerializeField, taught by showing what each one changes in the Inspector.",
+        title: "Getting started",
+        body: "What Unity does, what the six editor windows are for, and which code editor you will work in.",
         lessons: [
+          "What Unity is and is not",
+          "A tour of the editor",
+          "Choosing a code editor",
+        ],
+      },
+      {
+        title: "C# that sticks",
+        body: "Types, access modifiers and SerializeField, taught by showing what each one changes in the Inspector.",
+        lessons: [
+          "What C# is and how Unity uses it",
           "Variables and types",
           "public, private and [SerializeField]",
           "Conditions and loops",
@@ -110,10 +120,10 @@ export const en: Dictionary = {
         title: "The lifecycle",
         body: "Awake, OnEnable, Start, Update, FixedUpdate, LateUpdate. What each is for and what breaks when you pick wrong.",
         lessons: [
-          "Awake and Start",
+          "MonoBehaviour and your first script",
+          "Awake, OnEnable, Start",
           "Update and frame rate",
-          "FixedUpdate and the physics step",
-          "OnEnable, OnDisable, LateUpdate",
+          "FixedUpdate and LateUpdate",
         ],
       },
       {
@@ -128,12 +138,21 @@ export const en: Dictionary = {
       },
       {
         title: "Physics",
-        body: "Rigidbody, Collider, triggers, Raycast, and layer masks, alongside the failure modes you will actually hit.",
+        body: "Rigidbody, Collider, triggers, Raycast and layer masks, alongside the failure modes you will actually hit.",
         lessons: [
           "Rigidbody and force",
           "Collider and triggers",
           "Finding objects with Raycast",
           "Layers and the collision matrix",
+        ],
+      },
+      {
+        title: "Input and the game loop",
+        body: "Touch input, running game state from one place, and saving progress so it comes back.",
+        lessons: [
+          "Touch input",
+          "Game state",
+          "Saving and loading",
         ],
       },
       {
@@ -143,7 +162,6 @@ export const en: Dictionary = {
           "Single responsibility",
           "Data with ScriptableObject",
           "Events and observers",
-          "Untangling dependencies",
         ],
       },
       {
@@ -151,27 +169,15 @@ export const en: Dictionary = {
         body: "What never goes inside Update, pooling, allocation, draw calls, and reading a profile instead of guessing.",
         lessons: [
           "What never goes in Update",
-          "Object pooling",
-          "Allocation and GC",
-          "Draw calls and batching",
+          "Pooling, allocation and the Profiler",
         ],
       },
       {
-        title: "Third-party tooling",
-        body: "Adding packages such as DOTween, weighing what a dependency costs you, and knowing when to write it yourself.",
+        title: "Tooling and shipping",
+        body: "Adding packages, weighing what a dependency costs, building for mobile targets and going live.",
         lessons: [
-          "Package Manager",
-          "Motion with DOTween",
-          "What a dependency costs",
-        ],
-      },
-      {
-        title: "Shipping",
-        body: "Build settings, mobile targets, and how ads and analytics fit in without taking the game over.",
-        lessons: [
-          "Build settings",
-          "Android and iOS targets",
-          "Ads and analytics",
+          "Package Manager and DOTween",
+          "Build settings and shipping",
         ],
       },
     ],

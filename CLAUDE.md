@@ -2,7 +2,8 @@
 
 Unity ve C# öğreten interaktif kurs platformu. Açık bir ürün: birden çok öğrenci kayıt
 olur, modülleri kendi hızında ilerletir. Tek kişiye özel bir ders sayfası değil.
-Kapsam ve yol haritası için `docs/BRIEF.md`, arayüz kararları için `docs/DESIGN.md`.
+Kapsam ve yol haritası için `docs/BRIEF.md`, arayüz kararları için `docs/DESIGN.md`,
+ders planı ve öğretim tasarımı için `docs/CURRICULUM.md`.
 Bu dosya çalışma kurallarını tutar.
 
 ## Mimari kısıtlar

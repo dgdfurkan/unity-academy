@@ -22,10 +22,10 @@ reklam oyunu (playable ad) mantığındaki yapımlar.
 
 ## 2. Kapsam
 
-- Sekiz modül, her modül kendi içinde derslere bölünür.
+- Dokuz modül, otuz ders. Ayrıntılı plan `docs/CURRICULUM.md` dosyasında.
 - İçerik hacmi yaklaşık 25 saatlik ders karşılığı. Kimse bu süreye bağlı değil, herkes
   kendi hızında ilerler.
-- Ders içeriğinin madde madde yazımı sonraki fazda. Önce platform ayağa kalkar.
+- Ders metinleri beşerli gruplar hâlinde yazılacak, her grup bitince uçtan uca oynanabilir olacak.
 - Birebir ders, platformun üstüne eklenebilecek ayrı bir katman. Ürünün kendisi kurs.
 
 ## 3. Ürün tanımı
@@ -199,7 +199,7 @@ kurulum ansiklopedisi olmaz. Commit mesajları ne değiştiğini söyler.
 | 6 | Kod editörü ve kontrol motoru | |
 | 7 | Puanlama ve aralıklı tekrar | |
 | 8 | 3B interaktif modüller | |
-| 9 | Ders içeriğinin yazımı | |
+| 9 | Ders motoru, alıştırma tipleri ve içerik yazımı | |
 | 10 | Test, erişilebilirlik ve performans geçişi, yayın | |
 
 ## 8. Kurulu skill envanteri
