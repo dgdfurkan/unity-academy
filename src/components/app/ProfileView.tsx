@@ -11,12 +11,12 @@ export function ProfileView({ locale }: { locale: Locale }) {
   const { user } = useAuth();
 
   return (
-    <div className="px-safe mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 sm:py-10">
-      <h1 className="text-[1.6rem]/[1.2] font-semibold tracking-[-0.025em] text-text sm:text-[2rem]/[1.15]">
+    <div className="px-safe mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
+      <h1 className="font-display text-[1.7rem]/[1.15] font-semibold tracking-[-0.02em] text-text sm:text-[2.1rem]/[1.1]">
         {t.title}
       </h1>
 
-      <section className="mt-6 rounded-xl border border-border bg-surface">
+      <section className="mt-6 rounded-2xl bg-surface shadow-md">
         <h2 className="border-b border-border px-5 py-3.5 text-[13px] font-medium uppercase tracking-wide text-text-subtle">
           {t.account}
         </h2>
@@ -31,7 +31,7 @@ export function ProfileView({ locale }: { locale: Locale }) {
         </dl>
       </section>
 
-      <section className="mt-5 rounded-xl border border-border bg-surface">
+      <section className="mt-5 rounded-2xl bg-surface shadow-md">
         <h2 className="border-b border-border px-5 py-3.5 text-[13px] font-medium uppercase tracking-wide text-text-subtle">
           {t.preferences}
         </h2>

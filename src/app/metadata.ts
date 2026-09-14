@@ -38,7 +38,7 @@ export const sharedViewport: Viewport = {
   // Yakınlaştırmayı kapatmıyoruz, erişilebilirlik gereği.
   maximumScale: 5,
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0a0d14" },
-    { media: "(prefers-color-scheme: light)", color: "#fbfcfe" },
+    { media: "(prefers-color-scheme: dark)", color: "#171029" },
+    { media: "(prefers-color-scheme: light)", color: "#f4f1fe" },
   ],
 };

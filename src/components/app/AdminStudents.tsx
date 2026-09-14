@@ -90,7 +90,7 @@ export function AdminStudents({ locale }: { locale: Locale }) {
     <div className="px-safe mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
       <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-[1.6rem]/[1.2] font-semibold tracking-[-0.025em] text-text sm:text-[2rem]/[1.15]">
+          <h1 className="font-display text-[1.7rem]/[1.15] font-semibold tracking-[-0.02em] text-text sm:text-[2.1rem]/[1.1]">
             {t.title}
           </h1>
           <p className="mt-2 max-w-[34rem] text-[15px]/[1.6] text-text-muted">{t.lead}</p>
@@ -115,10 +115,10 @@ export function AdminStudents({ locale }: { locale: Locale }) {
 
       {/* ---------- Yeni öğrenci formu ---------- */}
       {open ? (
-        <section className="animate-rise mt-6 rounded-xl border border-border bg-surface p-5 sm:p-6">
+        <section className="animate-rise mt-6 rounded-2xl bg-surface shadow-md p-5 sm:p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 className="text-[17px] font-semibold tracking-[-0.01em] text-text">
+              <h2 className="font-display text-[19px] font-semibold tracking-[-0.015em] text-text">
                 {t.newStudent}
               </h2>
               <p className="mt-1 text-[13.5px]/[1.55] text-text-muted">{t.newStudentLead}</p>
@@ -213,9 +213,9 @@ export function AdminStudents({ locale }: { locale: Locale }) {
         </h2>
 
         {list.length === 0 ? (
-          <div className="mt-4 flex flex-col items-center rounded-xl border border-dashed border-border bg-surface px-6 py-14 text-center">
+          <div className="mt-4 flex flex-col items-center rounded-2xl border border-dashed border-border-strong bg-surface px-6 py-14 text-center">
             <Users className="size-7 text-text-subtle" strokeWidth={1.5} aria-hidden="true" />
-            <h3 className="mt-4 text-[16px] font-semibold text-text">{t.emptyTitle}</h3>
+            <h3 className="mt-4 font-display text-[18px] font-semibold text-text">{t.emptyTitle}</h3>
             <p className="mt-1.5 max-w-[26rem] text-[14px]/[1.6] text-text-muted">{t.emptyBody}</p>
           </div>
         ) : (
@@ -264,12 +264,12 @@ function StudentRow({
   return (
     <li
       className={cn(
-        "rounded-lg border border-border bg-surface p-4",
+        "rounded-2xl bg-surface shadow-sm p-4",
         isSelf && "border-accent/40",
       )}
     >
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h3 className="text-[15px] font-medium tracking-[-0.005em] text-text">{student.name}</h3>
+        <h3 className="font-display text-[17px] font-semibold tracking-[-0.01em] text-text">{student.name}</h3>
         <p className="font-mono text-[13px] text-accent-text">{student.username}</p>
       </div>
       <p className="mt-0.5 truncate text-[13px] text-text-subtle">{student.email}</p>
@@ -351,7 +351,7 @@ function CreatedCard({
         <div className="flex gap-2.5">
           <Check className="mt-0.5 size-4 shrink-0 text-success" strokeWidth={2.5} aria-hidden="true" />
           <div>
-            <h2 className="text-[15px] font-semibold text-text">{labels.createdTitle}</h2>
+            <h2 className="font-display text-[17px] font-semibold text-text">{labels.createdTitle}</h2>
             <p className="mt-1 text-[13.5px]/[1.55] text-text-muted">{labels.createdBody}</p>
           </div>
         </div>

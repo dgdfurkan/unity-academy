@@ -32,11 +32,35 @@ export const tr = {
       "C#, Unity'nin yaşam döngüsü, fizik ve mobil oyun üretiminin arkasındaki desenler. Her kavram anlatılır, sonra tarayıcıda sen yazarsın ve kontrol edilir.",
     ctaPrimary: "Hemen başla",
     ctaSecondary: "Müfredata bak",
+    note: "Önce anlat, sonra yazdır, sonra kontrol et.",
   },
   check: {
     passed: "Geçti.",
     // Ada dokunmuyoruz: FixedUpdate ve fixedDeltaTime kod tarafındaki isimler.
     body: "Hareket FixedUpdate içinde çalışıyor ve fixedDeltaTime ile ölçekleniyor, yani kare hızından bağımsız.",
+  },
+  stats: {
+    lessons: { value: "30", label: "Uçtan uca yazılmış ders" },
+    projects: { value: "3", label: "Yayınlanabilir proje" },
+  },
+  why: {
+    title: "Neden böyle öğretiyoruz",
+    lead: "Video izleyip anladığını sanmak ile kodu yazıp çalıştırmak arasındaki fark.",
+    items: [
+      "Her kavram Unity'de ne değiştirdiği gösterilerek anlatılır",
+      "Kodu sen yazarsın, kontrol edilir, neden kırıldığını görürsün",
+      "Her modül yayınlanabilir bir şeyle biter, alıştırma dosyasıyla değil",
+    ],
+  },
+  practice: {
+    tag: "Tarayıcıda çalışır",
+    title: "Yaz, çalıştır, ne olduğunu gör",
+    body: "Kod editörü sitenin içinde. Unity kurmadan yazmaya başlarsın; kontrol ettiğinde neyin çalıştığını ve neyin neden kırıldığını satır satır görürsün.",
+  },
+  band: {
+    title: "Bir sonraki oyunu sen yap",
+    body: "Hesabını eğitmen açar, ilk modül seni bekler.",
+    button: "Giriş yap",
   },
   how: {
     title: "Nasıl işliyor",

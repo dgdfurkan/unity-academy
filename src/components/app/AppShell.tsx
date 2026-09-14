@@ -53,7 +53,7 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
   return (
     <div className="min-h-dvh bg-bg">
       {/* --------- Masaüstü kenar çubuğu --------- */}
-      <aside className="pl-safe fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r border-border bg-surface lg:flex">
+      <aside className="pl-safe fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border bg-surface lg:flex">
         <div className="flex h-16 items-center px-5">
           <Link href={home} className="-mx-2 flex h-11 items-center rounded-md px-2">
             <Wordmark />
@@ -67,10 +67,10 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
               href={route(key, locale)}
               aria-current={activeKey === key ? "page" : undefined}
               className={cn(
-                "flex h-11 items-center gap-3 rounded-md px-3 text-[14.5px] font-medium",
+                "flex h-11 items-center gap-3 rounded-full px-4 text-[14.5px] font-medium",
                 "transition-colors duration-(--dur-instant)",
                 activeKey === key
-                  ? "bg-surface-3 text-text"
+                  ? "bg-accent-soft text-accent-text"
                   : "text-text-muted hover:bg-surface-2 hover:text-text",
               )}
             >
@@ -88,7 +88,7 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
           <button
             type="button"
             onClick={signOut}
-            className="flex h-11 cursor-pointer items-center gap-3 rounded-md px-3 text-[14.5px] font-medium text-text-muted transition-colors duration-(--dur-instant) hover:bg-surface-2 hover:text-text"
+            className="flex h-11 cursor-pointer items-center gap-3 rounded-full px-4 text-[14.5px] font-medium text-text-muted transition-colors duration-(--dur-instant) hover:bg-surface-2 hover:text-text"
           >
             <LogOut className="size-[18px] shrink-0" strokeWidth={1.75} aria-hidden="true" />
             {dict.app.signOut}
@@ -122,7 +122,7 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
       </header>
 
       {/* Alt çubuğun arkasına içerik girmesin diye taban boşluğu bırakılıyor. */}
-      <main id="main" className="scroll-pb-nav pb-28 lg:ml-60 lg:pb-12">
+      <main id="main" className="scroll-pb-nav pb-28 lg:ml-64 lg:pb-12">
         {children}
       </main>
 
@@ -140,7 +140,7 @@ export function AppShell({ locale, children }: { locale: Locale; children: React
                   href={route(key, locale)}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex h-16 flex-col items-center justify-center gap-1 rounded-md",
+                    "flex h-16 flex-col items-center justify-center gap-1 rounded-2xl",
                     "transition-colors duration-(--dur-instant)",
                     active ? "text-accent-text" : "text-text-subtle hover:text-text",
                   )}

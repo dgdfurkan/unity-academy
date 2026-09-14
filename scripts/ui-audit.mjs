@@ -23,6 +23,8 @@ const URL_ARG = process.argv[2] ?? "http://localhost:3000";
 // açılmadan önce oturum yazar.
 const AUTH_ARG = process.argv.find((a) => a.startsWith("--auth"));
 const AUTH_ROLE = AUTH_ARG?.split("=")[1] ?? (AUTH_ARG ? "student" : null);
+// --theme=light|dark: temayı sabitler. Verilmezse tarayıcının tercihi geçerli.
+const THEME = process.argv.find((a) => a.startsWith("--theme="))?.split("=")[1] ?? null;
 const OUT_DIR = ".audit";
 
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
@@ -249,6 +251,15 @@ if (AUTH_ROLE) {
   });
 }
 
+if (THEME) {
+  await cdp.send("Emulation.setEmulatedMedia", {
+    features: [{ name: "prefers-color-scheme", value: THEME }],
+  });
+  await cdp.send("Page.addScriptToEvaluateOnNewDocument", {
+    source: `try{localStorage.setItem("theme",${JSON.stringify(THEME)});}catch(e){}`,
+  });
+}
+
 mkdirSync(OUT_DIR, { recursive: true });
 
 let failed = 0;
@@ -298,7 +309,7 @@ for (const [name, width, height, mobile] of VIEWPORTS) {
     captureBeyondViewport: true,
     clip: { x: 0, y: 0, width, height: Math.min(pageHeight, 6000), scale: 1 },
   });
-  writeFileSync(join(OUT_DIR, `${name}.png`), Buffer.from(shot.data, "base64"));
+  writeFileSync(join(OUT_DIR, `${name}${THEME ? "-" + THEME : ""}.png`), Buffer.from(shot.data, "base64"));
 
   // Aynı tip sorunu tek satırda topla, rapor okunur kalsın.
   const grouped = new Map();

@@ -14,8 +14,8 @@ export function ProgressView({ locale }: { locale: Locale }) {
   const totalLessons = modules.reduce((n, mod) => n + mod.lessons.length, 0);
 
   return (
-    <div className="px-safe mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 sm:py-10">
-      <h1 className="text-[1.6rem]/[1.2] font-semibold tracking-[-0.025em] text-text sm:text-[2rem]/[1.15]">
+    <div className="px-safe mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
+      <h1 className="font-display text-[1.7rem]/[1.15] font-semibold tracking-[-0.02em] text-text sm:text-[2.1rem]/[1.1]">
         {t.title}
       </h1>
       <p className="mt-2 text-[15px] text-text-muted">{t.lead}</p>
@@ -23,21 +23,21 @@ export function ProgressView({ locale }: { locale: Locale }) {
       <dl className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <Metric
           icon={Trophy}
-          className="text-success"
+          className="bg-mint/15 text-mint-text"
           label={t.lessonsCompleted}
           value={`${progress.completed.length} / ${totalLessons}`}
         />
         <Metric
           icon={Sparkles}
-          className="text-accent-text"
+          className="bg-accent-soft text-accent-text"
           label={t.xpTotal}
           value={String(progress.xp)}
         />
         <Metric
           icon={Flame}
-          className="text-warning"
-          label={t.streakBest}
-          value={`${progress.streakDays} ${dict.app.streakUnit}`}
+          className="bg-sun/25 text-warm-text"
+          label={`${t.streakBest} (${dict.app.streakUnit})`}
+          value={`${progress.streakDays}`}
         />
       </dl>
 
@@ -53,9 +53,9 @@ export function ProgressView({ locale }: { locale: Locale }) {
           const pct = Math.round((done / mod.lessons.length) * 100);
 
           return (
-            <li key={mod.title} className="rounded-lg border border-border bg-surface p-4">
+            <li key={mod.title} className="rounded-2xl bg-surface shadow-sm p-4">
               <div className="flex items-baseline justify-between gap-4">
-                <h3 className="text-[14.5px] font-medium text-text">
+                <h3 className="font-display text-[16px] font-semibold text-text">
                   <span className="font-mono text-[12.5px] text-accent-text">
                     {String(mi + 1).padStart(2, "0")}
                   </span>{" "}
@@ -100,14 +100,19 @@ function Metric({
   value: string;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-surface p-4">
-      <dt className="flex items-center gap-2 text-[13px] text-text-subtle">
-        <Icon className={`size-4 ${className}`} strokeWidth={2} aria-hidden="true" />
-        {label}
-      </dt>
-      <dd className="mt-1.5 text-[22px] font-semibold tabular-nums tracking-[-0.015em] text-text">
-        {value}
-      </dd>
+    <div className="flex items-center gap-3.5 rounded-2xl bg-surface p-4 shadow-sm">
+      <span
+        aria-hidden="true"
+        className={`grid size-11 shrink-0 place-items-center rounded-full ${className}`}
+      >
+        <Icon className="size-5" strokeWidth={2} />
+      </span>
+      <div className="min-w-0">
+        <dt className="truncate text-[13px] text-text-subtle">{label}</dt>
+        <dd className="font-display text-[22px] font-semibold tabular-nums leading-tight tracking-[-0.015em] text-text">
+          {value}
+        </dd>
+      </div>
     </div>
   );
 }

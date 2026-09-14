@@ -44,6 +44,10 @@ Bu dosya çalışma kurallarını tutar.
 - `prefers-reduced-motion` desteklenir.
 - WCAG 2.2 AA. Klavyeyle tam gezinti, yeterli kontrast, anlamlı ekran okuyucu çıktısı.
 - Renk, boşluk ve tipografi token üzerinden gelir. Bileşen içine sabit değer yazılmaz.
+- Her `grid`'e taban sütun sayısı yazılır (`grid-cols-1`). Yalnızca `lg:grid-cols-*`
+  yazılırsa mobildeki örtük sütun `auto` boyutlanır, içindeki en geniş öğenin
+  min-content genişliğine şişer ve sayfayı viewport dışına taşırır. İki kez bu
+  yüzden mobil düzen kırıldı.
 
 ## Dil
 

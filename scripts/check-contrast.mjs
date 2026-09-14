@@ -42,10 +42,17 @@ const PAIRS = [
   ["on-accent", "accent", 4.5, "buton etiketi"],
   ["accent-text", "bg", 4.5, "vurgu rengi metin"],
   ["accent-text", "surface", 4.5, "vurgu rengi metin kartta"],
-  ["success", "bg", 4.5, "başarı metni"],
-  ["warning", "bg", 4.5, "uyarı metni"],
-  ["danger", "bg", 4.5, "hata metni"],
-  ["info", "bg", 4.5, "bilgi metni"],
+  ["on-ink", "ink", 4.5, "koyu bant metni"],
+  ["on-ink-muted", "ink", 4.5, "koyu bant ikincil metni"],
+  ["on-ink", "ink-2", 4.5, "koyu bant ikinci yüzeyi"],
+  ["warm-text", "bg", 4.5, "turuncu metin"],
+  ["mint-text", "bg", 4.5, "mint metin"],
+  ["sky-text", "bg", 4.5, "mavi metin"],
+  ["success", "success-surface", 4.5, "başarı metni kendi yüzeyinde"],
+  ["danger", "danger-surface", 4.5, "hata metni kendi yüzeyinde"],
+  ["warning", "warning-surface", 4.5, "uyarı metni kendi yüzeyinde"],
+  ["info", "info-surface", 4.5, "bilgi metni kendi yüzeyinde"],
+  ["danger", "bg", 4.5, "hata metni sayfa zemininde"],
   ["accent", "bg", 3.0, "dolu buton yüzeyi"],
   ["ring", "bg", 3.0, "odak halkası"],
   ["border-strong", "surface", 3.0, "girdi kenarlığı"],
@@ -53,8 +60,8 @@ const PAIRS = [
 
 let failed = 0;
 
-for (const selector of [":root,\n[data-theme=\"dark\"]", '[data-theme="light"]']) {
-  const label = selector.includes("light") ? "AÇIK TEMA" : "KOYU TEMA";
+for (const selector of [':root,\n[data-theme="light"]', '[data-theme="dark"]']) {
+  const label = selector.includes(":root") ? "AÇIK TEMA" : "KOYU TEMA";
   const t = readTheme(selector);
   console.log(`\n${label}`);
 

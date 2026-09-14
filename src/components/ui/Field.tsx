@@ -48,7 +48,7 @@ export function Field({
           aria-invalid={error ? true : undefined}
           aria-describedby={cn(hint && hintId, error && errorId) || undefined}
           className={cn(
-            "h-11 w-full rounded-md border bg-surface-2 px-3.5 text-[15px] text-text",
+            "h-12 w-full rounded-xl border bg-surface px-4 text-[15px] text-text",
             "transition-colors duration-(--dur-instant)",
             "placeholder:text-text-subtle",
             isPassword && "pr-12",
@@ -63,7 +63,7 @@ export function Field({
             type="button"
             onClick={() => setRevealed((v) => !v)}
             aria-label={revealed ? revealLabels.hide : revealLabels.show}
-            className="absolute right-0 top-0 grid h-11 w-11 cursor-pointer place-items-center rounded-md text-text-subtle transition-colors duration-(--dur-instant) hover:text-text"
+            className="absolute right-0.5 top-0 grid h-12 w-11 cursor-pointer place-items-center rounded-xl text-text-subtle transition-colors duration-(--dur-instant) hover:text-text"
           >
             {revealed ? (
               <EyeOff className="size-[18px]" strokeWidth={1.75} />

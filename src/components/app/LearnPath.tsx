@@ -34,10 +34,10 @@ export function LearnPath({ locale }: { locale: Locale }) {
   };
 
   return (
-    <div className="px-safe mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 sm:py-10">
+    <div className="px-safe mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
       {/* ---------- Karşılama ve sayaçlar ---------- */}
       <header>
-        <h1 className="text-[1.6rem]/[1.2] font-semibold tracking-[-0.025em] text-text sm:text-[2rem]/[1.15]">
+        <h1 className="font-display text-[1.7rem]/[1.15] font-semibold tracking-[-0.02em] text-text sm:text-[2.1rem]/[1.1]">
           {t.greeting}
           {user ? `, ${user.name.split(" ")[0]}` : ""}
         </h1>
@@ -46,8 +46,8 @@ export function LearnPath({ locale }: { locale: Locale }) {
           <Stat
             icon={Flame}
             tone="warning"
-            label={t.streak}
-            value={`${progress.streakDays} ${t.streakUnit}`}
+            label={`${t.streak} (${t.streakUnit})`}
+            value={String(progress.streakDays)}
           />
           <Stat icon={Sparkles} tone="accent" label={t.xp} value={String(progress.xp)} />
           <Stat
@@ -65,7 +65,7 @@ export function LearnPath({ locale }: { locale: Locale }) {
           initial={reduced ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
-          className="relative mt-6 overflow-hidden rounded-xl border border-border bg-surface p-5 sm:p-6"
+          className="relative mt-6 overflow-hidden rounded-2xl bg-surface shadow-md p-5 sm:p-6"
         >
           <div
             aria-hidden="true"
@@ -76,7 +76,7 @@ export function LearnPath({ locale }: { locale: Locale }) {
               <p className="text-[12px] font-medium uppercase tracking-wide text-text-subtle">
                 {t.continueTitle}
               </p>
-              <h2 className="mt-1.5 truncate text-[17px] font-semibold tracking-[-0.01em] text-text sm:text-lg">
+              <h2 className="mt-1.5 truncate font-display text-[19px] font-semibold tracking-[-0.015em] text-text sm:text-[21px]">
                 {next.title}
               </h2>
               <p className="mt-1 text-[13.5px] text-text-muted">
@@ -104,7 +104,7 @@ export function LearnPath({ locale }: { locale: Locale }) {
           return (
             <section key={mod.title}>
               <div className="flex items-baseline justify-between gap-4 border-b border-border pb-3">
-                <h3 className="text-[15.5px] font-semibold tracking-[-0.01em] text-text">
+                <h3 className="font-display text-[17px] font-semibold tracking-[-0.01em] text-text">
                   <span className="font-mono text-[13px] text-accent-text">
                     {String(mi + 1).padStart(2, "0")}
                   </span>{" "}
@@ -143,9 +143,9 @@ export function LearnPath({ locale }: { locale: Locale }) {
 /* ------------------------------ parçalar ------------------------------ */
 
 const TONE = {
-  warning: "text-warning",
-  accent: "text-accent-text",
-  info: "text-info",
+  warning: "bg-sun/25 text-warm-text",
+  accent: "bg-accent-soft text-accent-text",
+  info: "bg-sky/15 text-sky-text",
 } as const;
 
 function Stat({
@@ -160,14 +160,19 @@ function Stat({
   value: string;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-surface px-3 py-3 sm:px-4">
-      <dt className="flex items-center gap-1.5 text-[12px] font-medium text-text-subtle">
-        <Icon className={cn("size-3.5", TONE[tone])} strokeWidth={2} aria-hidden="true" />
-        {label}
-      </dt>
-      <dd className="mt-1 text-[19px] font-semibold tabular-nums tracking-[-0.01em] text-text">
-        {value}
-      </dd>
+    <div className="flex items-center gap-3 rounded-2xl bg-surface p-3 shadow-sm sm:p-3.5">
+      <span
+        aria-hidden="true"
+        className={cn("grid size-10 shrink-0 place-items-center rounded-full", TONE[tone])}
+      >
+        <Icon className="size-[18px]" strokeWidth={2} />
+      </span>
+      <div className="min-w-0">
+        <dt className="truncate text-[12px] font-medium text-text-subtle">{label}</dt>
+        <dd className="font-display text-[19px] font-semibold tabular-nums leading-tight tracking-[-0.01em] text-text">
+          {value}
+        </dd>
+      </div>
     </div>
   );
 }
@@ -193,7 +198,7 @@ function PathNode({
       {isLast ? null : (
         <span
           aria-hidden="true"
-          className="absolute left-[21px] top-[3.25rem] h-3 w-px bg-border-strong"
+          className="absolute left-[27px] top-[3.9rem] h-3 w-0.5 rounded-full bg-border-strong"
         />
       )}
       <button
@@ -201,20 +206,20 @@ function PathNode({
         disabled={locked}
         aria-describedby={locked ? `locked-${index}` : undefined}
         className={cn(
-          "group flex w-full items-center gap-3.5 rounded-lg border px-3 py-2.5 text-left",
+          "group flex w-full items-center gap-3.5 rounded-2xl border-2 px-3.5 py-3 text-left",
           "transition-colors duration-(--dur-fast)",
           locked
-            ? "cursor-not-allowed border-border bg-surface/50"
-            : "cursor-pointer border-border bg-surface hover:border-border-strong hover:bg-surface-2",
-          state === "current" && "border-accent/40 bg-surface",
+            ? "cursor-not-allowed border-transparent bg-surface/55"
+            : "cursor-pointer border-transparent bg-surface shadow-sm hover:-translate-y-px hover:shadow-md motion-reduce:hover:translate-y-0",
+          state === "current" && "border-accent bg-surface shadow-md",
         )}
       >
         <span
           className={cn(
             "grid size-11 shrink-0 place-items-center rounded-full border",
-            state === "done" && "border-success/40 bg-success-surface text-success",
+            state === "done" && "border-transparent bg-mint text-white",
             state === "current" && "border-transparent bg-accent text-on-accent",
-            locked && "border-border bg-surface-2 text-text-subtle",
+            locked && "border-transparent bg-surface-2 text-text-subtle",
           )}
         >
           {state === "done" ? (

@@ -81,7 +81,7 @@ export function SignInForm({ locale }: { locale: Locale }) {
         className="mx-auto flex w-full max-w-lg flex-1 flex-col justify-center px-5 py-10"
       >
         <div className="animate-rise">
-          <h1 className="text-[1.75rem]/[1.2] font-semibold tracking-[-0.025em] text-text">
+          <h1 className="font-display text-[2rem]/[1.15] font-semibold tracking-[-0.02em] text-text">
             {t.signInTitle}
           </h1>
           <p className="mt-2 text-[15px]/[1.6] text-text-muted">{t.signInLead}</p>
@@ -127,7 +127,7 @@ export function SignInForm({ locale }: { locale: Locale }) {
 
           {/* Sunucu bağlanana kadar deneme hesapları burada duruyor.
               Firebase geldiğinde bu blok silinecek. */}
-          <section className="mt-8 rounded-lg border border-border bg-surface p-4">
+          <section className="mt-8 rounded-2xl bg-surface p-4 shadow-sm">
             <h2 className="text-[13px] font-medium text-text">{t.demoTitle}</h2>
             <p className="mt-1 text-[13px]/[1.5] text-text-subtle">{t.demoBody}</p>
             <div className="mt-3 flex flex-wrap gap-2">

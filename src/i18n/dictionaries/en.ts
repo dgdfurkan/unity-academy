@@ -27,10 +27,34 @@ export const en: Dictionary = {
       "C#, Unity's lifecycle, physics, and the production patterns behind mobile games. Every idea is explained, then you write it in the browser and it gets checked.",
     ctaPrimary: "Start now",
     ctaSecondary: "See the curriculum",
+    note: "Explain it, then write it, then check it.",
   },
   check: {
     passed: "Passed.",
     body: "Movement runs in FixedUpdate and scales with fixedDeltaTime, so it holds up at any frame rate.",
+  },
+  stats: {
+    lessons: { value: "30", label: "Lessons written end to end" },
+    projects: { value: "3", label: "Projects you can ship" },
+  },
+  why: {
+    title: "Why we teach it this way",
+    lead: "The gap between watching a video and writing the code that runs.",
+    items: [
+      "Every idea is taught by showing what it changes inside Unity",
+      "You write the code, it gets checked, and you see why the rest broke",
+      "Each module ends with something shippable, not a practice file",
+    ],
+  },
+  practice: {
+    tag: "Runs in the browser",
+    title: "Write it, run it, watch what happens",
+    body: "The editor lives inside the site. You start writing without installing Unity, and when you check your work you see line by line what ran and why the rest broke.",
+  },
+  band: {
+    title: "Build the next one yourself",
+    body: "Your instructor opens the account, the first module is waiting.",
+    button: "Sign in",
   },
   how: {
     title: "How it works",

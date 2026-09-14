@@ -6,69 +6,106 @@
    token'larını kullanır.
    ========================================================================= */
 
+/* Açık tema varsayılan: zemin lavanta, bantlar koyu mor.
+   Koyu tema tam destekli, öğrenci gece çalışırken bırakılmıyor. */
 :root,
-[data-theme="dark"] {
-  color-scheme: dark;
-
-  --bg: #0a0d14;
-  --surface: #111621;
-  --surface-2: #171d2b;
-  --surface-3: #1e2637;
-  --border: #242c3e;
-  --border-strong: #5e6a82;
-
-  --text: #e8ecf5;
-  --text-muted: #98a2b8;
-  --text-subtle: #7c8698;
-
-  --accent: #6e4cff;
-  --accent-hover: #7d5eff;
-  --accent-text: #a594ff;
-  --on-accent: #ffffff;
-
-  --success: #34d399;
-  --success-surface: #07291f;
-  --warning: #fbbf24;
-  --warning-surface: #2b1f05;
-  --danger: #fb7185;
-  --danger-surface: #2d0f17;
-  --info: #38bdf8;
-  --info-surface: #05212f;
-
-  --ring: #8b73ff;
-  --shadow-color: 220 40% 2%;
-}
-
 [data-theme="light"] {
   color-scheme: light;
 
-  --bg: #fbfcfe;
+  --bg: #f4f1fe;
   --surface: #ffffff;
-  --surface-2: #f4f6fa;
-  --surface-3: #e9edf4;
-  --border: #e2e7f0;
-  --border-strong: #878fa0;
+  --surface-2: #efebfd;
+  --surface-3: #e3dcfa;
+  --border: #e2dbf7;
+  --border-strong: #9184c9;
 
-  --text: #10141f;
-  --text-muted: #4e5769;
-  --text-subtle: #667083;
+  --text: #241540;
+  --text-muted: #5b4b7d;
+  --text-subtle: #6e5f8c;
 
-  --accent: #5b3bee;
-  --accent-hover: #4f30d9;
-  --accent-text: #5433d6;
+  /* Koyu bant: sayfayı bölen, içinde beyaz metin taşıyan panel. */
+  --ink: #2a1b4d;
+  --ink-2: #382561;
+  --on-ink: #f3efff;
+  --on-ink-muted: #b6a7dd;
+  --ink-border: #48326f;
+
+  --accent: #6c3fe4;
+  --accent-hover: #5a2fd0;
+  --accent-text: #5a2fd0;
   --on-accent: #ffffff;
+  --accent-soft: #e7defd;
 
-  --success: #047857;
-  --success-surface: #e7f8f1;
+  /* Dekoratif dolgular. Metin için değil, yüzey ve şekil için. */
+  --warm: #f86d3b;
+  --sun: #ffc93c;
+  --mint: #21c99a;
+  --sky: #3da5f5;
+
+  /* Aynı renklerin metin için koyulaştırılmış halleri. */
+  --warm-text: #bd3f12;
+  --mint-text: #0a7a5c;
+  --sky-text: #0b6bbd;
+
+  --success: #0a7a5c;
+  --success-surface: #ddf7ef;
   --warning: #9a5b00;
-  --warning-surface: #fdf3e0;
-  --danger: #be123c;
-  --danger-surface: #fdeef1;
-  --info: #0369a1;
-  --info-surface: #e6f4fb;
+  --warning-surface: #fdf1dc;
+  --danger: #c0213c;
+  --danger-surface: #fdeaee;
+  --info: #0b6bbd;
+  --info-surface: #e2f1fd;
 
-  --ring: #5b3bee;
-  --shadow-color: 220 25% 60%;
+  --ring: #6c3fe4;
+  --shadow-color: 262 45% 35%;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #171029;
+  --surface: #211738;
+  --surface-2: #2b1f48;
+  --surface-3: #372958;
+  --border: #362a52;
+  --border-strong: #71609e;
+
+  --text: #f0ebff;
+  --text-muted: #b7a9d9;
+  --text-subtle: #a294c6;
+
+  --ink: #100a20;
+  --ink-2: #1c1334;
+  --on-ink: #f0ebff;
+  --on-ink-muted: #b7a9d9;
+  --ink-border: #322451;
+
+  --accent: #7c3aed;
+  --accent-hover: #8b52f5;
+  --accent-text: #bda5ff;
+  --on-accent: #ffffff;
+  --accent-soft: #2a1d4c;
+
+  --warm: #fb8154;
+  --sun: #ffd166;
+  --mint: #3ddbb0;
+  --sky: #5cb6f8;
+
+  --warm-text: #ff9a72;
+  --mint-text: #4fe0b8;
+  --sky-text: #7cc6fa;
+
+  --success: #4fe0b8;
+  --success-surface: #0a2c25;
+  --warning: #ffd166;
+  --warning-surface: #2e2208;
+  --danger: #ff8099;
+  --danger-surface: #34121c;
+  --info: #7cc6fa;
+  --info-surface: #0a2233;
+
+  --ring: #a98bff;
+  --shadow-color: 265 60% 4%;
 }
 
 /* =========================================================================
@@ -88,10 +125,25 @@
   --color-text-muted: var(--text-muted);
   --color-text-subtle: var(--text-subtle);
 
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-on-ink: var(--on-ink);
+  --color-on-ink-muted: var(--on-ink-muted);
+  --color-ink-border: var(--ink-border);
+
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-text: var(--accent-text);
+  --color-accent-soft: var(--accent-soft);
   --color-on-accent: var(--on-accent);
+
+  --color-warm: var(--warm);
+  --color-sun: var(--sun);
+  --color-mint: var(--mint);
+  --color-sky: var(--sky);
+  --color-warm-text: var(--warm-text);
+  --color-mint-text: var(--mint-text);
+  --color-sky-text: var(--sky-text);
 
   --color-success: var(--success);
   --color-success-surface: var(--success-surface);
@@ -104,18 +156,20 @@
 
   --color-ring: var(--ring);
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, monospace;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
 
-  --shadow-sm: 0 1px 2px hsl(var(--shadow-color) / 0.3);
-  --shadow-md: 0 4px 12px -2px hsl(var(--shadow-color) / 0.35);
-  --shadow-lg: 0 12px 32px -8px hsl(var(--shadow-color) / 0.45);
-  --shadow-xl: 0 24px 64px -16px hsl(var(--shadow-color) / 0.55);
+  --shadow-sm: 0 1px 2px hsl(var(--shadow-color) / 0.08);
+  --shadow-md: 0 8px 20px -6px hsl(var(--shadow-color) / 0.14);
+  --shadow-lg: 0 18px 40px -12px hsl(var(--shadow-color) / 0.18);
+  --shadow-xl: 0 30px 70px -20px hsl(var(--shadow-color) / 0.24);
 
   --breakpoint-sm: 480px;
   --breakpoint-md: 768px;
