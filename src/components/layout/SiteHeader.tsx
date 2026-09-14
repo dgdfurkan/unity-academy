@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/Button";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { Wordmark } from "@/components/ui/Logo";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
-import { getDictionary, localeHref, type Locale } from "@/i18n";
+import { getDictionary, type Locale } from "@/i18n";
+import { route } from "@/lib/routes";
 
 export function SiteHeader({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
-  const home = localeHref(locale);
+  const home = route("home", locale);
 
   const nav = [
     { href: "#how", label: dict.nav.how },
@@ -44,7 +45,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           <LanguageSwitcher current={locale} label={dict.nav.switchLanguage} />
           <ThemeToggle labelToDark={dict.nav.themeToDark} labelToLight={dict.nav.themeToLight} />
           <Button size="sm" asChild>
-            <Link href={home}>{dict.nav.signIn}</Link>
+            <Link href={route("signIn", locale)}>{dict.nav.signIn}</Link>
           </Button>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { AuthProvider } from "@/components/auth/AuthProvider";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { getDictionary, type Locale } from "@/i18n";
 import type { ReactNode } from "react";
@@ -41,7 +42,9 @@ export function RootShell({ locale, children }: { locale: Locale; children: Reac
         >
           {dict.nav.skipToContent}
         </a>
-        <MotionProvider>{children}</MotionProvider>
+        <AuthProvider>
+          <MotionProvider>{children}</MotionProvider>
+        </AuthProvider>
       </body>
     </html>
   );

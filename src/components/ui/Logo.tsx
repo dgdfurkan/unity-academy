@@ -32,8 +32,9 @@ export function Wordmark({ className }: { className?: string }) {
   return (
     <span className={cn("flex items-center gap-2.5", className)}>
       <LogoMark />
-      {/* Dar başlıkta yazı gizlenir, işaret kalır. Erişilebilir ad bağlantıda. */}
-      <span className="hidden text-[15px] font-semibold tracking-[-0.01em] text-text sm:inline">
+      {/* Dar ekranda yazı görünmez ama erişilebilirlik ağacında kalır:
+          display:none olsaydı bağlantı adsız kalırdı. */}
+      <span className="sr-only text-[15px] font-semibold tracking-[-0.01em] text-text sm:not-sr-only">
         Unity Academy
       </span>
     </span>

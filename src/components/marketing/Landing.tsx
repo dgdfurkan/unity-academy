@@ -14,7 +14,8 @@ import { CodePanel } from "@/components/marketing/CodePanel";
 import { Reveal } from "@/components/motion/Reveal";
 import { Button } from "@/components/ui/Button";
 import { LogoMark } from "@/components/ui/Logo";
-import { getDictionary, localeHref, type Locale } from "@/i18n";
+import { getDictionary, type Locale } from "@/i18n";
+import { route } from "@/lib/routes";
 
 // İkonlar sözlükte durmaz, metin ile sıra bazlı eşleşir.
 const HOW_ICONS: LucideIcon[] = [MonitorPlay, Terminal, RotateCcw];
@@ -22,7 +23,7 @@ const BUILD_ICONS: LucideIcon[] = [Footprints, Coins, Boxes];
 
 export function Landing({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
-  const home = localeHref(locale);
+  const signUp = route("signUp", locale);
 
   return (
     <>
@@ -63,7 +64,7 @@ export function Landing({ locale }: { locale: Locale }) {
               <Reveal index={3}>
                 <div className="mt-9 flex flex-wrap items-center gap-3">
                   <Button size="lg" asChild>
-                    <Link href={home}>
+                    <Link href={signUp}>
                       {dict.hero.ctaPrimary}
                       <ArrowRight className="size-4" strokeWidth={2.25} aria-hidden="true" />
                     </Link>
@@ -170,7 +171,7 @@ export function Landing({ locale }: { locale: Locale }) {
                   </p>
                   <div className="mt-8">
                     <Button size="lg" asChild>
-                      <Link href={home}>
+                      <Link href={signUp}>
                         {dict.cta.button}
                         <ArrowRight className="size-4" strokeWidth={2.25} aria-hidden="true" />
                       </Link>

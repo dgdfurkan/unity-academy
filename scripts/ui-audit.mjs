@@ -19,6 +19,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const URL_ARG = process.argv[2] ?? "http://localhost:3000";
+// --auth: korumalı sayfaları denetlemek için sayfa açılmadan önce oturum yazar.
+const WITH_AUTH = process.argv.includes("--auth");
 const OUT_DIR = ".audit";
 
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
@@ -202,6 +204,13 @@ const target = await fetch(`http://127.0.0.1:${port}/json/new?about:blank`, {
 const cdp = await Cdp.connect(target.webSocketDebuggerUrl);
 
 await cdp.send("Page.enable");
+
+if (WITH_AUTH) {
+  await cdp.send("Page.addScriptToEvaluateOnNewDocument", {
+    source: `try{localStorage.setItem("ua.session",JSON.stringify({id:"audit",name:"Deniz Kaya",email:"deniz@ornek.com",role:"student"}));}catch(e){}`,
+  });
+}
+
 mkdirSync(OUT_DIR, { recursive: true });
 
 let failed = 0;

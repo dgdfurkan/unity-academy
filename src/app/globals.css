@@ -262,3 +262,74 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* =========================================================================
+   6. Kod yazılma efekti
+   Satırlar baştan DOM'da, sadece kırpma açılıyor. Yükseklik en baştan ayrıldığı
+   için düzen kaymıyor. clip-path ve transform derleyicide çalışır, layout
+   hesabı tetiklemez.
+   ========================================================================= */
+
+@utility code-line {
+  display: inline-block;
+  animation: type-line var(--type-dur) steps(var(--type-chars)) var(--type-delay) both;
+}
+
+@keyframes type-line {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* İmleç satırın açılan ucuyla birlikte ilerler. Monospace olduğu için
+   karakter genişliği 1ch, konum birebir tutuyor. */
+@utility code-caret {
+  position: absolute;
+  top: 0.18em;
+  left: 0;
+  width: 1px;
+  height: 1.15em;
+  background: var(--accent-text);
+  opacity: 0;
+  animation:
+    caret-move var(--type-dur) steps(var(--type-chars)) var(--type-delay) forwards,
+    caret-life var(--type-dur) linear var(--type-delay) forwards;
+}
+
+@keyframes caret-move {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(calc(var(--type-chars) * 1ch), 0, 0);
+  }
+}
+
+/* Yazarken görünür, satır bitince kaybolur. Yanıp sönmüyor: hero'da sürekli
+   dönen bir öğe istemiyoruz. */
+@keyframes caret-life {
+  0%,
+  99% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@utility reveal-after-typing {
+  animation: rise var(--dur-base) var(--ease-out) var(--type-delay) both;
+}
+
+/* Hareketi azalt tercihi açıkken gecikme de sıfırlanır, yoksa içerik
+   saniyelerce gizli kalır. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-delay: 0ms !important;
+  }
+}
