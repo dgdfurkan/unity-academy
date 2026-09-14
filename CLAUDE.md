@@ -1,13 +1,17 @@
 # CLAUDE.md
 
-Unity ve C# öğreten interaktif eğitim platformu. Kapsam, roller, müfredat çerçevesi ve
-yol haritası için `docs/BRIEF.md` dosyasına bak. Bu dosya çalışma kurallarını tutar.
+Unity ve C# öğreten interaktif kurs platformu. Açık bir ürün: birden çok öğrenci kayıt
+olur, modülleri kendi hızında ilerletir. Tek kişiye özel bir ders sayfası değil.
+Kapsam ve yol haritası için `docs/BRIEF.md`, arayüz kararları için `docs/DESIGN.md`.
+Bu dosya çalışma kurallarını tutar.
 
 ## Mimari kısıtlar
 
 - Frontend GitHub Pages üzerinde **statik** yayınlanır. Sunucu tarafı render, API route
   veya çalışma anında Node gerektiren hiçbir şey frontend'e girmez.
-- Dinamik her şey eğitmenin VPS sunucusundaki API üzerinden gider. Veri orada durur.
+- Dinamik her şey tarayıcıdan Firebase SDK ile konuşur. Auth, Firestore, Storage.
+- Erişim kontrolü Security Rules ile kurulur. Arayüzde bir kontrolü gizlemek güvenlik
+  değildir; kural yazılmadan koleksiyon açılmaz.
 - Bu iki kısıt her teknik kararı bağlar. Bir çözüm bunlardan birini bozuyorsa çözüm değildir.
 
 ## Kod kuralları
@@ -38,12 +42,38 @@ yol haritası için `docs/BRIEF.md` dosyasına bak. Bu dosya çalışma kurallar
 - WCAG 2.2 AA. Klavyeyle tam gezinti, yeterli kontrast, anlamlı ekran okuyucu çıktısı.
 - Renk, boşluk ve tipografi token üzerinden gelir. Bileşen içine sabit değer yazılmaz.
 
-## Metin
+## Dil
 
-- Arayüz dili İngilizce ve kusursuz olur. Gramer hatası, tuhaf kelime seçimi, çeviri
-  kokusu kabul edilmez.
+Site iki dilli. **Türkçe varsayılan**, kökte servis edilir. İngilizce `/en` altında.
+Yeni bir metin eklenirken iki sözlüğe birden eklenir, tek dilde bırakılmaz.
+Sözlük tipleri parite zorunlu tutuyor: biri eksikse derleme kırılır.
+
+### Teknik terim kuralı
+
+Bu kural pazarlığa kapalı.
+
+**Asla çevrilmez.** Koda yazdığın veya Unity, Rider, Visual Studio arayüzünde gördüğün
+her şey İngilizce kalır: `Update`, `FixedUpdate`, `LateUpdate`, `Awake`, `OnEnable`,
+`Start`, `SerializeField`, `MonoBehaviour`, `Rigidbody`, `Collider`, `Raycast`,
+`GameObject`, `Transform`, `Prefab`, `ScriptableObject`, `Coroutine`, `Instantiate`,
+`Inspector`, `Hierarchy`, `Canvas`, tip adları, anahtar kelimeler, öznitelikler, menü
+adları, paket adları, dosya uzantıları.
+
+**Çevrilir.** Türkçe yazılım dilinde zaten yerleşmiş genel kavramlar: değişken, döngü,
+koşul, sınıf, nesne, kalıtım, metot, dizi, hata ayıklama.
+
+**Asla uydurulmaz.** Bir terimin yaygın kullanılan Türkçesi yoksa İngilizcesi kalır.
+"Güncelleme fonksiyonu" diye bir şey yok, `Update` vardır. "Katı gövde" diye bir şey
+yok, `Rigidbody` vardır.
+
+Ek kesme işaretiyle bağlanır: `Update`'in içinde, `Rigidbody`'ye, `Prefab`'ı.
+
+### Üslup
+
+- Her iki dilde de kusursuz. İngilizcede gramer hatası, Türkçede çeviri kokusu olmaz.
 - Hiçbir metin AI yazısı gibi durmaz. Klişe kalıp yok, gereksiz emoji yok, şişirme yok.
 - Öğrenciye giden her cümle kısa, net ve insan ağzından.
+- Türkçede uzun tire yok. Yerine virgül, iki nokta veya yeni cümle.
 
 ## Depo
 
@@ -51,7 +81,7 @@ yol haritası için `docs/BRIEF.md` dosyasına bak. Bu dosya çalışma kurallar
 - README projenin ne olduğunu kısaca anlatır. Kurulum ansiklopedisi, özellik listesi
   şişirmesi veya rozet yığını yazılmaz.
 - Commit mesajı ne değiştiğini söyler. AI imzası, emoji başlığı, şablon metin yok.
-- Sırlar depoya girmez. VPS kimlik bilgileri ortam değişkeninde durur.
+- Sırlar depoya girmez. Firebase yapılandırması ortam değişkeninde durur.
 
 ## Kurulu skill'ler
 

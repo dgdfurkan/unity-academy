@@ -1,0 +1,264 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   1. Ham değerler
+   Tema buradan değişir. Bileşenler bu isimleri değil, aşağıdaki Tailwind
+   token'larını kullanır.
+   ========================================================================= */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0a0d14;
+  --surface: #111621;
+  --surface-2: #171d2b;
+  --surface-3: #1e2637;
+  --border: #242c3e;
+  --border-strong: #5e6a82;
+
+  --text: #e8ecf5;
+  --text-muted: #98a2b8;
+  --text-subtle: #7c8698;
+
+  --accent: #6e4cff;
+  --accent-hover: #7d5eff;
+  --accent-text: #a594ff;
+  --on-accent: #ffffff;
+
+  --success: #34d399;
+  --success-surface: #07291f;
+  --warning: #fbbf24;
+  --warning-surface: #2b1f05;
+  --danger: #fb7185;
+  --danger-surface: #2d0f17;
+  --info: #38bdf8;
+  --info-surface: #05212f;
+
+  --ring: #8b73ff;
+  --shadow-color: 220 40% 2%;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #fbfcfe;
+  --surface: #ffffff;
+  --surface-2: #f4f6fa;
+  --surface-3: #e9edf4;
+  --border: #e2e7f0;
+  --border-strong: #878fa0;
+
+  --text: #10141f;
+  --text-muted: #4e5769;
+  --text-subtle: #667083;
+
+  --accent: #5b3bee;
+  --accent-hover: #4f30d9;
+  --accent-text: #5433d6;
+  --on-accent: #ffffff;
+
+  --success: #047857;
+  --success-surface: #e7f8f1;
+  --warning: #9a5b00;
+  --warning-surface: #fdf3e0;
+  --danger: #be123c;
+  --danger-surface: #fdeef1;
+  --info: #0369a1;
+  --info-surface: #e6f4fb;
+
+  --ring: #5b3bee;
+  --shadow-color: 220 25% 60%;
+}
+
+/* =========================================================================
+   2. Tailwind token eşlemesi
+   `inline` sayesinde üretilen sınıflar doğrudan var() yazar, tema anında döner.
+   ========================================================================= */
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-text: var(--accent-text);
+  --color-on-accent: var(--on-accent);
+
+  --color-success: var(--success);
+  --color-success-surface: var(--success-surface);
+  --color-warning: var(--warning);
+  --color-warning-surface: var(--warning-surface);
+  --color-danger: var(--danger);
+  --color-danger-surface: var(--danger-surface);
+  --color-info: var(--info);
+  --color-info-surface: var(--info-surface);
+
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  --shadow-sm: 0 1px 2px hsl(var(--shadow-color) / 0.3);
+  --shadow-md: 0 4px 12px -2px hsl(var(--shadow-color) / 0.35);
+  --shadow-lg: 0 12px 32px -8px hsl(var(--shadow-color) / 0.45);
+  --shadow-xl: 0 24px 64px -16px hsl(var(--shadow-color) / 0.55);
+
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-soft: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Süreler. Tailwind'in duration-* ölçeği ms alır, bunlar CSS ve Motion tarafında
+   ortak dil olsun diye ayrı tutuluyor. */
+:root {
+  --dur-instant: 120ms;
+  --dur-fast: 180ms;
+  --dur-base: 260ms;
+  --dur-slow: 420ms;
+  --dur-deliberate: 640ms;
+}
+
+/* =========================================================================
+   3. Taban
+   ========================================================================= */
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans), sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  /* Odak halkası her zaman görünür. outline:none tek başına yazılmaz. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--accent) 35%, transparent);
+    color: var(--text);
+  }
+
+  /* Dokunmada mavi vurgu kutusu çıkmasın, geri bildirimi kendimiz veriyoruz. */
+  button,
+  a,
+  [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Kaydırma çubuğu koyu yüzeye uysun. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+}
+
+/* =========================================================================
+   4. Güvenli alan
+   Çentik ve ana ekran çubuğu. Sabit her öğe bunlardan birini kullanır.
+   ========================================================================= */
+
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@utility pl-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+@utility pr-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+@utility px-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+@utility mt-safe {
+  margin-top: env(safe-area-inset-top, 0px);
+}
+@utility mb-safe {
+  margin-bottom: env(safe-area-inset-bottom, 0px);
+}
+@utility h-safe-top {
+  height: env(safe-area-inset-top, 0px);
+}
+@utility h-safe-bottom {
+  height: env(safe-area-inset-bottom, 0px);
+}
+
+/* Alt gezinti çubuğunun arkasına içerik girmesin. */
+@utility scroll-pb-nav {
+  scroll-padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 72px);
+}
+
+/* =========================================================================
+   5. Hareket
+   ========================================================================= */
+
+@utility animate-rise {
+  animation: rise var(--dur-base) var(--ease-out) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Hareketi azalt tercihi açıkken zorunlu olmayan her şey durur ve son durum
+   anında çizilir. Opaklık geçişi kalıyor, o bilgi taşıyor. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
