@@ -87,12 +87,10 @@ export function ConsoleSim({ locale, onSolved }: { locale: Locale; onSolved?: ()
 
   function pick(index: number) {
     setActive(index);
-    setSeen((current) => {
-      const next = new Set(current);
-      next.add(index);
-      if (next.size === ENTRIES.length) onSolved?.();
-      return next;
-    });
+    const next = new Set(seen);
+    next.add(index);
+    setSeen(next);
+    if (next.size === ENTRIES.length) onSolved?.();
   }
 
   const entry = active === null ? null : ENTRIES[active];

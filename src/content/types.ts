@@ -123,6 +123,13 @@ export type Activity =
       items: { text: L; bucket: string; why: L }[];
     }
   | {
+      /** Soldaki görevi sağdaki pencereye animasyonlu kabloyla bağla. */
+      kind: "cable";
+      question: L;
+      pairs: { left: L; right: L }[];
+      feedback: L;
+    }
+  | {
       /** Etiketli bir şemada noktalara dokun. Tur niteliğinde, sınav değil. */
       kind: "hotspot";
       question: L;
@@ -130,7 +137,11 @@ export type Activity =
       points: { id: string; label: L; note: L }[];
     };
 
-export type Step =
+/** Adımın hangi bölüme ait olduğu. Verilmezse ilk bölüm sayılır. */
+export type StepBase = { section?: number };
+
+export type Step = StepBase &
+  (
   /** Tek bir fikri anlatan kısa metin. En fazla üç dört cümle. */
   | { kind: "read"; title: L; text: L; blocks?: TeachBlock[] }
   /** Metnin hemen ardından gelen etkinlik. */
@@ -141,7 +152,16 @@ export type Step =
   | { kind: "predict"; exercise: Exercise }
   | { kind: "teach"; title: L; blocks: TeachBlock[] }
   | { kind: "check"; exercises: Exercise[] }
-  | { kind: "summary"; points: L[] };
+  | { kind: "summary"; points: L[] }
+  );
+
+/** Dersin bölümleri. Sol raydaki aşamalar bunlar. */
+export type LessonSection = {
+  title: L;
+  subtitle: L;
+  /** Bölümü temsil eden tek karakterlik işaret. */
+  glyph: string;
+};
 
 export type Lesson = {
   /** `m1-l1` biçiminde; `lessonId()` ile aynı. */
@@ -151,5 +171,7 @@ export type Lesson = {
   minutes: number;
   /** Aralıklı tekrar kuyruğuna girecek kavramlar. */
   concepts: string[];
+  /** Verilmezse ray gizlenir ve ders tek akış olarak ilerler. */
+  sections?: LessonSection[];
   steps: Step[];
 };

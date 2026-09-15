@@ -70,12 +70,10 @@ export function DamageSim({ locale, onSolved }: { locale: Locale; onSolved?: () 
       setFlying(false);
       setHealth((h) => Math.max(Math.round((h - applied) * 100) / 100, 0));
       setShots((s) => s + 1);
-      setTried((current) => {
-        const next = new Set(current);
-        next.add(mode);
-        if (next.size === 2) onSolved?.();
-        return next;
-      });
+      const next = new Set(tried);
+      next.add(mode);
+      setTried(next);
+      if (next.size === 2) onSolved?.();
     }, 420);
   }
 

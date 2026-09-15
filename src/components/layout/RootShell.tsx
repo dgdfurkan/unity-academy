@@ -1,5 +1,6 @@
 import { Fraunces, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { FeedbackProvider } from "@/components/feedback/FeedbackProvider";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { getDictionary, type Locale } from "@/i18n";
 import type { ReactNode } from "react";
@@ -65,7 +66,9 @@ export function RootShell({ locale, children }: { locale: Locale; children: Reac
           {dict.nav.skipToContent}
         </a>
         <AuthProvider>
-          <MotionProvider>{children}</MotionProvider>
+          <MotionProvider>
+            <FeedbackProvider>{children}</FeedbackProvider>
+          </MotionProvider>
         </AuthProvider>
       </body>
     </html>

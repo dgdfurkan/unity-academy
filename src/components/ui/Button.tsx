@@ -5,12 +5,21 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 type Variant = "primary" | "secondary" | "ghost" | "ink";
 type Size = "sm" | "md" | "lg";
 
+/**
+ * Butonlar altlarında katı bir gölge taşır ve basılınca aşağı çöker.
+ * Yumuşak blur gölgesinden farkı, nesnenin kalınlığı olduğunu hissettirmesi.
+ */
 const VARIANT: Record<Variant, string> = {
-  primary: "bg-accent text-on-accent hover:bg-accent-hover shadow-md hover:shadow-lg",
+  primary:
+    "bg-accent text-on-accent hover:bg-accent-hover solid-md [--solid-shadow:#4d24c0] " +
+    "hover:-translate-y-0.5 active:press-down",
   secondary:
-    "bg-surface text-text border border-border hover:border-border-strong hover:bg-surface-2 shadow-sm",
+    "bg-surface text-text ring-1 ring-border hover:ring-border-strong solid-sm " +
+    "[--solid-shadow:var(--surface-3)] hover:-translate-y-0.5 active:press-down",
   ghost: "text-text-muted hover:bg-surface-2 hover:text-text",
-  ink: "bg-ink text-on-ink hover:bg-ink-2",
+  ink:
+    "bg-ink text-on-ink hover:bg-ink-2 solid-md [--solid-shadow:#130923] " +
+    "hover:-translate-y-0.5 active:press-down",
 };
 
 // Dokunma hedefi her boyutta 44px'i tutar: sm'de görünen yükseklik 40px,
@@ -42,14 +51,16 @@ export function Button({
       className={cn(
         "relative inline-flex cursor-pointer select-none items-center justify-center",
         "rounded-full font-semibold whitespace-nowrap",
+        "overflow-hidden",
         "transition-[background-color,border-color,color,transform,box-shadow]",
-        "duration-(--dur-fast) ease-(--ease-out)",
-        "active:scale-[0.97] motion-reduce:active:scale-100",
-        "disabled:pointer-events-none disabled:opacity-50",
+        "duration-(--dur-instant) ease-(--ease-out)",
+        "motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0",
+        "disabled:pointer-events-none disabled:opacity-55 disabled:shadow-none",
         VARIANT[variant],
         SIZE[size],
         className,
       )}
+      data-wave=""
       {...props}
     />
   );

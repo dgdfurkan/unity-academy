@@ -164,6 +164,38 @@ export const m1l2: Lesson = {
       ],
     },
     {
+      kind: "activity",
+      activity: {
+        kind: "cable",
+        question: {
+          tr: "Soldaki işi, yapıldığı pencereye bağla.",
+          en: "Connect each task to the window where it happens.",
+        },
+        pairs: [
+          {
+            left: { tr: "Bir materyalin rengini değiştirmek", en: "Changing a material's colour" },
+            right: { tr: "Inspector", en: "Inspector" },
+          },
+          {
+            left: { tr: "Sahnedeki nesneleri listelemek", en: "Listing the objects in the scene" },
+            right: { tr: "Hierarchy", en: "Hierarchy" },
+          },
+          {
+            left: { tr: "Hatanın hangi satırda olduğunu bulmak", en: "Finding which line an error came from" },
+            right: { tr: "Console", en: "Console" },
+          },
+          {
+            left: { tr: "Projeye yeni bir görsel eklemek", en: "Adding a new image to the project" },
+            right: { tr: "Project", en: "Project" },
+          },
+        ],
+        feedback: {
+          tr: "Dört kablo da bağlı. Bir işi nerede yapacağını bilmek, Unity'de hız kazanmanın ilk adımı.",
+          en: "All four cables are connected. Knowing where a task belongs is the first step to working quickly in Unity.",
+        },
+      },
+    },
+    {
       kind: "check",
       exercises: [
         {
@@ -190,19 +222,7 @@ export const m1l2: Lesson = {
             en: "Each window has exactly one job. Knowing where to do a thing is the first step to working quickly in Unity.",
           },
         },
-        {
-          kind: "match",
-          question: {
-            tr: "Her işi yapılacağı pencereyle eşleştir",
-            en: "Match each task to the window where you do it",
-          },
-          pairs: [
-            { left: { tr: "Bir materyalin rengini değiştirmek", en: "Changing a material's colour" }, right: { tr: "Inspector", en: "Inspector" } },
-            { left: { tr: "Sahnedeki nesneleri listelemek", en: "Listing the objects in the scene" }, right: { tr: "Hierarchy", en: "Hierarchy" } },
-            { left: { tr: "Bir hatanın hangi satırda olduğunu bulmak", en: "Finding which line an error came from" }, right: { tr: "Console", en: "Console" } },
-            { left: { tr: "Projeye yeni bir görsel eklemek", en: "Adding a new image to the project" }, right: { tr: "Project", en: "Project" } },
-          ],
-        },
+
         {
           kind: "choice",
           multi: false,

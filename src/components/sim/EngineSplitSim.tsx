@@ -96,18 +96,14 @@ export function EngineSplitSim({
   }, [sys.physics]);
 
   function toggle(key: keyof Systems) {
-    setSys((current) => {
-      const next = { ...current, [key]: !current[key] };
-      if (current[key]) {
-        setTurnedOff((off) => {
-          const updated = new Set(off);
-          updated.add(key);
-          if (updated.size === 4) onSolved?.();
-          return updated;
-        });
-      }
-      return next;
-    });
+    const wasOn = sys[key];
+    setSys({ ...sys, [key]: !wasOn });
+    if (!wasOn) return;
+
+    const next = new Set(turnedOff);
+    next.add(key);
+    setTurnedOff(next);
+    if (next.size === 4) onSolved?.();
   }
 
   function jump() {

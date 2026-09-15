@@ -59,12 +59,10 @@ export function HierarchyProjectSim({
   const [did, setDid] = useState<Set<"instance" | "prefab">>(new Set());
 
   function mark(what: "instance" | "prefab") {
-    setDid((current) => {
-      const next = new Set(current);
-      next.add(what);
-      if (next.size === 2) onSolved?.();
-      return next;
-    });
+    const next = new Set(did);
+    next.add(what);
+    setDid(next);
+    if (next.size === 2) onSolved?.();
   }
 
   function reset() {

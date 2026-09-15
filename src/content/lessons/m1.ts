@@ -16,9 +16,31 @@ export const m1l1: Lesson = {
   lessonIndex: 0,
   minutes: 15,
   concepts: ["engine-vs-game", "edit-vs-play-mode"],
-  steps: [
-    /* ---------- 1. Oyun motoru nedir ---------- */
+  sections: [
     {
+      glyph: "01",
+      title: { tr: "Motor nedir", en: "What an engine is" },
+      subtitle: { tr: "Tekrar eden işler", en: "The repeating work" },
+    },
+    {
+      glyph: "02",
+      title: { tr: "Sınırı çiz", en: "Draw the line" },
+      subtitle: { tr: "Motor mu, sen mi", en: "Engine or you" },
+    },
+    {
+      glyph: "03",
+      title: { tr: "Sahnede dene", en: "Try it live" },
+      subtitle: { tr: "Sistemleri kapat", en: "Switch systems off" },
+    },
+    {
+      glyph: "04",
+      title: { tr: "İki mod", en: "Two modes" },
+      subtitle: { tr: "Kalıcı ve geçici", en: "Lasting and temporary" },
+    },
+  ],
+  steps: [
+    {
+      section: 0,
       kind: "read",
       title: { tr: "Bir oyun neyden oluşur?", en: "What is a game made of?" },
       text: {
@@ -27,6 +49,7 @@ export const m1l1: Lesson = {
       },
     },
     {
+      section: 0,
       kind: "activity",
       activity: {
         kind: "reveal",
@@ -67,6 +90,7 @@ export const m1l1: Lesson = {
       },
     },
     {
+      section: 0,
       kind: "read",
       title: { tr: "İşte motor bu", en: "That is what an engine is" },
       text: {
@@ -75,6 +99,7 @@ export const m1l1: Lesson = {
       },
     },
     {
+      section: 0,
       kind: "task",
       exercise: {
         kind: "choice",
@@ -117,6 +142,7 @@ export const m1l1: Lesson = {
 
     /* ---------- 2. Peki sen ne yaparsın ---------- */
     {
+      section: 1,
       kind: "read",
       title: { tr: "Peki geriye ne kaldı?", en: "So what is left?" },
       text: {
@@ -125,6 +151,7 @@ export const m1l1: Lesson = {
       },
     },
     {
+      section: 1,
       kind: "activity",
       activity: {
         kind: "sort",
@@ -191,31 +218,7 @@ export const m1l1: Lesson = {
 
     /* ---------- 3. Canlı sahne ---------- */
     {
-      kind: "read",
-      title: { tr: "Şimdi bunu çalışırken gör", en: "Now watch it happen" },
-      text: {
-        tr: "Aşağıda çalışan bir sahne var. Dört sistemi tek tek kapatabilirsin. Üçü motorun işi, biri senin. Hangisini kapatınca ne bozuluyor, kendin gör.",
-        en: "Below is a running scene. You can switch four systems off one at a time. Three belong to the engine, one to you. See for yourself what breaks with each.",
-      },
-    },
-    {
-      kind: "task",
-      exercise: {
-        kind: "sim",
-        variant: "engine-split",
-        question: {
-          tr: "Dört sistemi de bir kez kapat. Her birinde neyin bozulduğuna dikkat et.",
-          en: "Switch all four systems off once. Pay attention to what breaks each time.",
-        },
-        feedback: {
-          tr: "Render, fizik ve girdi kapanınca sahne gözle görülür şekilde bozuldu. Oyun kuralları kapandığında görüntüde hiçbir şey değişmedi, sadece sayaç durdu. Motor bundan rahatsız olmaz ama oyun oyun olmaktan çıkar.",
-          en: "With rendering, physics or input off the scene visibly broke. With the game rules off nothing looked different, the counter simply stopped. The engine does not mind, but the game stops being a game.",
-        },
-      },
-    },
-
-    /* ---------- 4. Unity ne değildir ---------- */
-    {
+      section: 1,
       kind: "read",
       title: { tr: "Unity'nin yapmadığı şeyler", en: "What Unity does not do" },
       text: {
@@ -224,6 +227,7 @@ export const m1l1: Lesson = {
       },
     },
     {
+      section: 1,
       kind: "activity",
       activity: {
         kind: "reveal",
@@ -259,6 +263,34 @@ export const m1l1: Lesson = {
 
     /* ---------- 5. İki mod ---------- */
     {
+      section: 2,
+      kind: "read",
+      title: { tr: "Şimdi bunu çalışırken gör", en: "Now watch it happen" },
+      text: {
+        tr: "Aşağıda çalışan bir sahne var. Dört sistemi tek tek kapatabilirsin. Üçü motorun işi, biri senin. Hangisini kapatınca ne bozuluyor, kendin gör.",
+        en: "Below is a running scene. You can switch four systems off one at a time. Three belong to the engine, one to you. See for yourself what breaks with each.",
+      },
+    },
+    {
+      section: 2,
+      kind: "task",
+      exercise: {
+        kind: "sim",
+        variant: "engine-split",
+        question: {
+          tr: "Dört sistemi de bir kez kapat. Her birinde neyin bozulduğuna dikkat et.",
+          en: "Switch all four systems off once. Pay attention to what breaks each time.",
+        },
+        feedback: {
+          tr: "Render, fizik ve girdi kapanınca sahne gözle görülür şekilde bozuldu. Oyun kuralları kapandığında görüntüde hiçbir şey değişmedi, sadece sayaç durdu. Motor bundan rahatsız olmaz ama oyun oyun olmaktan çıkar.",
+          en: "With rendering, physics or input off the scene visibly broke. With the game rules off nothing looked different, the counter simply stopped. The engine does not mind, but the game stops being a game.",
+        },
+      },
+    },
+
+    /* ---------- 4. Unity ne değildir ---------- */
+    {
+      section: 3,
       kind: "read",
       title: { tr: "Kurma modu ve deneme modu", en: "Build mode and try mode" },
       text: {
@@ -267,6 +299,7 @@ export const m1l1: Lesson = {
       },
     },
     {
+      section: 3,
       kind: "read",
       title: { tr: "Aralarındaki tehlikeli fark", en: "The dangerous difference" },
       text: {
@@ -275,6 +308,7 @@ export const m1l1: Lesson = {
       },
     },
     {
+      section: 3,
       kind: "task",
       exercise: {
         kind: "sim",
@@ -290,6 +324,7 @@ export const m1l1: Lesson = {
       },
     },
     {
+      section: 3,
       kind: "task",
       exercise: {
         kind: "choice",
@@ -332,6 +367,7 @@ export const m1l1: Lesson = {
 
     /* ---------- Özet ---------- */
     {
+      section: 3,
       kind: "summary",
       points: [
         {

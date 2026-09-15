@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f3ff">
+  <meta name="description" content="Unity editörünün altı temel penceresini deneyerek öğren.">
+  <title>Unity Editör Laboratuvarı</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2318171c'/%3E%3Cpath d='M18 18v18c0 10 6 15 14 15s14-5 14-15V18' fill='none' stroke='%23c9ff5d' stroke-width='7' stroke-linecap='round'/%3E%3Ccircle cx='18' cy='16' r='5' fill='%23ff725e'/%3E%3Ccircle cx='46' cy='16' r='5' fill='%238f7cff'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --ink:#18171c; --ink-2:#242229; --ink-3:#302d36; --paper:#f7f6f2; --muted:#aaa6b2;
+      --line:rgba(255,255,255,.1); --violet:#8f7cff; --violet-2:#bcb1ff; --lime:#c9ff5d;
+      --coral:#ff725e; --sun:#ffc94a; --mint:#56e6b1; --white:#fff; --shadow:0 24px 80px rgba(0,0,0,.28);
+      --ease:cubic-bezier(.22,1,.36,1);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--ink)}
+    body{margin:0;background:var(--ink);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;overflow-x:hidden}
+    button,input{font:inherit}
+    button{color:inherit}
+    :focus-visible{outline:3px solid var(--lime);outline-offset:3px}
+    .app{min-height:100vh;display:grid;grid-template-columns:252px minmax(0,1fr)}
+    .rail{position:fixed;inset:0 auto 0 0;width:252px;padding:24px 18px;border-right:1px solid var(--line);background:#141317;display:flex;flex-direction:column;z-index:30}
+    .brand{display:flex;align-items:center;gap:12px;padding:0 8px 24px}
+    .mark{width:38px;height:38px;border-radius:12px;background:var(--lime);display:grid;place-items:center;color:var(--ink);font-weight:950;box-shadow:0 10px 28px rgba(201,255,93,.14);transform:rotate(-4deg)}
+    .brand strong{font-size:15px;letter-spacing:-.02em}
+    .brand span{display:block;color:#7e7986;font-size:12px;margin-top:2px}
+    .rail-label{padding:10px 10px 8px;color:#6e6975;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
+    .stage-nav{display:flex;flex-direction:column;gap:7px}
+    .stage-btn{width:100%;border:0;background:transparent;padding:11px 10px;border-radius:14px;display:grid;grid-template-columns:35px 1fr auto;align-items:center;gap:10px;text-align:left;cursor:pointer;color:#8e8995;transition:.25s var(--ease)}
+    .stage-btn:hover{background:#1d1b20;color:#ddd9e2}.stage-btn.active{background:#26232b;color:#fff;box-shadow:inset 0 0 0 1px rgba(143,124,255,.25)}
+    .stage-btn.done .stage-num{background:var(--mint);color:#15201b}.stage-btn.active .stage-num{background:var(--violet);color:#fff}
+    .stage-num{width:32px;height:32px;border-radius:10px;background:#242128;display:grid;place-items:center;font-size:12px;font-weight:900}
+    .stage-copy b{display:block;font-size:13px}.stage-copy small{display:block;font-size:11px;margin-top:2px;color:#77727e}.stage-check{font-size:13px;color:var(--mint);opacity:0}.stage-btn.done .stage-check{opacity:1}
+    .rail-foot{margin-top:auto;border:1px solid var(--line);background:#1b191f;border-radius:16px;padding:14px}
+    .xp-row{display:flex;justify-content:space-between;font-size:12px;color:#9c97a3}.xp-row strong{color:var(--lime)}
+    .xp-track{height:6px;background:#2c2931;border-radius:10px;margin-top:10px;overflow:hidden}.xp-fill{height:100%;width:0;background:linear-gradient(90deg,var(--lime),var(--mint));transition:width .7s var(--ease)}
+    main{grid-column:2;min-width:0}
+    .topbar{height:72px;padding:0 clamp(22px,4vw,54px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(24,23,28,.86);backdrop-filter:blur(18px);z-index:20}
+    .crumb{font-size:13px;color:#8a8591}.crumb b{color:#d6d2db}
+    .top-actions{display:flex;align-items:center;gap:12px}.counter{padding:8px 12px;background:#211f25;border:1px solid var(--line);border-radius:999px;font-size:12px;color:#a7a2ad}.counter strong{color:var(--sun)}
+    .mobile-menu{display:none;border:0;background:#26232b;width:42px;height:42px;border-radius:13px;cursor:pointer}
+    .lesson{max-width:1180px;margin:0 auto;padding:44px clamp(22px,4vw,56px) 100px}
+    .lesson-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:30px;align-items:end;margin-bottom:32px}
+    .eyebrow{display:flex;align-items:center;gap:8px;color:var(--violet-2);font-size:12px;font-weight:850;text-transform:uppercase;letter-spacing:.12em}
+    .eyebrow:before{content:"";width:22px;height:2px;background:var(--violet)}
+    h1{font-size:clamp(34px,5.4vw,72px);letter-spacing:-.058em;line-height:.96;margin:12px 0 14px;max-width:780px}
+    .lead{color:#a6a1ac;font-size:clamp(16px,1.7vw,19px);line-height:1.6;max-width:710px;margin:0}
+    .mastery{width:132px;height:132px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--lime) var(--mastery,0%),#2b2930 0);position:relative;box-shadow:0 20px 50px rgba(0,0,0,.18)}
+    .mastery:after{content:"";position:absolute;inset:9px;border-radius:50%;background:var(--ink)}
+    .mastery div{position:relative;z-index:1;text-align:center}.mastery strong{display:block;font-size:28px;letter-spacing:-.04em}.mastery span{font-size:11px;color:#8d8894;text-transform:uppercase;letter-spacing:.1em}
+    .activity{display:none;animation:stageIn .55s var(--ease)}.activity.active{display:block}
+    @keyframes stageIn{from{opacity:0;transform:translateY(12px) scale(.992)}to{opacity:1;transform:none}}
+    .activity-card{background:#201e24;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:var(--shadow)}
+    .activity-bar{min-height:66px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 18px 13px 22px;background:#27242c;border-bottom:1px solid var(--line)}
+    .activity-title{display:flex;align-items:center;gap:12px}.activity-icon{width:38px;height:38px;border-radius:12px;background:#35313c;display:grid;place-items:center;font-size:18px}
+    .activity-title b{display:block;font-size:14px}.activity-title small{display:block;color:#928d99;font-size:12px;margin-top:2px}
+    .pill{border:1px solid var(--line);background:#1e1c22;border-radius:999px;padding:8px 12px;color:#a6a1ac;font-size:12px;white-space:nowrap}
+    .activity-body{padding:clamp(16px,3vw,30px)}
+    .hint{display:flex;align-items:flex-start;gap:11px;margin-bottom:20px;color:#d7d3dc;font-size:15px;line-height:1.55}.hint-badge{flex:none;width:25px;height:25px;border-radius:8px;background:var(--lime);color:var(--ink);display:grid;place-items:center;font-size:12px;font-weight:950;margin-top:0}
+    .workspace{height:530px;border-radius:20px;overflow:hidden;background:#101014;border:1px solid rgba(255,255,255,.13);display:grid;grid-template-columns:180px 1fr 210px;grid-template-rows:38px 1fr 145px;gap:2px;padding:2px;position:relative}
+    .unity-top{grid-column:1/-1;background:#27252a;display:flex;align-items:center;justify-content:space-between;padding:0 12px;color:#8d8990;font-size:11px}
+    .traffic{display:flex;gap:5px}.traffic i{width:8px;height:8px;border-radius:50%;background:#55515a}.traffic i:nth-child(1){background:var(--coral)}.traffic i:nth-child(2){background:var(--sun)}.traffic i:nth-child(3){background:var(--mint)}
+    .unity-panel{border:0;background:#1c1a20;color:#aaa6af;padding:0;position:relative;overflow:hidden;cursor:pointer;transition:.25s var(--ease);text-align:left}
+    .unity-panel:hover{background:#242129}.unity-panel.revealed{box-shadow:inset 0 0 0 2px var(--violet);background:#27232f}.unity-panel.revealed .panel-purpose{opacity:1;transform:none}
+    .panel-tab{height:29px;padding:0 10px;display:flex;align-items:center;border-bottom:1px solid #333039;font-size:11px;font-weight:700}
+    .panel-content{padding:10px;font-size:11px;line-height:1.7;color:#77727d}
+    .panel-purpose{position:absolute;inset:auto 9px 9px 9px;background:var(--paper);color:#242126;padding:11px;border-radius:11px;font-size:12px;font-weight:750;line-height:1.35;opacity:0;transform:translateY(5px);transition:.3s var(--ease);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+    .hierarchy{grid-row:2}.scene-game{grid-row:2;display:grid;grid-template-columns:1fr 1fr;gap:2px}.inspector{grid-row:2/4}.project{grid-column:1/3;grid-row:3}.console{grid-column:2;grid-row:3}
+    .scene-art{height:100%;background:radial-gradient(circle at 50% 55%,rgba(143,124,255,.16),transparent 26%),linear-gradient(#1c1b20 49%,#29262f 50%);position:relative}
+    .scene-art:before,.scene-art:after{content:"";position:absolute;background:#81768e}.scene-art:before{width:1px;inset:30% auto 25% 50%}.scene-art:after{height:1px;inset:58% 26% auto 24%}
+    .scene-cube{position:absolute;left:calc(50% - 25px);top:calc(54% - 25px);width:50px;height:50px;border:2px solid var(--violet);transform:rotate(30deg) skew(-8deg);background:rgba(143,124,255,.08)}
+    .fake-list{display:grid;gap:5px}.fake-line{height:7px;border-radius:4px;background:#34313a}.fake-line:nth-child(2){width:74%}.fake-line:nth-child(3){width:86%}.fake-line:nth-child(4){width:58%}
+    .discover-status{position:absolute;top:50px;left:50%;transform:translateX(-50%);z-index:8;background:#111015;border:1px solid var(--line);border-radius:999px;padding:9px 14px;font-size:12px;box-shadow:0 12px 30px rgba(0,0,0,.35);pointer-events:none}.discover-status b{color:var(--lime)}
+    .finish-panel{position:absolute;inset:0;display:grid;place-items:center;background:rgba(13,12,16,.72);backdrop-filter:blur(8px);z-index:12;opacity:0;pointer-events:none;transition:.4s}.finish-panel.show{opacity:1;pointer-events:auto}
+    .finish-inner{text-align:center;max-width:390px;padding:30px}.finish-pop{font-size:54px;animation:bob 1.8s ease-in-out infinite}.finish-inner h3{font-size:28px;margin:8px 0}.finish-inner p{color:#a7a2ad;line-height:1.55;margin:0 0 20px}
+    @keyframes bob{50%{transform:translateY(-8px) rotate(5deg)}}
+    .primary,.secondary{border:0;border-radius:14px;min-height:48px;padding:0 18px;font-weight:850;cursor:pointer;transition:.2s var(--ease)}
+    .primary{background:var(--lime);color:#19191b;box-shadow:0 10px 30px rgba(201,255,93,.14)}.primary:hover{transform:translateY(-2px);box-shadow:0 15px 35px rgba(201,255,93,.2)}.primary:active{transform:scale(.97)}
+    .secondary{background:#302d35;color:#dad6df;border:1px solid var(--line)}.secondary:hover{background:#393540}
+    .lab-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:16px}
+    .asset-bank,.scene-bank{background:#18171b;border:1px solid var(--line);border-radius:20px;min-height:390px;overflow:hidden}
+    .lab-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.lab-head span{font-size:12px;font-weight:850;text-transform:uppercase;letter-spacing:.08em;color:#8e8995}.lab-head b{font-size:11px;color:var(--mint)}
+    .prefab-card{margin:18px;border-radius:18px;padding:18px;background:linear-gradient(145deg,#2d263b,#201d26);border:1px solid rgba(143,124,255,.3);position:relative;transition:.4s}
+    .prefab-card.deleted{opacity:.25;filter:grayscale(1);transform:scale(.94)}
+    .cube-icon{width:58px;height:58px;border-radius:18px;background:var(--violet);display:grid;place-items:center;font-size:30px;box-shadow:0 14px 40px rgba(143,124,255,.25)}
+    .prefab-meta{margin-top:18px}.prefab-meta strong{display:block;font-size:16px}.prefab-meta span{color:#88838f;font-size:12px}.hp-row{display:flex;align-items:center;gap:10px;margin-top:18px}.hp-row label{font-size:12px;color:#aaa5af}.hp-row input{accent-color:var(--lime);min-width:0;width:100%}.hp-value{font:800 12px ui-monospace,monospace;color:var(--lime)}
+    .danger{width:100%;margin-top:15px;border:1px solid rgba(255,114,94,.28);background:rgba(255,114,94,.09);color:#ff9a8c;border-radius:12px;padding:11px;cursor:pointer;font-size:12px;font-weight:800}.danger:hover{background:rgba(255,114,94,.15)}
+    .instances{padding:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .instance{min-height:150px;border:1px solid var(--line);background:#242128;border-radius:16px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;transition:.45s var(--ease)}
+    .instance.removed{opacity:0;transform:scale(.5) rotate(-10deg);pointer-events:none}.instance.broken{border-color:rgba(255,114,94,.5);background:rgba(255,114,94,.07);animation:glitch .28s linear 3}.instance .mini-cube{font-size:32px}.instance small{color:#8e8995}.instance .hp-mini{font:800 11px ui-monospace,monospace;color:var(--lime)}.instance.broken .hp-mini{color:var(--coral)}
+    .instance button{position:absolute;top:8px;right:8px;width:28px;height:28px;border:0;border-radius:9px;background:#312e36;color:#8f8a96;cursor:pointer}.instance button:hover{color:var(--coral)}
+    @keyframes glitch{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+    .outcome{margin:0 18px 18px;padding:12px 14px;background:#242129;border-radius:12px;color:#aaa5b0;font-size:13px;line-height:1.45;min-height:44px}.outcome.good{color:#aaf3d4}.outcome.bad{color:#ffa397}
+    .cable-board{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:clamp(38px,12vw,170px);padding:10px;min-height:420px}
+    .cable-col{display:flex;flex-direction:column;gap:12px;position:relative;z-index:3}.cable-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#77727e;margin:0 2px 5px}
+    .socket{min-height:70px;border:1px solid var(--line);background:#19181c;border-radius:15px;display:flex;align-items:center;gap:12px;padding:12px;cursor:pointer;transition:.22s var(--ease);position:relative;text-align:left}
+    .socket:hover{border-color:rgba(255,255,255,.22);transform:translateY(-1px)}.socket.selected{border-color:var(--sun);box-shadow:0 0 0 3px rgba(255,201,74,.1)}.socket.matched{border-color:rgba(86,230,177,.4);background:rgba(86,230,177,.06)}
+    .port{width:24px;height:24px;border-radius:50%;border:5px solid #4a4650;background:#111014;flex:none;box-shadow:inset 0 0 0 2px #77717d}.left-socket .port{margin-left:auto}.socket b{font-size:13px;line-height:1.35}.socket small{color:#817c88;font-size:11px;display:block;margin-top:3px}
+    .cables{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible}.cable-path{fill:none;stroke-width:5;stroke-linecap:round;stroke-dasharray:10 8;animation:flow 1s linear infinite;filter:drop-shadow(0 5px 8px rgba(0,0,0,.3))}
+    @keyframes flow{to{stroke-dashoffset:-18}}
+    .match-message{text-align:center;min-height:30px;color:#99949f;font-size:13px;padding-top:4px}.match-message.good{color:var(--mint)}.match-message.bad{color:var(--coral)}
+    .detective{display:grid;grid-template-columns:.9fr 1.15fr;gap:16px}
+    .console-pane,.code-pane{border:1px solid var(--line);background:#151418;border-radius:18px;overflow:hidden;min-height:390px}
+    .pane-head{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#242128;border-bottom:1px solid var(--line);font-size:11px;font-weight:850;color:#aaa5af}
+    .console-row{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:14px;border-bottom:1px solid var(--line);cursor:pointer;transition:.2s}.console-row:hover{background:#201e24}.console-row.active{background:rgba(255,114,94,.08);box-shadow:inset 3px 0 var(--coral)}
+    .err-icon{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:rgba(255,114,94,.14);color:var(--coral);font-weight:900}.console-row.warning .err-icon{background:rgba(255,201,74,.12);color:var(--sun)}.console-row.log .err-icon{background:rgba(143,124,255,.12);color:var(--violet-2)}
+    .console-row b{font:700 12px/1.45 ui-monospace,SFMono-Regular,monospace}.console-row span{display:block;color:#716c77;font:11px ui-monospace,monospace;margin-top:5px}
+    .code-lines{padding:12px 0;font:12px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace;counter-reset:line}.code-line{display:block;padding:0 16px 0 50px;position:relative;cursor:pointer;color:#b9b4bf;white-space:pre}.code-line:before{counter-increment:line;content:counter(line);position:absolute;left:16px;color:#514d56}.code-line:hover{background:#25222a}.code-line.target{background:rgba(255,114,94,.12);box-shadow:inset 3px 0 var(--coral)}.code-line.correct{background:rgba(86,230,177,.12);box-shadow:inset 3px 0 var(--mint)}
+    .kw{color:#c6baff}.fn{color:#72e4b8}.str{color:#ffd575}.comment{color:#68636e}
+    .clue{margin:14px;background:#201e24;border-radius:13px;padding:13px;color:#9d98a3;font-size:12px;line-height:1.5}.clue strong{color:#fff}
+    .quiz-shell{display:grid;grid-template-columns:260px 1fr;gap:20px}.scenario-visual{border-radius:20px;background:linear-gradient(145deg,#302b38,#19181d);border:1px solid var(--line);padding:20px;display:flex;flex-direction:column;justify-content:space-between;min-height:380px}
+    .scenario-step{color:#928d98;font-size:12px}.scenario-big{font-size:70px;filter:drop-shadow(0 14px 20px rgba(0,0,0,.25))}.scenario-visual h3{font-size:22px;line-height:1.15;margin:12px 0 8px}.scenario-visual p{color:#918c97;font-size:13px;line-height:1.5;margin:0}
+    .question-card{padding:8px}.question-card h2{font-size:clamp(21px,3vw,30px);line-height:1.25;letter-spacing:-.025em;margin:8px 0 22px}.choices{display:grid;gap:10px}.choice{border:1px solid var(--line);background:#19181c;border-radius:15px;padding:15px;text-align:left;cursor:pointer;display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:center;transition:.2s}.choice:hover{border-color:#4b4652;transform:translateX(3px)}.choice-key{width:28px;height:28px;border-radius:9px;background:#2c2931;display:grid;place-items:center;font-size:11px;font-weight:900}.choice.correct{border-color:rgba(86,230,177,.5);background:rgba(86,230,177,.08)}.choice.wrong{border-color:rgba(255,114,94,.5);background:rgba(255,114,94,.08)}
+    .quiz-feedback{min-height:58px;margin-top:14px;border-radius:14px;padding:13px 15px;background:#27242c;color:#9d98a3;font-size:13px;line-height:1.45;display:flex;align-items:center}.quiz-feedback.good{color:#adf2d5;background:rgba(86,230,177,.08)}.quiz-feedback.bad{color:#ffab9f;background:rgba(255,114,94,.08)}
+    .summary-card{text-align:center;padding:clamp(28px,6vw,70px);position:relative;overflow:hidden;background:radial-gradient(circle at 50% 20%,rgba(201,255,93,.12),transparent 38%),#201e24}
+    .summary-card .trophy{font-size:82px;display:block;animation:bob 2s ease-in-out infinite}.summary-card h2{font-size:clamp(30px,5vw,52px);letter-spacing:-.045em;margin:12px 0}.summary-card>p{color:#9f9aa5;font-size:16px;line-height:1.6;max-width:570px;margin:0 auto 28px}
+    .recap{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:760px;margin:0 auto 28px}.recap div{border:1px solid var(--line);background:#18171b;border-radius:16px;padding:18px;text-align:left}.recap span{display:block;font-size:23px;margin-bottom:12px}.recap b{font-size:13px}.recap p{font-size:12px;line-height:1.45;color:#88838e;margin:7px 0 0}
+    .next-row{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:20px}.next-row .secondary{margin-right:auto}.next-tip{font-size:12px;color:#74707a}
+    .toast{position:fixed;right:24px;bottom:24px;z-index:100;background:#f7f6f2;color:#262329;border-radius:16px;padding:13px 16px;box-shadow:0 20px 60px rgba(0,0,0,.35);font-size:13px;font-weight:800;transform:translateY(30px);opacity:0;pointer-events:none;transition:.35s var(--ease)}.toast.show{transform:none;opacity:1}
+    .shake{animation:shake .34s linear}@keyframes shake{20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+    .confetti{position:fixed;inset:0;pointer-events:none;z-index:90;overflow:hidden}.confetti i{position:absolute;top:-20px;width:9px;height:16px;border-radius:2px;animation:fall 1.5s var(--ease) forwards}@keyframes fall{to{transform:translate(var(--dx),110vh) rotate(720deg);opacity:.8}}
+    @media(max-width:900px){
+      .app{display:block}.rail{transform:translateX(-105%);transition:.35s var(--ease);box-shadow:30px 0 70px rgba(0,0,0,.4)}.rail.open{transform:none}.mobile-menu{display:grid;place-items:center}
+      main{grid-column:auto}.lesson{padding-top:30px}.lesson-head{grid-template-columns:1fr}.mastery{display:none}.workspace{height:540px;grid-template-columns:130px 1fr 150px}.lab-grid,.detective,.quiz-shell{grid-template-columns:1fr}.scenario-visual{min-height:230px}.instances{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:620px){
+      .topbar{padding:0 14px;height:62px}.crumb span{display:none}.counter{padding:7px 9px}.lesson{padding:24px 12px 80px}.lesson-head{margin-bottom:22px}.lead{font-size:15px}
+      .activity-card{border-radius:20px}.activity-bar{align-items:flex-start;padding:12px}.pill{display:none}.activity-body{padding:12px}.hint{font-size:14px}
+      .workspace{height:610px;grid-template-columns:1fr 1fr;grid-template-rows:34px 118px 180px 130px 130px}.unity-top{grid-row:1;grid-column:1/-1}.hierarchy{grid-row:2;grid-column:1}.inspector{grid-row:2;grid-column:2}.scene-game{grid-row:3;grid-column:1/-1}.project{grid-row:4;grid-column:1/-1}.console{grid-row:5;grid-column:1/-1}.discover-status{top:42px}.panel-purpose{font-size:11px}
+      .lab-grid{gap:10px}.asset-bank,.scene-bank{min-height:0}.instances{padding:12px;gap:8px}.instance{padding:8px;min-height:120px}.prefab-card{margin:12px}.outcome{margin:0 12px 12px}.cable-board{gap:24px;padding:2px;min-height:500px}.socket{padding:9px 8px;min-height:86px}.socket b{font-size:11px}.socket small{display:none}.port{width:20px;height:20px}.cable-path{stroke-width:4}
+      .console-pane,.code-pane{min-height:0}.code-lines{font-size:10px;overflow-x:auto}.code-line{padding-left:42px}.quiz-shell{gap:10px}.scenario-visual{min-height:190px}.scenario-big{font-size:54px}.recap{grid-template-columns:1fr}.next-row{flex-wrap:wrap}.next-tip{width:100%}
+    }
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+    /* Unity Academy light learning system — aligned with the supplied product UI */
+    :root{
+      --ink:#251541;--ink-2:#3a2760;--ink-3:#f0ebff;--paper:#fff;--muted:#75658f;
+      --line:#ded5f7;--violet:#6d3bea;--violet-2:#5c2fd4;--lime:#22c99a;
+      --coral:#ff6b37;--sun:#ffbd2e;--mint:#18b987;--white:#fff;
+      --shadow:0 22px 70px rgba(73,45,142,.10),0 4px 14px rgba(68,42,130,.05);
+    }
+    html{background:#f6f3ff}
+    body{
+      background:
+        radial-gradient(circle at 18% 14%,rgba(128,92,246,.10),transparent 26rem),
+        radial-gradient(circle at 88% 78%,rgba(255,189,46,.09),transparent 30rem),
+        #f6f3ff;color:var(--ink)
+    }
+    body:before,body:after{content:"";position:fixed;border-radius:999px;pointer-events:none;z-index:0;filter:blur(.1px)}
+    body:before{width:11px;height:11px;background:var(--coral);left:7vw;top:26vh;box-shadow:0 0 0 9px rgba(255,107,55,.09);animation:ambientOne 7s ease-in-out infinite}
+    body:after{width:13px;height:13px;background:var(--mint);right:7vw;bottom:18vh;box-shadow:0 0 0 10px rgba(24,185,135,.08);animation:ambientTwo 8s ease-in-out infinite}
+    @keyframes ambientOne{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(24px,-26px) rotate(180deg)}}
+    @keyframes ambientTwo{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-20px,-34px) scale(1.18)}}
+    .app{position:relative;z-index:1}
+    .rail{background:rgba(255,255,255,.91);border-right:1px solid var(--line);box-shadow:12px 0 45px rgba(64,40,123,.04);backdrop-filter:blur(18px)}
+    .brand{color:var(--ink)}
+    .mark{background:var(--violet);color:#fff;box-shadow:0 9px 0 #4d24c0,0 16px 30px rgba(109,59,234,.18);animation:markFloat 4s ease-in-out infinite}
+    @keyframes markFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-5px) rotate(3deg)}}
+    .brand strong{font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:-.03em}.brand span{color:#8c7ca7}
+    .rail-label{color:#998ab5}
+    .stage-btn{color:#6d5d88}
+    .stage-btn:hover{background:#f3efff;color:var(--violet)}
+    .stage-btn.active{background:#e8deff;color:var(--violet);box-shadow:inset 0 0 0 1px #d6c6ff}
+    .stage-btn.locked{opacity:.48}.stage-btn.locked .stage-num:after{content:"·";font-weight:900}.stage-btn.locked .stage-num{font-size:0}.stage-btn.locked .stage-num:after{font-size:18px}
+    .stage-btn.active .stage-num{background:var(--violet);box-shadow:0 5px 0 #4f25c4;animation:activeBounce 1.8s ease-in-out infinite}
+    .stage-btn.done .stage-num{background:#d7faee;color:#087655}.stage-btn.done .stage-check{color:#0b9b70}
+    .stage-num{background:#f1ecff;color:#79699a}.stage-copy small{color:#9b8daf}
+    @keyframes activeBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+    .rail-foot{background:#fbfaff;border-color:var(--line)}.xp-row{color:#786990}.xp-row strong{color:var(--violet)}
+    .xp-track{background:#e9e2fa;height:8px}.xp-fill{background:linear-gradient(90deg,var(--violet),#916dff,var(--coral));background-size:200% 100%;animation:progressShine 2.4s linear infinite}
+    @keyframes progressShine{to{background-position:-200% 0}}
+    main{background:transparent}
+    .topbar{height:76px;background:rgba(250,248,255,.86);border-bottom:1px solid rgba(213,201,243,.76);backdrop-filter:blur(20px);box-shadow:0 10px 30px rgba(77,48,140,.04)}
+    .top-progress{height:12px;max-width:520px;flex:1;margin:0 28px;background:#e8e0f8;border-radius:999px;overflow:hidden;box-shadow:inset 0 2px 3px rgba(79,50,139,.06)}
+    .top-progress-fill{height:100%;width:8%;border-radius:inherit;background:linear-gradient(90deg,var(--violet),#916cff,var(--coral));background-size:200% 100%;position:relative;transition:width .65s var(--ease);animation:progressShine 2.4s linear infinite}
+    .top-progress-fill:after{content:"";position:absolute;inset:2px 7px auto;border-radius:99px;height:3px;background:rgba(255,255,255,.42)}
+    .crumb{color:#8a79a5}.crumb b{color:var(--ink)}
+    .counter{background:#fff;border-color:var(--line);color:#77658f;box-shadow:0 4px 0 #e4dcf7}.counter strong{color:var(--violet)}
+    .mobile-menu{background:#fff;color:var(--violet);border:1px solid var(--line);box-shadow:0 4px 0 #dfd5f7}
+    .lesson{max-width:1120px;padding-top:38px}
+    .lesson-head{align-items:center;margin-bottom:28px}
+    .eyebrow{color:var(--violet);letter-spacing:.09em}.eyebrow:before{background:var(--coral);height:3px;border-radius:9px}
+    h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(35px,4.8vw,61px);line-height:1.02;color:var(--ink);letter-spacing:-.052em}
+    .lead{color:#75668d;font-size:17px;max-width:730px}
+    .mastery{width:122px;height:122px;background:conic-gradient(var(--violet) var(--mastery,0%),#e8e0fa 0);box-shadow:0 12px 35px rgba(92,47,212,.14)}
+    .mastery:after{background:#fbfaff}.mastery strong{color:var(--ink)}.mastery span{color:#8b7ca2}
+    .activity{animation:lightStageIn .62s var(--ease)}
+    @keyframes lightStageIn{0%{opacity:0;transform:translateX(34px) scale(.985);filter:blur(5px)}100%{opacity:1;transform:none;filter:none}}
+    .activity-card{background:#fff;border:1px solid #ddd3f6;border-radius:30px;box-shadow:0 8px 0 #e1d8f6,var(--shadow)}
+    .activity-bar{background:linear-gradient(115deg,#f0eaff,#faf8ff);border-bottom:1px solid #ded5f7;min-height:72px}
+    .activity-icon{background:#fff;color:var(--violet);border:1px solid #dacff7;box-shadow:0 5px 0 #dfd5f6;animation:iconWiggle 3.8s ease-in-out infinite}
+    .activity-title b{color:var(--ink);font-size:15px}.activity-title small{color:#806f9a}
+    .pill{background:#fff;border-color:#ddd3f5;color:#76658f;box-shadow:0 3px 0 #e4dcf6}
+    @keyframes iconWiggle{0%,84%,100%{transform:rotate(0) translateY(0)}90%{transform:rotate(-8deg) translateY(-3px)}95%{transform:rotate(7deg) translateY(-2px)}}
+    .activity-body{color:var(--ink)}
+    .hint{background:#faf8ff;border:1px solid #e4dcf8;border-radius:18px;padding:15px 16px;color:#57456f;margin-bottom:20px}
+    .hint-badge{background:var(--violet);color:#fff;box-shadow:0 4px 0 #4d24c0}
+    .workspace{background:#e8e1f3;border-color:#d7cbed;box-shadow:0 12px 30px rgba(57,35,102,.08)}
+    .unity-top{background:#30244b;color:#d7cee5}
+    .unity-panel{background:#fbfaff;color:#4f4065}
+    .unity-panel:hover{background:#f3edff;z-index:2;transform:scale(1.012)}
+    .unity-panel.revealed{background:#eee7ff;box-shadow:inset 0 0 0 3px var(--violet);animation:panelPop .44s var(--ease)}
+    @keyframes panelPop{40%{transform:scale(1.035)}70%{transform:scale(.99)}100%{transform:scale(1)}}
+    .panel-tab{background:#f1ecfa;border-color:#ddd5e8;color:#4d3f61}.panel-content{color:#8c7e9d}.fake-line{background:#ded4ed}
+    .scene-art{background:radial-gradient(circle at 50% 55%,rgba(109,59,234,.18),transparent 28%),linear-gradient(#f7f4fd 49%,#eee8f6 50%)}
+    .scene-art:before,.scene-art:after{background:#b7a4d0}.scene-cube{border-color:var(--violet);background:rgba(109,59,234,.08);animation:cubeBreath 3s ease-in-out infinite}
+    @keyframes cubeBreath{0%,100%{transform:rotate(30deg) skew(-8deg) scale(1)}50%{transform:rotate(38deg) skew(-8deg) scale(1.08)}}
+    .panel-purpose{background:#fff;color:var(--ink);box-shadow:0 8px 0 #d7cdf0,0 18px 35px rgba(79,45,153,.16)}
+    .discover-status{background:#fff;border-color:#ddd2f5;color:#716082;box-shadow:0 6px 0 #e0d7f4,0 16px 30px rgba(67,39,126,.12)}
+    .discover-status b{color:var(--violet)}
+    .finish-panel{background:rgba(246,243,255,.86)}.finish-inner h3{color:var(--ink)}.finish-inner p{color:#75668d}
+    .finish-pop{filter:drop-shadow(0 12px 15px rgba(109,59,234,.18))}
+    .primary,.secondary{min-height:51px;border-radius:15px}
+    .primary,.secondary,.choice,.socket,.unity-panel{position:relative;overflow:hidden}
+    .tap-wave{position:absolute;border-radius:50%;background:rgba(255,255,255,.48);transform:translate(-50%,-50%) scale(0);animation:tapWave .58s ease-out;pointer-events:none;z-index:20}
+    @keyframes tapWave{to{transform:translate(-50%,-50%) scale(1);opacity:0}}
+    .primary{background:var(--violet);color:#fff;box-shadow:0 6px 0 #4d24c0,0 14px 28px rgba(109,59,234,.18)}
+    .primary:hover{transform:translateY(-2px);box-shadow:0 8px 0 #4d24c0,0 18px 34px rgba(109,59,234,.22)}
+    .primary:active{transform:translateY(5px);box-shadow:0 1px 0 #4d24c0}
+    .primary:disabled{background:#d6ccef;color:#9d8db9;box-shadow:0 5px 0 #c7badf;cursor:not-allowed}
+    .secondary{background:#fff;color:#6c5a85;border:1px solid #dcd2f2;box-shadow:0 4px 0 #e2daf3}
+    .secondary:hover{background:#faf8ff}.secondary:active{transform:translateY(3px);box-shadow:0 1px 0 #ded5ee}
+    .asset-bank,.scene-bank{background:#faf8ff;border-color:#dfd6f3}
+    .lab-head{background:#f0eaff;border-color:#ddd4f0}.lab-head span{color:#806e9a}.lab-head b{color:#0b9b70}
+    .prefab-card{background:linear-gradient(145deg,#fff,#f0e9ff);border:2px solid #ccbafa;box-shadow:0 7px 0 #ded2f5;animation:cardHover 4.4s ease-in-out infinite}
+    @keyframes cardHover{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    .prefab-card.deleted{animation:none}.cube-icon{background:var(--violet);color:#fff;box-shadow:0 7px 0 #4e25bf,0 15px 28px rgba(109,59,234,.18)}
+    .prefab-meta span,.hp-row label{color:#827294}.hp-row input{accent-color:var(--violet)}.hp-value{color:var(--violet)}
+    .danger{background:#fff2ee;border-color:#ffc5b3;color:#c83f16;box-shadow:0 4px 0 #ffd7ca}.danger:hover{background:#ffe9e2}
+    .instance{background:#fff;border-color:#dfd6f2;box-shadow:0 5px 0 #e6def4}
+    .instance:nth-child(1){animation:instanceBob 3.2s ease-in-out infinite}.instance:nth-child(2){animation:instanceBob 3.2s .3s ease-in-out infinite}.instance:nth-child(3){animation:instanceBob 3.2s .6s ease-in-out infinite}
+    @keyframes instanceBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+    .instance.removed{animation:none}.instance.broken{animation:glitch .28s linear 3}.instance small{color:#857591}.instance .hp-mini{color:#0d9a71}.instance.broken .hp-mini{color:#da3e17}
+    .instance button{background:#f4effc;color:#806f96}.outcome{background:#f4efff;color:#665578}.outcome.good{background:#e4fbf3;color:#087a59}.outcome.bad{background:#fff0eb;color:#ba3513}
+    .cable-board{background:linear-gradient(180deg,#fff,#fcfaff);border-radius:18px}
+    .cable-label{color:#9787aa}.socket{background:#fff;border-color:#ded4f2;box-shadow:0 4px 0 #e6def3;color:var(--ink)}
+    .socket:hover{border-color:#bba8ed;transform:translateY(-2px)}.socket.selected{border-color:var(--coral);box-shadow:0 4px 0 #ffd0c1,0 0 0 4px rgba(255,107,55,.10);animation:socketReady .85s ease-in-out infinite alternate}
+    @keyframes socketReady{to{transform:translateY(-3px) scale(1.015)}}
+    .socket.matched{border-color:#8de2c7;background:#effcf8;box-shadow:0 4px 0 #caefe4}
+    .port{border-color:#c8bce0;background:#f5f1ff;box-shadow:inset 0 0 0 2px #fff}.socket b{color:var(--ink)}.socket small{color:#8d7da0}
+    .cable-path{stroke-width:6;filter:drop-shadow(0 4px 5px rgba(90,50,170,.16))}
+    .match-message{color:#7f6f93}.match-message.good{color:#07835e}.match-message.bad{color:#cf3e16}
+    .console-pane,.code-pane{border-color:#ddd3f0;box-shadow:0 6px 0 #e4dcf3}
+    .console-pane{background:#fff}.code-pane{background:#2e1d50;border-color:#2e1d50}
+    .pane-head{background:#eee8fa;border-color:#dbd1ed;color:#695879}.code-pane .pane-head{background:#261742;border-color:#463267;color:#d5c9eb}
+    .console-row{border-color:#e5dff0;color:var(--ink)}.console-row:hover{background:#faf7ff}.console-row.active{background:#fff0eb;box-shadow:inset 4px 0 var(--coral);animation:rowScan .55s var(--ease)}
+    @keyframes rowScan{from{background:#ffd8cc;transform:translateX(-5px)}to{background:#fff0eb;transform:none}}
+    .console-row b{color:#34214c}.console-row span{color:#8b7b9d}.err-icon{background:#fff0eb;color:#dc421a}.console-row.warning .err-icon{background:#fff8df;color:#bd7a00}.console-row.log .err-icon{background:#f0ebff;color:var(--violet)}
+    .code-line{color:#eee7fa}.code-line:before{color:#8e7fa9}.code-line:hover{background:#3b2860}.code-line.target{background:rgba(255,107,55,.24);box-shadow:inset 4px 0 var(--coral);animation:targetPulse 1.15s ease-in-out infinite}.code-line.correct{background:rgba(24,185,135,.25);box-shadow:inset 4px 0 #31d6a5}
+    @keyframes targetPulse{50%{background:rgba(255,107,55,.38)}}
+    .kw{color:#c7b2ff}.fn{color:#74e8c1}.str{color:#ffd36a}.comment{color:#a996bc}
+    .clue{background:#f3eeff;color:#67577a}.clue strong{color:var(--ink)}
+    .scenario-visual{background:linear-gradient(145deg,#efe8ff,#fff);border-color:#d7c9f6;box-shadow:0 6px 0 #e2d8f6}
+    .scenario-step{color:var(--violet)}.scenario-big{filter:drop-shadow(0 10px 12px rgba(84,48,158,.13));animation:scenarioFloat 3s ease-in-out infinite}
+    @keyframes scenarioFloat{50%{transform:translateY(-9px) rotate(2deg)}}
+    .scenario-visual h3,.question-card h2{color:var(--ink)}.scenario-visual p{color:#796990}
+    .choice{background:#fff;border:2px solid #ded4f2;color:var(--ink);box-shadow:0 5px 0 #e5dcf3}
+    .choice:hover{border-color:#a98bed;transform:translateY(-2px)}.choice:active{transform:translateY(4px);box-shadow:0 1px 0 #e5dcf3}
+    .choice-key{background:#eee7ff;color:var(--violet)}.choice.correct{border-color:#72d8b8;background:#edfbf6;box-shadow:0 5px 0 #bfedde}.choice.wrong{border-color:#ff9a7a;background:#fff1ec;box-shadow:0 5px 0 #ffd2c3}
+    .quiz-feedback{background:#f3effb;color:#746484}.quiz-feedback.good{color:#087a59;background:#e5faf3}.quiz-feedback.bad{color:#bd3715;background:#fff0eb}
+    .summary-card{background:radial-gradient(circle at 50% 5%,rgba(109,59,234,.12),transparent 38%),#fff}
+    .summary-card h2{font-family:Georgia,"Times New Roman",serif;color:var(--ink)}.summary-card>p{color:#76668b}
+    .recap div{background:#faf8ff;border-color:#ddd3f1;box-shadow:0 5px 0 #e6def4}.recap b{color:var(--ink)}.recap p{color:#81718f}
+    .next-tip{color:#8d7fa0}.toast{background:var(--ink);color:#fff;box-shadow:0 8px 0 #130923,0 24px 60px rgba(43,20,81,.28)}
+    .confetti i{border-radius:4px}
+
+    @media(max-width:900px){
+      .rail{box-shadow:24px 0 70px rgba(62,33,122,.16)}
+      .lesson{padding-top:26px}
+    }
+    @media(max-width:620px){
+      body{background:#fbfaff}
+      body:before,body:after{display:none}
+      .topbar{height:68px;padding:0 14px;background:rgba(255,255,255,.94)}
+      .crumb{display:none}.top-progress{margin:0 12px;height:13px}.counter:last-child{display:none}.counter{box-shadow:none;background:transparent;border:0;padding:6px}
+      .lesson{padding:18px 0 110px}
+      .lesson-head{padding:0 18px;margin-bottom:18px}
+      .eyebrow{font-size:11px}.lesson-head h1{font-family:Georgia,"Times New Roman",serif;font-size:28px;line-height:1.08;margin:9px 0 0}.lead{display:none}
+      .activity-card{border:0;border-radius:0;box-shadow:none;background:#fbfaff;overflow:visible}
+      .activity-bar{margin:0 12px;border:1px solid #ded4f4;border-radius:20px;box-shadow:0 5px 0 #e5dcf4;padding:12px 14px;min-height:66px}
+      .activity-icon{width:40px;height:40px}.activity-title b{font-size:14px}.activity-title small{font-size:11px}
+      .activity-body{padding:18px 12px 0}
+      .hint{font-size:15px;line-height:1.5;background:#fff;padding:14px;border-radius:18px;box-shadow:0 4px 0 #e8e1f4}
+      .workspace{border-radius:18px;height:590px;box-shadow:0 6px 0 #e1d8f0}
+      .finish-panel{border-radius:18px}
+      .next-row{position:sticky;bottom:0;margin:18px -12px 0;padding:14px 14px calc(14px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid #ded5ef;z-index:25;backdrop-filter:blur(18px);box-shadow:0 -10px 28px rgba(66,40,123,.08)}
+      .next-row .primary{margin-left:auto;min-width:46%;min-height:54px}.next-row .secondary{min-height:54px}.next-tip{display:none}
+      .lab-grid,.detective,.quiz-shell{gap:14px}
+      .asset-bank,.scene-bank,.console-pane,.code-pane,.scenario-visual{border-radius:18px}
+      .cable-board{min-height:520px;padding:4px 0;background:transparent}
+      .socket{min-height:88px;border-radius:16px}.socket b{font-size:12px;line-height:1.25}
+      .question-card{padding:4px}.question-card h2{font-size:24px;margin:10px 2px 18px}.choice{min-height:66px;padding:13px;border-radius:16px}
+      .quiz-feedback{min-height:70px;border-radius:16px}
+      .summary-card{margin:0 12px;border:1px solid #ddd3f1;border-radius:24px;box-shadow:0 6px 0 #e3dbf3;padding:32px 18px}.summary-card .trophy{font-size:66px}.summary-card h2{font-size:34px}
+      .recap{gap:10px}.recap div{padding:15px}
+      .toast{right:12px;left:12px;bottom:88px;text-align:center}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="rail" id="rail" aria-label="Ders aşamaları">
+      <div class="brand"><div class="mark">U</div><div><strong>Unity Academy</strong><span>Deneyerek öğren</span></div></div>
+      <div class="rail-label">Editör turu</div>
+      <nav class="stage-nav">
+        <button class="stage-btn active" data-stage="0"><span class="stage-num">01</span><span class="stage-copy"><b>Panel avı</b><small>6 pencereyi keşfet</small></span><span class="stage-check">✓</span></button>
+        <button class="stage-btn" data-stage="1"><span class="stage-num">02</span><span class="stage-copy"><b>Bağlantı laboratuvarı</b><small>Kalıp ve örnek</small></span><span class="stage-check">✓</span></button>
+        <button class="stage-btn" data-stage="2"><span class="stage-num">03</span><span class="stage-copy"><b>Kabloları bağla</b><small>İşi pencereye eşleştir</small></span><span class="stage-check">✓</span></button>
+        <button class="stage-btn" data-stage="3"><span class="stage-num">04</span><span class="stage-copy"><b>Hata dedektifi</b><small>Console'u oku</small></span><span class="stage-check">✓</span></button>
+        <button class="stage-btn" data-stage="4"><span class="stage-num">05</span><span class="stage-copy"><b>Ustalık kontrolü</b><small>Bilgini kanıtla</small></span><span class="stage-check">✓</span></button>
+      </nav>
+      <div class="rail-foot"><div class="xp-row"><span>Ders ilerlemesi</span><strong id="xpText">0 XP</strong></div><div class="xp-track"><div class="xp-fill" id="xpFill"></div></div></div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px"><button class="mobile-menu" id="menuBtn" aria-label="Ders menüsünü aç">☰</button><div class="crumb"><span>Modül 1&nbsp; / &nbsp;</span><b>Editör Turu</b></div></div>
+        <div class="top-progress" id="topProgressBar" role="progressbar" aria-label="Ders ilerlemesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="8"><div class="top-progress-fill" id="topProgress"></div></div>
+        <div class="top-actions"><div class="counter">⚡ <strong id="streak">0</strong> seri</div><div class="counter"><strong id="stepCounter">1 / 5</strong></div></div>
+      </header>
+
+      <div class="lesson">
+        <div class="lesson-head">
+          <div><div class="eyebrow">16 dakikalık etkileşimli ders</div><h1>Altı pencere.<br>Tek bir görev.</h1><p class="lead">Unity editörünü ezberleme. Dokun, boz, bağla ve hatayı kendin bul. Ders bittiğinde hangi pencerenin ne işe yaradığını düşünmeden bileceksin.</p></div>
+          <div class="mastery" id="mastery"><div><strong id="masteryText">%0</strong><span>Kavrama</span></div></div>
+        </div>
+
+        <section class="activity active" data-activity="0">
+          <div class="activity-card">
+            <div class="activity-bar"><div class="activity-title"><span class="activity-icon">⌖</span><div><b>Panel Avı</b><small>Haritayı dokunarak aç</small></div></div><span class="pill">0 / 6 keşfedildi</span></div>
+            <div class="activity-body">
+              <div class="hint"><span class="hint-badge">1</span><span>Aşağıdaki editörün altı penceresine dokun. Her pencere kendi görevini sana kısa bir hareketle gösterecek.</span></div>
+              <div class="workspace" id="workspace">
+                <div class="unity-top"><div class="traffic"><i></i><i></i><i></i></div><span>SampleScene — Unity</span><span>▶　Ⅱ　◼</span></div>
+                <div class="discover-status"><b id="discoverCount">0/6</b> panel keşfedildi</div>
+                <button class="unity-panel hierarchy" data-panel="Hierarchy" data-purpose="Bu sahnedeki nesnelerin listesi."><span class="panel-tab">Hierarchy</span><div class="panel-content fake-list"><i class="fake-line"></i><i class="fake-line"></i><i class="fake-line"></i><i class="fake-line"></i></div><span class="panel-purpose">🌳 Sahnedeki nesneleri listeler.</span></button>
+                <div class="scene-game">
+                  <button class="unity-panel" data-panel="Scene" data-purpose="Oyunu kurduğun çalışma masası."><span class="panel-tab">Scene</span><div class="scene-art"><i class="scene-cube"></i></div><span class="panel-purpose">🛠 Oyunun sahnesini burada kurarsın.</span></button>
+                  <button class="unity-panel" data-panel="Game" data-purpose="Oyuncunun göreceği son görüntü."><span class="panel-tab">Game</span><div class="scene-art" style="filter:saturate(.55)"><i class="scene-cube"></i></div><span class="panel-purpose">🎮 Oyuncunun gördüğü ekran.</span></button>
+                </div>
+                <button class="unity-panel inspector" data-panel="Inspector" data-purpose="Seçili nesnenin tüm ayarları."><span class="panel-tab">Inspector</span><div class="panel-content fake-list"><i class="fake-line"></i><i class="fake-line"></i><i class="fake-line"></i><i class="fake-line"></i></div><span class="panel-purpose">🎛 Seçili nesnenin ayarları.</span></button>
+                <button class="unity-panel project" data-panel="Project" data-purpose="Diskteki dosya ve varlıkların tamamı."><span class="panel-tab">Project</span><div class="panel-content">📁 Assets　 ◈ Enemy.prefab　 🖼 Ground.png</div><span class="panel-purpose">📦 Diskteki bütün varlıklar.</span></button>
+                <button class="unity-panel console" data-panel="Console" data-purpose="Unity'nin mesaj, uyarı ve hataları."><span class="panel-tab">Console</span><div class="panel-content">● Oyun başladı　▲ Warning　⨯ Error</div><span class="panel-purpose">🚨 Mesaj, uyarı ve hatalar.</span></button>
+                <div class="finish-panel" id="panelFinish"><div class="finish-inner"><div class="finish-pop">🧭</div><h3>Harita tamam!</h3><p>Artık editör gözünde altı ayrı kutu değil, her biri tek görevli altı araç.</p><button class="primary" data-next>Bağlantı laboratuvarına geç →</button></div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="activity" data-activity="1">
+          <div class="activity-card">
+            <div class="activity-bar"><div class="activity-title"><span class="activity-icon">⛓</span><div><b>Bağlantı Laboratuvarı</b><small>Prefab kalıbını canlı test et</small></div></div><button class="secondary" id="resetLab">Baştan al</button></div>
+            <div class="activity-body">
+              <div class="hint"><span class="hint-badge">2</span><span>Önce mor kalıptaki can değerini değiştir. Sonra bir sahne örneğini sil ve en son kalıbı sil. Sonuçları karşılaştır.</span></div>
+              <div class="lab-grid">
+                <div class="asset-bank"><div class="lab-head"><span>Project · disk</span><b>1 KALIP</b></div><div class="prefab-card" id="prefab"><div class="cube-icon">◈</div><div class="prefab-meta"><strong>Enemy.prefab</strong><span>Ana kalıp · bütün örnekler buna bağlı</span></div><div class="hp-row"><label for="hpRange">Can</label><input id="hpRange" type="range" min="20" max="150" value="100"><span class="hp-value" id="hpValue">100</span></div><button class="danger" id="deletePrefab">Kalıbı diskten sil</button></div></div>
+                <div class="scene-bank"><div class="lab-head"><span>Hierarchy · sahne</span><b>3 ÖRNEK</b></div><div class="instances" id="instances">
+                  <div class="instance"><button aria-label="Birinci örneği sil">×</button><span class="mini-cube">♟</span><b>Enemy (1)</b><small>Prefab örneği</small><span class="hp-mini">100 HP</span></div>
+                  <div class="instance"><button aria-label="İkinci örneği sil">×</button><span class="mini-cube">♟</span><b>Enemy (2)</b><small>Prefab örneği</small><span class="hp-mini">100 HP</span></div>
+                  <div class="instance"><button aria-label="Üçüncü örneği sil">×</button><span class="mini-cube">♟</span><b>Enemy (3)</b><small>Prefab örneği</small><span class="hp-mini">100 HP</span></div>
+                </div><div class="outcome" id="labOutcome">Deneye başla: kalıbın can değerini değiştir.</div></div>
+              </div>
+              <div class="next-row"><button class="secondary" data-prev>← Geri</button><span class="next-tip">Tamamlamak için üç farklı etkiyi gör.</span><button class="primary" id="labNext" disabled>Kabloları bağla →</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="activity" data-activity="2">
+          <div class="activity-card">
+            <div class="activity-bar"><div class="activity-title"><span class="activity-icon">⌁</span><div><b>Kabloları Bağla</b><small>Görevi doğru pencereye tak</small></div></div><span class="pill" id="matchPill">0 / 4 doğru</span></div>
+            <div class="activity-body">
+              <div class="hint"><span class="hint-badge">3</span><span>Soldan bir görev seç, sonra kablonun bağlanacağı doğru pencereye dokun. Yanlış bağlantı geri seker.</span></div>
+              <div class="cable-board" id="cableBoard">
+                <svg class="cables" id="cables" aria-hidden="true"></svg>
+                <div class="cable-col">
+                  <div class="cable-label">Görev fişleri</div>
+                  <button class="socket left-socket" data-id="material" data-answer="Inspector"><span><b>Materyalin rengini değiştir</b><small>Seçili varlığın ayarı</small></span><i class="port"></i></button>
+                  <button class="socket left-socket" data-id="objects" data-answer="Hierarchy"><span><b>Sahnedeki nesneleri listele</b><small>Aktif sahnenin içeriği</small></span><i class="port"></i></button>
+                  <button class="socket left-socket" data-id="error" data-answer="Console"><span><b>Hatanın geldiği satırı bul</b><small>Motorun söylediği ipucu</small></span><i class="port"></i></button>
+                  <button class="socket left-socket" data-id="image" data-answer="Project"><span><b>Projeye yeni görsel ekle</b><small>Diskteki yeni varlık</small></span><i class="port"></i></button>
+                </div>
+                <div class="cable-col">
+                  <div class="cable-label">Pencere girişleri</div>
+                  <button class="socket right-socket" data-target="Project"><i class="port"></i><span><b>Project</b><small>Diskteki varlıklar</small></span></button>
+                  <button class="socket right-socket" data-target="Console"><i class="port"></i><span><b>Console</b><small>Mesajlar ve hatalar</small></span></button>
+                  <button class="socket right-socket" data-target="Inspector"><i class="port"></i><span><b>Inspector</b><small>Seçili olanın ayarları</small></span></button>
+                  <button class="socket right-socket" data-target="Hierarchy"><i class="port"></i><span><b>Hierarchy</b><small>Sahnedeki nesneler</small></span></button>
+                </div>
+              </div>
+              <div class="match-message" id="matchMessage">İlk görev fişini seç.</div>
+              <div class="next-row"><button class="secondary" data-prev>← Geri</button><span class="next-tip">Her doğru kablo farklı bir renkte yanar.</span><button class="primary" id="matchNext" disabled>Hata dedektifliğine geç →</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="activity" data-activity="3">
+          <div class="activity-card">
+            <div class="activity-bar"><div class="activity-title"><span class="activity-icon">⌕</span><div><b>Hata Dedektifi</b><small>İpucunu Console'dan koda taşı</small></div></div><span class="pill" id="detectivePill">Vaka açık</span></div>
+            <div class="activity-body">
+              <div class="hint"><span class="hint-badge">4</span><span>Kırmızı hata satırını seç. Console'un verdiği dosya ve satır numarasına bakıp kodda hatalı satırı işaretle.</span></div>
+              <div class="detective">
+                <div class="console-pane"><div class="pane-head"><span>Console</span><span>3 kayıt</span></div>
+                  <div class="console-row log" data-kind="log"><div class="err-icon">i</div><div><b>Oyun başladı</b><span>GameManager.cs:18</span></div></div>
+                  <div class="console-row warning" data-kind="warning"><div class="err-icon">!</div><div><b>Kullanılmayan değişken: temp</b><span>PlayerMove.cs:9</span></div></div>
+                  <div class="console-row" data-kind="error"><div class="err-icon">×</div><div><b>NullReferenceException: target bulunamadı</b><span>PlayerMove.cs:23</span></div></div>
+                  <div class="clue" id="clue"><strong>Dedektif notu:</strong> Kırmızı olan çalışmayı durdurabilir. Satıra dokun ve konum bilgisini oku.</div>
+                </div>
+                <div class="code-pane"><div class="pane-head"><span>PlayerMove.cs</span><span>C#</span></div><div class="code-lines" id="codeLines">
+                  <span class="code-line"><span class="kw">using</span> UnityEngine;</span>
+                  <span class="code-line"></span>
+                  <span class="code-line"><span class="kw">public class</span> PlayerMove : MonoBehaviour</span>
+                  <span class="code-line">{</span>
+                  <span class="code-line">  <span class="kw">public</span> Transform target;</span>
+                  <span class="code-line">  <span class="kw">public float</span> speed = 5f;</span>
+                  <span class="code-line"></span>
+                  <span class="code-line">  <span class="kw">void</span> <span class="fn">Start</span>()</span>
+                  <span class="code-line">  {</span>
+                  <span class="code-line">    <span class="comment">// Hareketi hazırla</span></span>
+                  <span class="code-line">  }</span>
+                  <span class="code-line"></span>
+                  <span class="code-line">  <span class="kw">void</span> <span class="fn">Update</span>()</span>
+                  <span class="code-line">  {</span>
+                  <span class="code-line">    <span class="kw">if</span> (Input.GetKey(KeyCode.W))</span>
+                  <span class="code-line">    {</span>
+                  <span class="code-line">      transform.Translate(Vector3.forward * speed);</span>
+                  <span class="code-line">    }</span>
+                  <span class="code-line"></span>
+                  <span class="code-line">    <span class="comment">// Hedefe bak</span></span>
+                  <span class="code-line">    Vector3 direction = target.position</span>
+                  <span class="code-line">      - transform.position;</span>
+                  <span class="code-line" data-line="23">    transform.rotation = Quaternion.LookRotation(direction);</span>
+                  <span class="code-line">  }</span>
+                  <span class="code-line">}</span>
+                </div></div>
+              </div>
+              <div class="next-row"><button class="secondary" data-prev>← Geri</button><span class="next-tip">Console, hatanın adresini zaten verir.</span><button class="primary" id="detectiveNext" disabled>Ustalık kontrolüne geç →</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="activity" data-activity="4">
+          <div class="activity-card">
+            <div class="activity-bar"><div class="activity-title"><span class="activity-icon">◆</span><div><b>Ustalık Kontrolü</b><small>Son iki senaryo</small></div></div><span class="pill" id="quizPill">Soru 1 / 2</span></div>
+            <div class="activity-body" id="quizArea">
+              <div class="quiz-shell">
+                <div class="scenario-visual"><span class="scenario-step">SENARYO 01</span><div class="scenario-big" id="scenarioIcon">♟♟♟</div><div><h3 id="scenarioTitle">Üç düşman bir kalıba bağlı</h3><p id="scenarioText">Project penceresindeki Enemy.prefab siliniyor.</p></div></div>
+                <div class="question-card"><h2 id="question">Sahnedeki üç örneğe ne olur?</h2><div class="choices" id="choices"></div><div class="quiz-feedback" id="quizFeedback">Kararını ver; ardından nedenini birlikte göreceğiz.</div></div>
+              </div>
+              <div class="next-row"><button class="secondary" data-prev>← Geri</button><span class="next-tip">Tahmin et, geri bildirimi oku, sonra ilerle.</span><button class="primary" id="quizNext" disabled>Sonraki soru →</button></div>
+            </div>
+            <div class="summary-card" id="summary" hidden><span class="trophy">🏆</span><h2>Editör artık yabancı değil.</h2><p>Altı pencereyi yalnızca okumadın; kalıbı bozdun, bağlantıları kurdun ve bir hatanın adresini kendin buldun.</p><div class="recap"><div><span>🌳</span><b>Hierarchy ≠ Project</b><p>Biri sahneyi, diğeri diski gösterir.</p></div><div><span>🎛</span><b>Inspector seçimi izler</b><p>Seçim yoksa gösterecek ayar da yoktur.</p></div><div><span>🚨</span><b>Console adres verir</b><p>Kırmızı satırı kapatmadan önce oku.</p></div></div><button class="primary" id="restartLesson">Dersi yeniden oyna</button></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div><div class="confetti" id="confetti"></div>
+
+  <script>
+    const state={stage:0,done:new Set(),xp:0,streak:0,panels:new Set(),lab:{changed:false,removed:false,deleted:false},matches:new Map(),selected:null,errorSelected:false,detectiveDone:false,quiz:0,quizAnswered:false,quizScore:0};
+    const colors=['#8f7cff','#56e6b1','#ffc94a','#ff725e'];
+    const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+    document.addEventListener('pointerdown',e=>{const host=e.target.closest('.primary,.secondary,.choice,.socket,.unity-panel');if(!host)return;const r=host.getBoundingClientRect(),wave=document.createElement('i'),size=Math.max(r.width,r.height)*1.7;wave.className='tap-wave';wave.style.width=wave.style.height=size+'px';wave.style.left=(e.clientX-r.left)+'px';wave.style.top=(e.clientY-r.top)+'px';host.appendChild(wave);setTimeout(()=>wave.remove(),650)});
+    function buzz(pattern=25){if(navigator.vibrate) navigator.vibrate(pattern)}
+    function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),1800)}
+    function shake(el){el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');buzz([35,45,35])}
+    function celebrate(count=28){const box=$('#confetti');for(let i=0;i<count;i++){const p=document.createElement('i');p.style.left=Math.random()*100+'vw';p.style.background=colors[i%colors.length];p.style.setProperty('--dx',(Math.random()*220-110)+'px');p.style.animationDelay=(Math.random()*.35)+'s';box.appendChild(p);setTimeout(()=>p.remove(),2100)}}
+    function updateHUD(){
+      $('#xpText').textContent=state.xp+' XP';$('#xpFill').style.width=Math.min(100,state.xp/5)+'%';$('#streak').textContent=state.streak;
+      $('#stepCounter').textContent=(state.stage+1)+' / 5';const mastery=Math.min(100,state.done.size*20),topValue=state.done.size===5?100:Math.min(94,8+state.stage*22);$('#masteryText').textContent='%'+mastery;$('#mastery').style.setProperty('--mastery',mastery+'%');$('#topProgress').style.width=topValue+'%';$('#topProgressBar').setAttribute('aria-valuenow',topValue);
+      $$('.stage-btn').forEach((b,i)=>{b.classList.toggle('active',i===state.stage);b.classList.toggle('done',state.done.has(i));b.classList.toggle('locked',i>state.done.size)});
+    }
+    function award(stage,xp=100){if(!state.done.has(stage)){state.done.add(stage);state.xp+=xp;state.streak++;updateHUD();buzz([25,30,55]);celebrate(18)}}
+    function goStage(n){n=Math.max(0,Math.min(4,n));state.stage=n;$$('.activity').forEach((a,i)=>a.classList.toggle('active',i===n));$('#rail').classList.remove('open');updateHUD();window.scrollTo({top:0,behavior:'smooth'});if(n===2)setTimeout(drawCables,80)}
+    $$('.stage-btn').forEach((b,i)=>b.addEventListener('click',()=>{if(i>state.done.size){shake(b);toast('Önce sıradaki etkinliği tamamla');return}goStage(i)}));
+    $$('[data-next]').forEach(b=>b.addEventListener('click',()=>goStage(state.stage+1)));
+    $$('[data-prev]').forEach(b=>b.addEventListener('click',()=>goStage(state.stage-1)));
+    $('#menuBtn').addEventListener('click',()=>$('#rail').classList.toggle('open'));
+
+    $$('.unity-panel').forEach(panel=>panel.addEventListener('click',()=>{
+      panel.classList.add('revealed');state.panels.add(panel.dataset.panel);const n=state.panels.size;
+      $('#discoverCount').textContent=n+'/6';$('.activity[data-activity="0"] .pill').textContent=n+' / 6 keşfedildi';buzz(18);
+      if(n===6){award(0,100);setTimeout(()=>$('#panelFinish').classList.add('show'),550)}
+    }));
+
+    const hp=$('#hpRange');
+    hp.addEventListener('input',()=>{
+      if(state.lab.deleted)return;$('#hpValue').textContent=hp.value;$$('.instance:not(.removed):not(.broken) .hp-mini').forEach(x=>x.textContent=hp.value+' HP');
+      state.lab.changed=true;$('#labOutcome').className='outcome good';$('#labOutcome').textContent='Kalıptaki değer değişince bağlı bütün örnekler aynı anda güncellendi.';checkLab();buzz(12)
+    });
+    $$('.instance button').forEach(btn=>btn.addEventListener('click',()=>{
+      const card=btn.closest('.instance');if(card.classList.contains('removed')||state.lab.deleted)return;card.classList.add('removed');state.lab.removed=true;
+      $('#labOutcome').className='outcome good';$('#labOutcome').textContent='Yalnızca sahnedeki bu örnek silindi. Enemy.prefab diskte duruyor, diğerleri çalışıyor.';checkLab();buzz(22)
+    }));
+    $('#deletePrefab').addEventListener('click',()=>{
+      if(state.lab.deleted)return;state.lab.deleted=true;$('#prefab').classList.add('deleted');$$('.instance:not(.removed)').forEach(x=>{x.classList.add('broken');x.querySelector('small').textContent='Missing Prefab';x.querySelector('.hp-mini').textContent='BAĞLANTI KIRIK'});
+      $('#labOutcome').className='outcome bad';$('#labOutcome').textContent='Kalıp silindi: ona bağlı kalan bütün sahne örnekleri bozuldu. Project’ten silmek, Hierarchy’den silmekle aynı şey değil.';checkLab();buzz([45,55,45])
+    });
+    function checkLab(){if(state.lab.changed&&state.lab.removed&&state.lab.deleted){award(1,100);$('#labNext').disabled=false;toast('Deney tamamlandı · +100 XP')}}
+    $('#labNext').addEventListener('click',()=>goStage(2));
+    $('#resetLab').addEventListener('click',()=>{
+      state.lab={changed:false,removed:false,deleted:false};hp.value=100;$('#hpValue').textContent='100';$('#prefab').classList.remove('deleted');
+      $$('.instance').forEach((x,i)=>{x.classList.remove('removed','broken');x.querySelector('small').textContent='Prefab örneği';x.querySelector('.hp-mini').textContent='100 HP'});
+      $('#labOutcome').className='outcome';$('#labOutcome').textContent='Deneye başla: kalıbın can değerini değiştir.';$('#labNext').disabled=true
+    });
+
+    $$('.left-socket').forEach(s=>s.addEventListener('click',()=>{
+      if(s.classList.contains('matched'))return;$$('.left-socket').forEach(x=>x.classList.remove('selected'));s.classList.add('selected');state.selected=s;$('#matchMessage').className='match-message';$('#matchMessage').textContent='Şimdi doğru pencere girişini seç.';buzz(12)
+    }));
+    $$('.right-socket').forEach(t=>t.addEventListener('click',()=>{
+      if(!state.selected){shake($('#cableBoard'));$('#matchMessage').textContent='Önce soldan bir görev fişi seç.';return}
+      const s=state.selected;
+      if(s.dataset.answer===t.dataset.target){
+        const idx=state.matches.size;s.classList.remove('selected');s.classList.add('matched');t.classList.add('matched');state.matches.set(s.dataset.id,{source:s,target:t,color:colors[idx]});state.selected=null;
+        $('#matchMessage').className='match-message good';$('#matchMessage').textContent='Bağlantı oturdu. Görev ve pencere aynı mantıkta.';$('#matchPill').textContent=state.matches.size+' / 4 doğru';drawCables();buzz([15,25,25]);
+        if(state.matches.size===4){award(2,100);$('#matchNext').disabled=false;toast('Bütün kablolar bağlı · +100 XP')}
+      }else{$('#matchMessage').className='match-message bad';$('#matchMessage').textContent='Bu giriş kabul etmedi. Görevin nerede gerçekleştiğini düşün.';shake(t)}
+    }));
+    function drawCables(){
+      const board=$('#cableBoard'),svg=$('#cables');if(!board||!svg)return;const br=board.getBoundingClientRect();svg.setAttribute('viewBox','0 0 '+br.width+' '+br.height);svg.innerHTML='';
+      state.matches.forEach(({source,target,color})=>{const a=$('.port',source).getBoundingClientRect(),b=$('.port',target).getBoundingClientRect();const x1=a.left+a.width/2-br.left,y1=a.top+a.height/2-br.top,x2=b.left+b.width/2-br.left,y2=b.top+b.height/2-br.top,curve=Math.max(50,(x2-x1)*.5);const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',`M ${x1} ${y1} C ${x1+curve} ${y1}, ${x2-curve} ${y2}, ${x2} ${y2}`);p.setAttribute('stroke',color);p.setAttribute('class','cable-path');svg.appendChild(p)})
+    }
+    window.addEventListener('resize',drawCables);$('#matchNext').addEventListener('click',()=>goStage(3));
+
+    $$('.console-row').forEach(r=>r.addEventListener('click',()=>{
+      $$('.console-row').forEach(x=>x.classList.remove('active'));r.classList.add('active');
+      if(r.dataset.kind==='error'){state.errorSelected=true;$('#clue').innerHTML='<strong>Adres bulundu:</strong> PlayerMove.cs dosyasında 23. satır. Şimdi sağda o satıra dokun.';$$('.code-line')[22].classList.add('target');buzz(20)}
+      else{$('#clue').innerHTML=r.dataset.kind==='warning'?'<strong>Bu bir uyarı:</strong> Dikkat ister ama oyun çalışmaya devam edebilir.':'<strong>Bu bir bilgi mesajı:</strong> Çalışmanın durduğunu söylemez.'}
+    }));
+    $$('.code-line').forEach((line,i)=>line.addEventListener('click',()=>{
+      if(!state.errorSelected){shake($('.console-pane'));toast('Önce kırmızı Console satırını seç');return}
+      if(i===22){line.classList.remove('target');line.classList.add('correct');state.detectiveDone=true;$('#clue').innerHTML='<strong>Vaka çözüldü:</strong> Console mesaj + dosya + satır numarasını verdi. Hatayı gözle aramana gerek kalmadı.';$('#detectivePill').textContent='Vaka çözüldü';$('#detectiveNext').disabled=false;award(3,100);buzz([20,20,45]);toast('Doğru satır · +100 XP')}
+      else{shake(line);toast('Satır numarasını tekrar kontrol et')}
+    }));
+    $('#detectiveNext').addEventListener('click',()=>goStage(4));
+
+    const quiz=[
+      {icon:'♟♟♟',title:'Üç düşman bir kalıba bağlı',text:'Project penceresindeki Enemy.prefab siliniyor.',q:'Sahnedeki üç örneğe ne olur?',answers:[
+        ['Bozulurlar; yerlerinde Missing Prefab kalır',true,'Doğru. Örnekler kalıbı işaret ediyordu; kalıp gidince bağlantı kırıldı.'],
+        ['Hiçbir şey olmaz; kopyalar tamamen bağımsızdır',false,'Prefab örnekleri bağımsız değildir. Toplu güncelleme de bu bağlantı sayesinde çalışır.'],
+        ['Sahnedeki örnekler sessizce silinir',false,'Silinmezler. Yerlerinde bozuk nesneler kalır; sorun bu yüzden geç fark edilebilir.']
+      ]},
+      {icon:'🎛',title:'Inspector bomboş görünüyor',text:'Sahne açık ve Unity çalışmaya devam ediyor.',q:'En olası sebep nedir?',answers:[
+        ['Hiçbir nesne seçili değildir',true,'Doğru. Inspector her zaman seçili olanı gösterir; seçim yoksa panel de boştur.'],
+        ['Unity kesin olarak çökmüştür',false,'Boş Inspector normal bir durumdur; tek başına çökme belirtisi değildir.'],
+        ['Sahne henüz kaydedilmemiştir',false,'Kaydetme durumu Inspector içeriğini boşaltmaz.']
+      ]}
+    ];
+    function renderQuiz(){
+      const q=quiz[state.quiz];state.quizAnswered=false;$('#scenarioIcon').textContent=q.icon;$('#scenarioTitle').textContent=q.title;$('#scenarioText').textContent=q.text;$('#question').textContent=q.q;$('#quizPill').textContent='Soru '+(state.quiz+1)+' / 2';
+      $('#quizFeedback').className='quiz-feedback';$('#quizFeedback').textContent='Kararını ver; ardından nedenini birlikte göreceğiz.';$('#quizNext').disabled=true;$('#quizNext').textContent=state.quiz===quiz.length-1?'Sonucu gör →':'Sonraki soru →';
+      const box=$('#choices');box.innerHTML='';q.answers.forEach((a,i)=>{const b=document.createElement('button');b.className='choice';b.innerHTML='<span class="choice-key">'+String.fromCharCode(65+i)+'</span><span>'+a[0]+'</span>';b.addEventListener('click',()=>answerQuiz(b,a));box.appendChild(b)})
+    }
+    function answerQuiz(btn,a){
+      if(state.quizAnswered)return;state.quizAnswered=true;$$('.choice').forEach(x=>x.disabled=true);btn.classList.add(a[1]?'correct':'wrong');if(!a[1]){const correctIndex=quiz[state.quiz].answers.findIndex(x=>x[1]);$$('.choice')[correctIndex].classList.add('correct');shake(btn);state.streak=0}else{state.quizScore++;state.streak++;buzz([15,20,35])}
+      $('#quizFeedback').className='quiz-feedback '+(a[1]?'good':'bad');$('#quizFeedback').textContent=a[2];$('#quizNext').disabled=false;updateHUD()
+    }
+    $('#quizNext').addEventListener('click',()=>{
+      if(state.quiz<quiz.length-1){state.quiz++;renderQuiz()}else{$('#quizArea').hidden=true;$('#summary').hidden=false;award(4,100);celebrate(70);toast('Ders tamamlandı · 500 XP')}
+    });
+    $('#restartLesson').addEventListener('click',()=>location.reload());
+    renderQuiz();updateHUD();
+  </script>
+</body>
+</html>

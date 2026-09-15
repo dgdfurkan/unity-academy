@@ -58,7 +58,11 @@ const AUDIT = (minTarget) => `(() => {
   };
 
   // Dekoratif katmanlar (ışık, arka plan) kasıtlı olarak taşar.
-  const decorative = (el) => el.closest('[aria-hidden="true"]') !== null;
+  // Kapalı çekmece gibi görünmez öğeler de ölçülmez.
+  const decorative = (el) =>
+    el.closest('[aria-hidden="true"]') !== null ||
+    el.closest("[inert]") !== null ||
+    getComputedStyle(el).visibility === "hidden";
 
   // Ekran okuyucuya özel gizli öğeler görsel hedef değildir.
   const visuallyHidden = (el) => {
@@ -123,7 +127,7 @@ const AUDIT = (minTarget) => `(() => {
     const r = el.getBoundingClientRect();
     if (r.width === 0 || r.height === 0) continue;
     // ::before ile büyütülen hedefler gerçek alanı yansıtmaz, onları atlıyoruz.
-    if (visuallyHidden(el)) continue;
+    if (visuallyHidden(el) || decorative(el)) continue;
     // ::before ile büyütülen hedefler gerçek alanı yansıtmaz, onları atlıyoruz.
     const grown = getComputedStyle(el, "::before").content !== "none";
     if (!grown && (r.width < MIN_TARGET || r.height < MIN_TARGET)) {

@@ -122,6 +122,26 @@ Ek kesme işaretiyle bağlanır: `Update`'in içinde, `Rigidbody`'ye, `Prefab`'�
 - Bir derste 12-18 adım bulunur. Beş büyük bölüm değil, çok sayıda küçük vuruş.
 - Hedef kitle hiçbir şey bilmiyor. Terimler ilk geçtikleri yerde tanıtılır;
   ilk derste Unity'ye özel isim kullanılmaz.
+- Ders bölümlere ayrılır; bölümler sol rayda görünür. Öğrenci nerede olduğunu
+  ve neyin kaldığını her an görür.
+
+## Arayüz dili
+
+- Butonlar ve kartlar altlarında katı bir gölge taşır (`solid-sm/md/lg`) ve
+  basılınca aşağı çöker. Nesnenin kalınlığı olduğu hissi buradan geliyor.
+- Dokunulan her fiziksel yüzeye `data-wave` eklenir; dalga efekti tek bir
+  genel dinleyiciyle çalışır, bileşen başına kod yazılmaz.
+- Doğru cevapta konfeti ve titreşim, yanlışta sarsıntı ve titreşim verilir.
+  Üçü de `useFeedback` üzerinden çağrılır.
+- Bekleme animasyonları yavaş ve küçük genliklidir (`idle-float`,
+  `idle-wiggle`, `idle-bounce`). Dikkat çalmazlar.
+
+## React kuralları
+
+- State güncelleyicileri saf kalır. `onSolved`, `celebrate`, `buzz` gibi yan
+  etkiler `setState(current => ...)` içinde çağrılmaz; React "render sırasında
+  başka bileşeni güncelleme" uyarısı veriyor. Tekrar koruması gerekiyorsa ref
+  kullanılır.
 
 ## Çalışma biçimi
 

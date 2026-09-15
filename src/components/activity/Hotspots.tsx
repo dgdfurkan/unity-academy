@@ -51,12 +51,10 @@ export function Hotspots({
 
   function pick(id: string) {
     setActive(id);
-    setSeen((current) => {
-      const next = new Set(current);
-      next.add(id);
-      if (next.size === activity.points.length) onDone?.();
-      return next;
-    });
+    const next = new Set(seen);
+    next.add(id);
+    setSeen(next);
+    if (next.size === activity.points.length) onDone?.();
   }
 
   const current = activity.points.find((p) => p.id === active);

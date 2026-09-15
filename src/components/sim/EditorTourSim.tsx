@@ -48,12 +48,10 @@ export function EditorTourSim({ locale, onSolved }: { locale: Locale; onSolved?:
 
   function pick(key: PanelKey) {
     setActive(key);
-    setSeen((current) => {
-      const next = new Set(current);
-      next.add(key);
-      if (next.size === 6) onSolved?.();
-      return next;
-    });
+    const next = new Set(seen);
+    next.add(key);
+    setSeen(next);
+    if (next.size === 6) onSolved?.();
   }
 
   const panel = (key: PanelKey, className: string) => (
