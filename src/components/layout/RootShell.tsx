@@ -44,11 +44,20 @@ export function RootShell({ locale, children }: { locale: Locale; children: Reac
   const dict = getDictionary(locale);
 
   return (
-    <html lang={locale} data-theme="light" suppressHydrationWarning>
+    // Font değişkenleri <html> üzerinde duruyor, <body> üzerinde değil.
+    // :root'ta tanımlı --font-sans içindeki var(--font-jakarta) ancak burada
+    // çözülüyor; body'ye verilince değer geçersiz kalıyor ve gövde metni
+    // sistem fontuna düşüyordu.
+    <html
+      lang={locale}
+      data-theme="light"
+      suppressHydrationWarning
+      className={`${fraunces.variable} ${jakarta.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
-      <body className={`${fraunces.variable} ${jakarta.variable} ${jetbrainsMono.variable} antialiased`}>
+      <body className="antialiased">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-on-accent"
