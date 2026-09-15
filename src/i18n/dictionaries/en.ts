@@ -241,6 +241,7 @@ export const en: Dictionary = {
     lessonsDone: "lessons done",
     locked: "Locked",
     soon: "Coming soon",
+    open: "Open",
     completed: "Completed",
     current: "Up next",
     lockedHint: "Unlocks when you finish the lesson before it.",

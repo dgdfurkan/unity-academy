@@ -47,6 +47,11 @@ Her ders aynı yedi adımdan geçer. Adımlar tamamlanmadan sonrakine geçilmez.
 | 6. Kontrol | 3-5 dk | 3-5 karışık alıştırma, biri önceki modülden |
 | 7. Özet | ~1 dk | Akılda kalacak üç madde + yorum alanı |
 
+Her ders en az iki canlı simülasyon içerir. Bir kavram simülasyonla
+gösterilebiliyorsa paragrafla anlatılmaz: öğrenci sistemi kapatır, değeri
+değiştirir, mermiyi atar ve sonucu kendi gözüyle görür. Yazı simülasyonun
+öncesinde soruyu kurar, sonrasında ne olduğunu bağlar.
+
 Ders başına hedef süre 15-25 dakika. Toplam yaklaşık 9 saatlik çekirdek içerik,
 alıştırmalar ve projelerle birlikte 25-30 saate çıkıyor.
 
@@ -65,6 +70,7 @@ Tek tip soru yok. Her tipin öğrettiği şey farklı.
 | `live-code` | C# yaz, yapısal kontrolden geçir | Üretim | Her modülde |
 | `scenario` | Duruma göre doğru aracı seç | Karar verme | M3, M5, M7 |
 | `scene-tweak` | 3B sahnede değeri değiştir, sonucu gözle | Uzamsal ve fiziksel sezgi | M4, M5 |
+| `sim` | Çalışan bir sahneyi kurcala, ne bozulduğunu gör | Kavramı anlatmadan gösterme | Tümü |
 | `perf-audit` | Sorunlu satırları işaretle | Performans gözü | M8 |
 | `refactor` | Çalışan ama kötü kodu düzelt | SOLID | M7 |
 | `rapid` | Hızlı doğru-yanlış turu | Geri getirme | Tekrar oturumları |

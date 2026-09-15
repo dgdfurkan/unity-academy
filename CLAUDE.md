@@ -111,6 +111,13 @@ Ek kesme işaretiyle bağlanır: `Update`'in içinde, `Rigidbody`'ye, `Prefab`'�
 - Alıştırmalarda yanlış şıklar rastgele değil: her biri bir yanlış anlamayı
   temsil eder ve seçilince onu düzelten geri bildirim çıkar.
 - Öğrenci ilerlemesi uydurulmaz. Herkes sıfırdan başlar.
+- Bir kavram canlı simülasyonla gösterilebiliyorsa paragrafla anlatılmaz.
+  Her derste en az iki simülasyon bulunur; öğrenci sistemi kapatır, değeri
+  değiştirir, sonucu kendi gözüyle görür.
+- Örnekler gerçek oyunlardan verilir: mermi ve can, jeton ve sayaç, zıplama
+  yüksekliği. Soyut örnek yok.
+- Ders metni tam cümlelerle yazılır. Kısa, devrik, slogan gibi cümle yok.
+  Kanca en az iki paragraf olur ve ne öğrenileceğini söyler.
 
 ## Çalışma biçimi
 

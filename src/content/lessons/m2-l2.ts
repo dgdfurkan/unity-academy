@@ -5,15 +5,18 @@ export const m2l2: Lesson = {
   id: "m2-l2",
   moduleIndex: 1,
   lessonIndex: 1,
-  minutes: 18,
+  minutes: 20,
   concepts: ["value-types", "int-division", "float-suffix"],
   steps: [
     {
       kind: "hook",
-      title: { tr: "Aynı tip, iki farklı tepki", en: "Same type, two different reactions" },
+      title: {
+        tr: "Düşman neden bir mermi fazla dayanıyor?",
+        en: "Why does the enemy survive one extra bullet?",
+      },
       body: {
-        tr: "float speed = 8; yazıyorsun, sorun yok. float speed = 8.5; yazıyorsun, altı kırmızı çiziliyor. İkisi de float. Derleyici neden birine kızıyor?",
-        en: "You write float speed = 8; and nothing complains. You write float speed = 8.5; and it gets a red underline. Both are float. Why does the compiler object to one of them?",
+        tr: "Bir nişancı oyunu yapıyorsun. Düşmanın canı 100, merminin hasarı 12.5. Kağıt üzerinde sekiz mermi düşmanı düşürmeli. Oynuyorsun, sekiz mermi atıyorsun ve düşman hâlâ ayakta. Dokuzuncu mermiyle düşüyor.\n\nKodda bir hata görmüyorsun. Hasar değerini doğru yazmışsın, çıkarma işlemi doğru. Ama bir yerde 8 mermilik hasarın 100 yerine 96 olduğunu fark ediyorsun. Kayıp 4 puan nereye gitti?\n\nCevap, seçtiğin tipte. Bu ders o tipleri anlatıyor.",
+        en: "You are making a shooter. The enemy has 100 health and each bullet deals 12.5 damage. On paper eight bullets should bring it down. You play, you fire eight, and the enemy is still standing. It drops on the ninth.\n\nYou cannot see a mistake in the code. The damage value is right and the subtraction is right. Then you notice that eight bullets dealt 96 damage instead of 100. Where did those 4 points go?\n\nThe answer is in the type you picked. That is what this lesson is about.",
       },
     },
     {
@@ -108,6 +111,28 @@ export const m2l2: Lesson = {
           ],
         },
         {
+          kind: "sim",
+          variant: "damage",
+          caption: {
+            tr: "Aynı hasar değerini önce int, sonra float ile dene. Düşmanın kaç mermide düştüğüne bak.",
+            en: "Try the same damage value with int, then with float. Count how many bullets the enemy takes.",
+          },
+        },
+        {
+          kind: "text",
+          text: {
+            tr: "Yukarıdaki sahnede gördüğün şey kancadaki bilmecenin cevabı. 12.5 hasarı int olarak tuttuğunda ondalık kısım atılır ve her mermi 12 hasar verir. Sekiz mermi 100 değil 96 eder, düşman ayakta kalır. Aynı değeri float tuttuğunda sekiz mermi tam 100 eder.",
+            en: "What you just saw in that scene is the answer to the puzzle in the opening. Holding 12.5 damage as an int throws the fraction away and every bullet deals 12. Eight bullets make 96 instead of 100 and the enemy survives. Held as a float, eight bullets land on exactly 100.",
+          },
+        },
+        {
+          kind: "text",
+          text: {
+            tr: "Bu tür hatalar tehlikelidir çünkü oyun çökmez, hata mesajı vermez ve kod doğru görünür. Sadece sayılar biraz tutmaz. Zırh, kritik vuruş ve hasar çarpanı gibi sistemler devreye girdiğinde bu küçük kaymalar birikir ve oyunun dengesi bozulur.",
+            en: "Bugs like this are dangerous because the game does not crash, no error is printed and the code looks correct. The numbers are simply a little off. Once armour, critical hits and damage multipliers enter the picture, those small drifts pile up and the balance of the game goes with them.",
+          },
+        },
+        {
           kind: "text",
           text: {
             tr: "f eki şundan geliyor: C#'ta ondalıklı sabitler varsayılan olarak double sayılır. 8.5 bir double'dır ve double bir float'a kendiliğinden sığdırılmaz. 8.5f yazınca sabit doğrudan float olur.",
@@ -134,6 +159,18 @@ export const m2l2: Lesson = {
     {
       kind: "check",
       exercises: [
+        {
+          kind: "sim",
+          variant: "damage",
+          question: {
+            tr: "12.5 hasarı hem int hem float ile dene. Düşmanın kaç mermide düştüğünü karşılaştır.",
+            en: "Try 12.5 damage with both int and float. Compare how many bullets the enemy takes.",
+          },
+          feedback: {
+            tr: "int ile her mermi 12 hasar verdi ve dokuz mermi gerekti. float ile 12.5 verdi ve sekiz mermi yetti. Tek karakterlik bir tip farkı, oyunun dengesini değiştiriyor.",
+            en: "With int every bullet dealt 12 and it took nine of them. With float it dealt 12.5 and eight were enough. A one-character difference in type changes the balance of the game.",
+          },
+        },
         {
           kind: "fill",
           question: {

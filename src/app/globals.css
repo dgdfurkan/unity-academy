@@ -716,3 +716,19 @@
     transform: translate3d(-2px, 0, 0);
   }
 }
+
+/* Hasar sahnesindeki mermi. Tek seferlik, döngü değil. */
+@utility animate-bullet {
+  animation: bullet 0.42s linear forwards;
+}
+
+@keyframes bullet {
+  from {
+    transform: translate3d(4.5rem, 0, 0);
+    opacity: 1;
+  }
+  to {
+    transform: translate3d(calc(100% + 18rem), 0, 0);
+    opacity: 1;
+  }
+}

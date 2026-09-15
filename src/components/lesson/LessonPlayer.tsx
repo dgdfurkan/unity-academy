@@ -15,6 +15,7 @@ import { LessonComments } from "@/components/lesson/LessonComments";
 import { MatchExercise } from "@/components/lesson/MatchExercise";
 import { SpotExercise } from "@/components/lesson/SpotExercise";
 import { TeachBlocks } from "@/components/lesson/TeachBlocks";
+import { SimExercise } from "@/components/lesson/SimExercise";
 import { ArrowBadge, Button } from "@/components/ui/Button";
 import type { Exercise, Lesson, Step } from "@/content/types";
 import { getLesson } from "@/content/lessons";
@@ -340,6 +341,8 @@ function ExerciseView({
       return <InspectorExercise exercise={exercise} locale={locale} onSolved={onSolved} />;
     case "code":
       return <CodeExercise exercise={exercise} locale={locale} onSolved={onSolved} />;
+    case "sim":
+      return <SimExercise exercise={exercise} locale={locale} onSolved={onSolved} />;
   }
 }
 

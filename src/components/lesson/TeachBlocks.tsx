@@ -1,4 +1,7 @@
+"use client";
+
 import { Info, TriangleAlert } from "lucide-react";
+import { Sim } from "@/components/sim";
 import type { TeachBlock } from "@/content/types";
 import type { Locale } from "@/i18n";
 import { cn } from "@/lib/utils";
@@ -70,6 +73,18 @@ export function TeachBlocks({ blocks, locale }: { blocks: TeachBlock[]; locale: 
                 </pre>
                 {block.caption ? (
                   <figcaption className="border-t border-ink-border px-4 py-2.5 text-[13px] text-on-ink-muted">
+                    {block.caption[locale]}
+                  </figcaption>
+                ) : null}
+              </figure>
+            );
+
+          case "sim":
+            return (
+              <figure key={i} className="max-w-[46rem]">
+                <Sim variant={block.variant} locale={locale} />
+                {block.caption ? (
+                  <figcaption className="mt-2.5 text-[13px] text-text-subtle">
                     {block.caption[locale]}
                   </figcaption>
                 ) : null}

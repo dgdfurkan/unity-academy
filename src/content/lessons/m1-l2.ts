@@ -5,18 +5,18 @@ export const m1l2: Lesson = {
   id: "m1-l2",
   moduleIndex: 0,
   lessonIndex: 1,
-  minutes: 15,
+  minutes: 16,
   concepts: ["editor-windows", "hierarchy-vs-project", "console-basics"],
   steps: [
     {
       kind: "hook",
       title: {
-        tr: "Sildiğini sandığın şey hâlâ orada",
-        en: "The thing you thought you deleted is still there",
+        tr: "Altı pencere, bir tane de sık yapılan hata",
+        en: "Six windows and one very common mistake",
       },
       body: {
-        tr: "Bir öğrenci Hierarchy'den küpü siliyor, Play'e basıyor, küp hâlâ sahnede. Bir başkası Project'ten bir dosyayı siliyor ve sahnedeki her şey bozuluyor. İkisi de aynı yanılgının iki ucu: sahnedeki nesne ile diskteki dosya aynı şey değil.",
-        en: "One student deletes a cube from the Hierarchy, hits Play, and the cube is still there. Another deletes a file from the Project and the whole scene breaks. Both are the same misunderstanding: the object in the scene and the file on disk are not the same thing.",
+        tr: "Unity'yi ilk açtığında ekranda altı ayrı pencere görürsün ve hepsi aynı anda bir şeyler gösterir. Bu yoğunluk ilk günlerde yorucudur, ama aslında her pencerenin tek bir işi vardır.\n\nBu dersin asıl konusu ise bu altı pencereden ikisinin arasındaki farktır. Hierarchy sahnedeki nesneleri listeler, Project diskteki dosyaları. Çoğu yeni başlayan bu ikisini aynı sanır ve iki tür hata yapar: ya sahnedeki bir nesneyi silip dosyanın da silindiğini zanneder, ya da diskten bir dosya silip sahnedeki her şeyin bozulmasına şaşırır. Dersin sonunda bu farkı bir daha unutmayacaksın.",
+        en: "The first time you open Unity you see six separate windows all showing you something at once. That density is tiring in the early days, but each window really does have exactly one job.\n\nThe real subject of this lesson is the difference between two of those six. The Hierarchy lists the objects in the scene; the Project lists the files on disk. Most beginners treat these as the same thing and make one of two mistakes: either they delete an object from the scene and assume the file went with it, or they delete a file from disk and are surprised when the whole scene breaks. By the end of this lesson that difference will stick.",
       },
     },
     {
@@ -109,10 +109,33 @@ export const m1l2: Lesson = {
           ],
         },
         {
+          kind: "sim",
+          variant: "editor-tour",
+          caption: {
+            tr: "Altı pencereye tek tek dokun. Hangisinin ne işe yaradığını gör.",
+            en: "Tap each of the six windows and see what it is for.",
+          },
+        },
+        {
           kind: "text",
           text: {
-            tr: "Kritik ayrım şu: Project'teki bir Prefab bir kalıptır. Hierarchy'deki her kopya o kalıptan üretilmiş bir örnektir. Kalıbı silersen örnekler bozulur; örneği silersen kalıp yerinde durur.",
-            en: "The key distinction: a Prefab in the Project is a mould. Every copy in the Hierarchy is an instance made from it. Delete the mould and the instances break; delete an instance and the mould stays.",
+            tr: "Şimdi asıl konuya gelelim. Project'teki bir Prefab bir kalıptır; Hierarchy'deki her kopya o kalıptan üretilmiş bir örnektir. Bir düşman prefab'ı düşün: sahnede on tane düşman varsa, diskte tek bir Enemy.prefab dosyası ve sahnede ona bağlı on örnek vardır.",
+            en: "Now to the main point. A Prefab in the Project is a mould, and every copy in the Hierarchy is an instance made from it. Picture an enemy prefab: with ten enemies in the scene there is one Enemy.prefab file on disk and ten instances in the scene linked to it.",
+          },
+        },
+        {
+          kind: "text",
+          text: {
+            tr: "Bu bağ çok işine yarar. Kalıptaki düşmanın canını 100'den 80'e düşürürsen sahnedeki on düşmanın da canı düşer. Tek tek gezmen gerekmez. Ama aynı bağ tehlikeli tarafı da getirir: kalıbı silersen on örnek birden bozulur.",
+            en: "That link is enormously useful. Drop the enemy's health from 100 to 80 on the mould and all ten enemies in the scene follow. You never visit them one by one. But the same link carries the danger: delete the mould and all ten instances break at once.",
+          },
+        },
+        {
+          kind: "sim",
+          variant: "hierarchy-project",
+          caption: {
+            tr: "Önce soldan bir örnek sil, sonra sağdaki kalıbı sil. Farkı gör.",
+            en: "First delete an instance on the left, then delete the mould on the right. Watch the difference.",
           },
         },
         {
@@ -123,11 +146,19 @@ export const m1l2: Lesson = {
           },
         },
         {
+          kind: "sim",
+          variant: "console",
+          caption: {
+            tr: "Üç satıra da dokun. Log, Warning ve Error arasındaki farkı gör.",
+            en: "Tap all three lines. See the difference between Log, Warning and Error.",
+          },
+        },
+        {
           kind: "callout",
           tone: "info",
           text: {
-            tr: "Console'daki bir hata satırına çift tıklamak kod editörünü tam o satırda açar. Hatayı aramak yerine üstüne tıkla.",
-            en: "Double-clicking an error in the Console opens your code editor on that exact line. Click the error instead of hunting for it.",
+            tr: "Console'daki bir hata satırına çift tıklamak kod editörünü tam o satırda açar. Hatayı gözle aramak yerine satırın üstüne tıkla; bu alışkanlık sana yüzlerce dakika kazandırır.",
+            en: "Double-clicking an error in the Console opens your code editor on that exact line. Instead of hunting for the error by eye, click the line; this habit will save you hundreds of minutes.",
           },
         },
       ],
@@ -135,6 +166,30 @@ export const m1l2: Lesson = {
     {
       kind: "check",
       exercises: [
+        {
+          kind: "sim",
+          variant: "hierarchy-project",
+          question: {
+            tr: "Önce bir örneği, sonra kalıbı sil. İkisinin sonucu arasındaki farkı gör.",
+            en: "Delete an instance first, then the mould. See how the two outcomes differ.",
+          },
+          feedback: {
+            tr: "Sahnedeki örnek ile diskteki kalıp ayrı şeyler. Örnek silmek geri alınabilir bir iştir; kalıp silmek o kalıba bağlı her şeyi bozar.",
+            en: "An instance in the scene and a mould on disk are separate things. Deleting an instance is easy to undo; deleting the mould breaks everything linked to it.",
+          },
+        },
+        {
+          kind: "sim",
+          variant: "editor-tour",
+          question: {
+            tr: "Altı pencereye de dokun ve ne işe yaradıklarını oku.",
+            en: "Tap all six windows and read what each one does.",
+          },
+          feedback: {
+            tr: "Her pencerenin tek bir işi var. Bir şeyi nerede yapacağını bilmek, Unity'de hız kazanmanın ilk adımı.",
+            en: "Each window has exactly one job. Knowing where to do a thing is the first step to working quickly in Unity.",
+          },
+        },
         {
           kind: "match",
           question: {

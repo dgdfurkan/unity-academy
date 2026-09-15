@@ -247,6 +247,7 @@ export const tr = {
     lessonsDone: "ders bitti",
     locked: "Kilitli",
     soon: "Yakında",
+    open: "Açık",
     completed: "Tamamlandı",
     current: "Sıradaki",
     lockedHint: "Önceki dersi bitirince açılır.",

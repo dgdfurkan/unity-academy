@@ -5,12 +5,16 @@ import { Check, Lock, PenLine, Play } from "lucide-react";
 import { m, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
-/** `soon`: ders henüz yazılmadı. Kilitli değil, sadece içeriği yok. */
-export type NodeState = "done" | "current" | "locked" | "soon";
+/**
+ * `open`: açık ama henüz başlanmamış ders.
+ * `soon`: ders henüz yazılmadı. Kilitli değil, sadece içeriği yok.
+ */
+export type NodeState = "done" | "current" | "open" | "locked" | "soon";
 
 export type NodeLabels = {
   done: string;
   current: string;
+  open: string;
   locked: string;
   soon: string;
   lockedHint: string;
@@ -96,6 +100,7 @@ export function LessonNode({
             "relative grid shrink-0 place-items-center rounded-full",
             state === "done" && "bg-mint text-white",
             state === "current" && "bg-accent text-on-accent",
+            state === "open" && "bg-accent-soft text-accent-text ring-1 ring-accent/40",
             state === "soon" && "bg-surface-2 text-text-subtle ring-1 ring-border-strong",
             locked && "bg-surface-2 text-text-subtle ring-1 ring-border",
           )}
@@ -109,7 +114,7 @@ export function LessonNode({
 
           {state === "done" ? (
             <Check className="relative size-6" strokeWidth={3} />
-          ) : state === "current" ? (
+          ) : state === "current" || state === "open" ? (
             <Play className="relative size-5 translate-x-px" strokeWidth={2.75} fill="currentColor" />
           ) : state === "soon" ? (
             <PenLine className="relative size-[18px]" strokeWidth={2} />
@@ -133,6 +138,7 @@ export function LessonNode({
               "mt-0.5 block text-[12.5px] font-medium",
               state === "done" && "text-mint-text",
               state === "current" && "text-accent-text",
+              state === "open" && "text-accent-text",
               state === "soon" && "text-text-subtle",
               locked && "text-text-subtle",
             )}
@@ -141,9 +147,11 @@ export function LessonNode({
               ? labels.done
               : state === "current"
                 ? labels.current
-                : state === "soon"
-                  ? labels.soon
-                  : labels.locked}
+                : state === "open"
+                  ? labels.open
+                  : state === "soon"
+                    ? labels.soon
+                    : labels.locked}
           </span>
         </span>
       </MotionLink>

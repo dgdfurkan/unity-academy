@@ -33,10 +33,10 @@ export function LearnPath({ locale }: { locale: Locale }) {
 
   const stateOf = (id: string): NodeState => {
     if (progress.completed.includes(id)) return "done";
-    if (next?.id === id) return hasLesson(id) ? "current" : "soon";
-    // Yazılmamış ders kilitli değil, sadece içeriği yok. İkisini ayırmak
-    // öğrenciye "sen ilerlemedin" ile "biz yazmadık" farkını gösteriyor.
-    return hasLesson(id) ? "locked" : "soon";
+    if (!hasLesson(id)) return "soon";
+    // Geliştirme sırasında kilit yok: yazılan her ders açık.
+    // Sıra kuralı geri geleceği zaman burası `locked` döndürecek.
+    return next?.id === id ? "current" : "open";
   };
 
   return (
@@ -128,6 +128,7 @@ export function LearnPath({ locale }: { locale: Locale }) {
                     labels={{
                       done: t.completed,
                       current: t.current,
+                      open: t.open,
                       locked: t.locked,
                       soon: t.soon,
                       lockedHint: t.lockedHint,

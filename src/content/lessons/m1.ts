@@ -1,22 +1,30 @@
 import type { Lesson } from "@/content/types";
 
-/** Ders 01 — Unity Nedir, Ne Değildir? */
+/**
+ * Ders 01 — Unity Nedir, Ne Değildir?
+ *
+ * Bu ders kavramla açılıyor ve tek satır kod içermiyor. Amacı, öğrencinin
+ * kafasındaki "Unity oyun yapar" cümlesini "Unity çizer ve hesaplar, oyunu
+ * ben yazarım" cümlesiyle değiştirmek. Anlatım yerine iki canlı simülasyon
+ * kullanıyor: biri sistemleri tek tek kapattırıyor, diğeri Play Mode'un
+ * neden geçici olduğunu denetiyor.
+ */
 export const m1l1: Lesson = {
   id: "m1-l1",
   moduleIndex: 0,
   lessonIndex: 0,
-  minutes: 12,
+  minutes: 15,
   concepts: ["engine-vs-game", "edit-vs-play-mode"],
   steps: [
     {
       kind: "hook",
       title: {
-        tr: "Bu küpün düşmesini kimse koda yazmadı",
-        en: "Nobody wrote code to make this cube fall",
+        tr: "Küpü düşüren kod nerede?",
+        en: "Where is the code that made the cube fall?",
       },
       body: {
-        tr: "Sahneye bir küp koyuyorsun, Play'e basıyorsun, küp düşüyor ve zemine çarpıp duruyor. Tek satır kod yazmadın. Motor bunu kendiliğinden yaptıysa, geriye sana ne kalıyor?",
-        en: "You drop a cube into the scene, hit Play, and it falls and lands on the floor. You wrote no code at all. If the engine does that on its own, what is left for you to do?",
+        tr: "Sahneye bir küp koydun ve üzerine bir Rigidbody bileşeni ekledin. Play'e bastığında küp aşağı düştü, zemine çarptı ve durdu. Bu davranışı tarif eden tek bir satır kod yazmadın. Yerçekimini, çarpışmayı ve durmayı motor kendisi hesapladı.\n\nPeki motor bu kadarını kendiliğinden yapıyorsa, geriye sana ne kalıyor? Bu dersin cevaplamaya çalıştığı soru bu. Cevabı bulduğunda, karşılaştığın her problemde \"bunu motor mu halleder, ben mi yazmalıyım\" sorusunu doğru cevaplayabileceksin.",
+        en: "You dropped a cube into the scene and added a Rigidbody component to it. When you pressed Play the cube fell, hit the floor and stopped. You did not write a single line describing that behaviour. Gravity, the collision and the stop were all calculated by the engine.\n\nSo if the engine does that much on its own, what is left for you? That is the question this lesson answers. Once you have the answer, you will be able to look at any problem and know whether the engine handles it or you have to write it.",
       },
     },
     {
@@ -25,40 +33,52 @@ export const m1l1: Lesson = {
         kind: "choice",
         multi: true,
         question: {
-          tr: "Aşağıdakilerden hangilerini Unity sen kod yazmadan yapar?",
-          en: "Which of these does Unity do without you writing any code?",
+          tr: "Bir nişancı oyunu düşün. Aşağıdakilerden hangilerini Unity, sen kod yazmadan yapar?",
+          en: "Think about a shooter. Which of these does Unity do without you writing any code?",
         },
         choices: [
           {
-            text: { tr: "İki nesnenin çarpıştığını hesaplamak", en: "Working out that two objects collided" },
+            text: {
+              tr: "Merminin duvara çarptığını tespit etmek",
+              en: "Detecting that the bullet hit a wall",
+            },
             correct: true,
             feedback: {
-              tr: "Doğru. Çarpışma tespiti motorun fizik tarafının işi. Sen yalnızca çarpışınca ne olacağını yazarsın.",
-              en: "Right. Collision detection is the engine's physics job. You only write what happens on impact.",
+              tr: "Doğru. Çarpışma tespiti fizik motorunun işidir. İki collider kesiştiğinde motor bunu fark eder ve sana haber verir. Senin işin, haber geldiğinde ne olacağına karar vermek.",
+              en: "Correct. Detecting collisions is the physics engine's job. When two colliders overlap the engine notices and tells you. Your job is to decide what happens once it does.",
             },
           },
           {
-            text: { tr: "Sahneyi ekrana çizmek", en: "Drawing the scene on screen" },
+            text: {
+              tr: "Duvarın gölgesini ekrana çizmek",
+              en: "Drawing the wall's shadow on screen",
+            },
             correct: true,
             feedback: {
-              tr: "Doğru. Render motorun işi. Neyin görüneceğine sen karar verirsin, nasıl çizileceğine motor.",
-              en: "Right. Rendering is the engine's job. You decide what is visible; the engine decides how it is drawn.",
+              tr: "Doğru. Işık hesabı, gölge, perspektif ve ekrana çizim tamamen motorun işidir. Sen yalnızca ışığın nerede duracağını söylersin.",
+              en: "Correct. Lighting, shadows, perspective and drawing to the screen all belong to the engine. You only say where the light stands.",
             },
           },
           {
-            text: { tr: "Çarpışınca canın azalmasına karar vermek", en: "Deciding that a collision costs health" },
+            text: {
+              tr: "Mermi çarpınca düşmanın canının 25 azalmasına karar vermek",
+              en: "Deciding that a hit costs the enemy 25 health",
+            },
             correct: false,
             feedback: {
-              tr: "Bu bir oyun kuralı. Motor çarpışmayı bildirir, sonucunda ne olacağını sen yazarsın.",
-              en: "That is a game rule. The engine reports the collision; what it costs is up to your code.",
+              tr: "Bu bir oyun kuralıdır ve senin yazman gerekir. Motor sana yalnızca çarpışmanın olduğunu söyler. Canın ne kadar azalacağı, hiç azalıp azalmayacağı, zırhın devreye girip girmeyeceği tamamen senin kararın.",
+              en: "That is a game rule and you have to write it. The engine only tells you a collision happened. How much health is lost, whether it is lost at all, whether armour reduces it: those are all your decisions.",
             },
           },
           {
-            text: { tr: "Hangi seviyenin ne zaman açılacağını belirlemek", en: "Deciding when the next level unlocks" },
+            text: {
+              tr: "Düşman öldüğünde bir sonraki dalganın başlaması",
+              en: "Starting the next wave when the enemy dies",
+            },
             correct: false,
             feedback: {
-              tr: "Bu da bir oyun kuralı. Motorun sahneleri yükleme aracı var ama hangisini ne zaman yükleyeceğini sen söylersin.",
-              en: "Also a game rule. The engine can load scenes, but you say which one and when.",
+              tr: "Bu da senin işin. Motorun oyununda dalga olduğundan haberi bile yok. Dalga kavramını, sırasını ve zorluğunu sen tanımlarsın.",
+              en: "Also yours. The engine has no idea your game even has waves. You define what a wave is, when it comes and how hard it gets.",
             },
           },
         ],
@@ -66,71 +86,111 @@ export const m1l1: Lesson = {
     },
     {
       kind: "teach",
-      title: { tr: "Motor ne yapar, sen ne yaparsın", en: "What the engine does, what you do" },
+      title: {
+        tr: "Motor ne yapar, sen ne yaparsın",
+        en: "What the engine does and what you do",
+      },
       blocks: [
         {
           kind: "text",
           text: {
-            tr: "Oyun motoru, her oyunda tekrar eden işleri üstlenen bir yazılım. Onlarca yıldır herkesin yeniden yazdığı şeyleri bir kez yazıp sana veriyor.",
-            en: "A game engine is software that takes over the work every game repeats. It writes once what everyone used to rewrite, and hands it to you.",
+            tr: "Oyun motoru, her oyunda tekrar eden işleri üstlenen bir yazılımdır. Bir üçgeni ekrana çizmek, iki cismin çarpışıp çarpışmadığını hesaplamak, dokunmayı okumak, sesi hoparlöre göndermek: bunların hepsi her oyunda aynı şekilde yapılır. Unity bu işleri bir kez yazmış ve sana hazır veriyor.",
+            en: "A game engine is software that takes on the work every game repeats. Drawing a triangle to the screen, working out whether two bodies overlap, reading a touch, sending sound to the speaker: all of these work the same way in every game. Unity wrote them once and hands them to you.",
+          },
+        },
+        {
+          kind: "text",
+          text: {
+            tr: "Senin yazdığın şey ise oyunun kendisidir. Oyunun kuralları, hedefleri, dengesi ve karakteri motorda bulunmaz, çünkü bunlar senin oyununa özeldir. Bir platform oyunuyla bir bulmaca oyunu aynı motoru kullanır ama tamamen farklı kurallarla çalışır.",
+            en: "What you write is the game itself. Its rules, its goals, its balance and its character are not in the engine, because they belong to your game alone. A platformer and a puzzle game use the same engine and run on completely different rules.",
           },
         },
         {
           kind: "table",
           head: [
-            { tr: "Motorun işi", en: "The engine's job" },
-            { tr: "Senin işin", en: "Your job" },
+            { tr: "Durum", en: "Situation" },
+            { tr: "Motorun yaptığı", en: "What the engine does" },
+            { tr: "Senin yazdığın", en: "What you write" },
           ],
           rows: [
             [
-              { tr: "Sahneyi ekrana çizmek", en: "Drawing the scene" },
-              { tr: "Sahnede ne olacağına karar vermek", en: "Deciding what goes in the scene" },
+              { tr: "Karakter zıplıyor", en: "The character jumps" },
+              {
+                tr: "Yukarı doğru kuvveti uygular, yerçekimini ekler, zemine çarpmayı bulur",
+                en: "Applies the upward force, adds gravity, finds the landing",
+              },
+              {
+                tr: "Zıplamanın ne kadar yüksek olacağı, havada ikinci zıplama olup olmadığı",
+                en: "How high the jump is and whether a second jump is allowed in the air",
+              },
             ],
             [
-              { tr: "Fizik: düşme, çarpışma, sürtünme", en: "Physics: falling, collisions, friction" },
-              { tr: "Çarpışınca ne olacağı", en: "What a collision costs" },
+              { tr: "Jeton toplanıyor", en: "A coin is collected" },
+              {
+                tr: "Karakterin jetona değdiğini haber verir",
+                en: "Reports that the character touched the coin",
+              },
+              {
+                tr: "Jetonun kaç puan ettiği, sayacın nasıl artacağı, sesin çalıp çalmayacağı",
+                en: "What the coin is worth, how the counter goes up, whether a sound plays",
+              },
             ],
             [
-              { tr: "Girdi okumak: dokunma, tuş, jiroskop", en: "Reading input: touch, keys, gyroscope" },
-              { tr: "Girdinin neyi tetikleyeceği", en: "What that input triggers" },
-            ],
-            [
-              { tr: "Ses çalmak", en: "Playing sound" },
-              { tr: "Hangi sesin ne zaman çalacağı", en: "Which sound plays when" },
-            ],
-            [
-              { tr: "Android ve iOS'a paketlemek", en: "Packaging for Android and iOS" },
-              { tr: "Neyin paketleneceği", en: "What goes into the package" },
+              { tr: "Düşman görünüyor", en: "An enemy appears" },
+              {
+                tr: "Modeli çizer, gölgesini hesaplar, kameraya göre konumlandırır",
+                en: "Draws the model, computes its shadow, positions it for the camera",
+              },
+              {
+                tr: "Düşmanın nereden çıkacağı, kaç tane olacağı, ne yapacağı",
+                en: "Where it comes from, how many there are and what it does",
+              },
             ],
           ],
         },
         {
-          kind: "text",
-          text: {
-            tr: "Kısaca: motor nasılını bilir, sen neyini yazarsın.",
-            en: "In short: the engine knows the how, you write the what.",
+          kind: "sim",
+          variant: "engine-split",
+          caption: {
+            tr: "Dört sistemi tek tek kapatıp neyin bozulduğuna bak. Üçü motorun, biri senin.",
+            en: "Switch each of the four systems off and see what breaks. Three belong to the engine, one to you.",
           },
         },
         {
           kind: "text",
           text: {
-            tr: "Unity ne değildir? Bir çizim programı değil, hazır bir oyun şablonu değil, düğmeye basınca oyun üreten bir araç hiç değil. Model, ses ve görselleri başka araçlarda üretip buraya getirirsin.",
-            en: "What Unity is not: a drawing program, a ready-made game template, or a tool that produces a game at the press of a button. You make models, sounds and art elsewhere and bring them in.",
+            tr: "Yukarıdaki sahnede kapattığın sistemlerden üçü motora aitti: render, fizik ve girdi. Kapattığında sahne çizilmedi, karakter düşmedi, dokunma okunmadı. Dördüncüsü senindi: oyun kuralları kapandığında görüntüde hiçbir şey bozulmadı, sadece jeton sayacı artmayı bıraktı. Kural yoksa oyun da yoktur, ama motor bundan hiç rahatsız olmaz.",
+            en: "Three of the systems you switched off belong to the engine: rendering, physics and input. With them off the scene was not drawn, the character did not fall and touches were not read. The fourth was yours: with the game rules off nothing looked broken, the coin counter simply stopped going up. Without rules there is no game, but the engine does not mind at all.",
           },
         },
         {
           kind: "text",
           text: {
-            tr: "Editörde iki mod var. Edit Mode'da sahneyi kurarsın; Play Mode'da oyunu denersin.",
-            en: "The editor has two modes. In Edit Mode you build the scene; in Play Mode you try the game.",
+            tr: "Unity'nin ne olmadığını da söylemek gerekir. Unity bir çizim programı değildir: karakter modelini Blender'da, dokusunu Photoshop'ta, sesini bir ses programında üretip buraya getirirsin. Unity hazır bir oyun şablonu da değildir: içinde başlamaya hazır bir platform oyunu yoktur. Ve düğmeye basınca oyun üreten bir araç hiç değildir.",
+            en: "It is worth saying what Unity is not. It is not a drawing program: you model the character in Blender, paint the texture in Photoshop, make the sound in an audio tool and bring all of it in. It is not a ready-made game template either: there is no platformer sitting inside waiting for you. And it is certainly not a tool that produces a game at the press of a button.",
+          },
+        },
+        {
+          kind: "text",
+          text: {
+            tr: "Editörde iki mod vardır ve bu ayrım ilk günden itibaren önem taşır. Edit Mode'da sahneyi kurarsın: nesneleri yerleştirir, değerleri ayarlar, script eklersin. Play Mode'da oyunu denersin: kodun çalışır, fizik işler, girdi okunur.",
+            en: "The editor has two modes and the distinction matters from day one. In Edit Mode you build the scene: you place objects, set values and attach scripts. In Play Mode you try the game: your code runs, physics ticks and input is read.",
+          },
+        },
+        {
+          kind: "sim",
+          variant: "play-mode",
+          caption: {
+            tr: "Play'e bas, çalışırken speed değerini değiştir, sonra Stop'a bas.",
+            en: "Press Play, change speed while it runs, then press Stop.",
           },
         },
         {
           kind: "callout",
           tone: "warning",
           text: {
-            tr: "Play Mode'dayken yaptığın her değişiklik, Play'den çıkınca kaybolur. Yeni başlayanın en çok saat kaybettiği yer burasıdır: bir değeri Play sırasında güzelce ayarlarsın, Stop'a basarsın, her şey eski hâline döner.",
-            en: "Every change you make during Play Mode is discarded when you stop. This is where beginners lose the most time: you tune a value while playing, press Stop, and it all reverts.",
+            tr: "Az önce gördüğün şey yeni başlayanın en çok saat kaybettiği yerdir. Play sırasında bir değeri güzelce ayarlarsın, oyun tam istediğin gibi olur, Stop'a basarsın ve bütün ayarların kaybolur. Unity bunu sana sormaz, uyarmaz; sessizce sahnede kayıtlı olan değerlere döner. Kalıcı bir değişiklik yapacaksan önce Play'den çık.",
+            en: "What you just saw is where beginners lose the most hours. You tune a value during Play, the game finally feels right, you press Stop and every adjustment is gone. Unity does not ask and does not warn; it quietly returns to the values stored in the scene. If a change is meant to last, leave Play first.",
           },
         },
       ],
@@ -139,90 +199,124 @@ export const m1l1: Lesson = {
       kind: "check",
       exercises: [
         {
-          kind: "choice",
-          multi: false,
+          kind: "sim",
+          variant: "play-mode",
           question: {
-            tr: "Play Mode'dayken Inspector'da speed değerini 5'ten 12'ye çektin, sonra Stop'a bastın. speed kaç olur?",
-            en: "While in Play Mode you changed speed from 5 to 12 in the Inspector, then pressed Stop. What is speed now?",
+            tr: "Play Mode'da bir değeri değiştirip Stop'a bas. Değerin ne olduğunu kendi gözünle gör.",
+            en: "Change a value in Play Mode and press Stop. See for yourself what happens to it.",
           },
-          choices: [
-            {
-              text: { tr: "5", en: "5" },
-              correct: true,
-              feedback: {
-                tr: "Doğru. Play sırasındaki değişiklikler geçicidir; Stop'a basınca sahne kaydedilmiş hâline döner.",
-                en: "Right. Changes during Play are temporary; Stop restores the scene to its saved state.",
-              },
-            },
-            {
-              text: { tr: "12", en: "12" },
-              correct: false,
-              feedback: {
-                tr: "Play Mode'daki değişiklikler kaydedilmez. Kalıcı olması için Play'den çıkıp değiştirmen gerekir.",
-                en: "Changes made in Play Mode are not saved. To make it stick, stop first, then change it.",
-              },
-            },
-            {
-              text: { tr: "0, sıfırlanır", en: "0, it resets" },
-              correct: false,
-              feedback: {
-                tr: "Sıfırlanmaz, sahnede kayıtlı olan değere döner. O da 5'ti.",
-                en: "It does not reset to zero; it returns to the value stored in the scene, which was 5.",
-              },
-            },
-            {
-              text: { tr: "Unity kaydetmek isteyip istemediğini sorar", en: "Unity asks whether you want to save" },
-              correct: false,
-              feedback: {
-                tr: "Sormaz. Sessizce eski değere döner, bu yüzden fark etmek zordur.",
-                en: "It does not ask. It quietly reverts, which is exactly why this is easy to miss.",
-              },
-            },
-          ],
+          feedback: {
+            tr: "Play sırasındaki değişiklik geçicidir. Kalıcı olması için Edit Mode'da yapılması gerekir. Bir gün \"ama ben bunu ayarlamıştım\" dediğinde ilk bakacağın yer burasıdır.",
+            en: "A change made during Play is temporary. To make it stick it has to happen in Edit Mode. The day you catch yourself saying \"but I set that\", this is the first thing to check.",
+          },
         },
         {
           kind: "match",
           question: {
-            tr: "Her işi doğru tarafla eşleştir",
-            en: "Match each job to the side that does it",
+            tr: "Bir yarış oyunundaki her işi doğru tarafla eşleştir",
+            en: "Match each job in a racing game to the side that handles it",
           },
           pairs: [
-            { left: { tr: "Gölge hesaplamak", en: "Calculating shadows" }, right: { tr: "Motor", en: "Engine" } },
-            { left: { tr: "Düşmanın kaç can götüreceği", en: "How much damage an enemy deals" }, right: { tr: "Sen", en: "You" } },
-            { left: { tr: "Dokunmayı algılamak", en: "Detecting a touch" }, right: { tr: "Motor", en: "Engine" } },
-            { left: { tr: "Skor tablosunun kuralları", en: "The rules of the scoreboard" }, right: { tr: "Sen", en: "You" } },
+            {
+              left: { tr: "Arabanın duvara çarpması", en: "The car hitting the wall" },
+              right: { tr: "Motor", en: "Engine" },
+            },
+            {
+              left: { tr: "Çarpınca kaç saniye ceza alınacağı", en: "How many seconds the crash costs" },
+              right: { tr: "Sen", en: "You" },
+            },
+            {
+              left: { tr: "Lastik izinin asfalta çizilmesi", en: "Drawing the tyre marks on the asphalt" },
+              right: { tr: "Motor", en: "Engine" },
+            },
+            {
+              left: { tr: "Üçüncü turda yağmurun başlaması", en: "Rain starting on the third lap" },
+              right: { tr: "Sen", en: "You" },
+            },
           ],
         },
         {
           kind: "choice",
           multi: false,
           question: {
-            tr: "Karakterin zıplama yüksekliğini kalıcı olarak değiştirmek istiyorsun. Ne yaparsın?",
-            en: "You want to permanently change the character's jump height. What do you do?",
+            tr: "Bir arkadaşın diyor ki: \"Unity kullanınca oyun kendiliğinden oluyor, kod yazmaya gerek yok.\" Ona ne cevap verirsin?",
+            en: "A friend says: \"With Unity the game just happens, you do not need to write code.\" What do you tell them?",
           },
           choices: [
             {
-              text: { tr: "Önce Stop'a basarım, sonra değeri değiştiririm", en: "Press Stop first, then change the value" },
+              text: {
+                tr: "Motor çizim ve fiziği hallediyor ama oyunun kurallarını yazan biri olmalı",
+                en: "The engine handles drawing and physics, but someone has to write the game's rules",
+              },
               correct: true,
               feedback: {
-                tr: "Doğru. Edit Mode'da yapılan değişiklik sahneye yazılır ve kalıcıdır.",
-                en: "Right. A change made in Edit Mode is written to the scene and sticks.",
+                tr: "Doğru. Motor altyapıyı verir, oyunu sen yazarsın. Kod yazmadan bir sahne kurabilirsin ama o sahne bir oyun olmaz.",
+                en: "Right. The engine gives you the foundation; you write the game. You can build a scene without code, but that scene will not be a game.",
               },
             },
             {
-              text: { tr: "Play sırasında değiştirip Ctrl+S ile kaydederim", en: "Change it while playing and press Ctrl+S" },
+              text: {
+                tr: "Haklı, Unity her şeyi kendisi yapıyor",
+                en: "They are right, Unity does everything itself",
+              },
               correct: false,
               feedback: {
-                tr: "Play sırasında sahne kaydedilemez. Unity bu durumda kaydetmeyi reddeder.",
-                en: "The scene cannot be saved during Play. Unity refuses the save in that state.",
+                tr: "Az önce sahnede gördün: oyun kurallarını kapattığında görüntü bozulmadı ama jeton sayacı durdu. O kuralı yazacak biri olmadan oyun oyun olmuyor.",
+                en: "You just saw it in the scene: with the game rules off nothing looked broken, but the coin counter stopped. Without someone writing that rule there is no game.",
               },
             },
             {
-              text: { tr: "Play sırasında değiştiririm, Unity hatırlar", en: "Change it while playing; Unity remembers" },
+              text: {
+                tr: "Yanılıyor, Unity fizik hesabını da senin yazmanı bekliyor",
+                en: "They are wrong, Unity expects you to write the physics too",
+              },
               correct: false,
               feedback: {
-                tr: "Hatırlamaz. Stop'a bastığın anda değer eski hâline döner.",
-                en: "It does not remember. The moment you press Stop the value reverts.",
+                tr: "Fizik motorun işidir. Rigidbody eklediğin küp senden hiçbir kod almadan düştü.",
+                en: "Physics is the engine's job. The cube you gave a Rigidbody fell without a single line from you.",
+              },
+            },
+          ],
+        },
+        {
+          kind: "choice",
+          multi: false,
+          question: {
+            tr: "Karakterin zıplama yüksekliğini kalıcı olarak değiştirmek istiyorsun. Hangi sırayla çalışırsın?",
+            en: "You want to permanently change the character's jump height. In what order do you work?",
+          },
+          choices: [
+            {
+              text: {
+                tr: "Play'de deneyerek doğru değeri bulurum, Stop'a basarım, sonra Edit Mode'da o değeri yazarım",
+                en: "Find the right value by trying it in Play, press Stop, then set that value in Edit Mode",
+              },
+              correct: true,
+              feedback: {
+                tr: "Doğru ve profesyoneller de böyle çalışır. Play Mode denemek için idealdir çünkü sonucu anında görürsün; ama bulduğun değeri Edit Mode'da yazmadan iş bitmez.",
+                en: "Right, and this is how professionals work. Play Mode is ideal for trying things because you see the result immediately, but the job is not done until you write the value down in Edit Mode.",
+              },
+            },
+            {
+              text: {
+                tr: "Play sırasında değiştirip Ctrl+S ile kaydederim",
+                en: "Change it during Play and press Ctrl+S",
+              },
+              correct: false,
+              feedback: {
+                tr: "Unity Play sırasında sahneyi kaydetmez, bu isteği reddeder. Değeri kaybetmenin en hızlı yolu budur.",
+                en: "Unity refuses to save the scene during Play. This is the fastest way to lose the value.",
+              },
+            },
+            {
+              text: {
+                tr: "Hiç Play'e basmadan doğrudan Edit Mode'da yazarım",
+                en: "Skip Play entirely and just write it in Edit Mode",
+              },
+              correct: false,
+              feedback: {
+                tr: "Çalışır ama doğru değeri bulmak zorlaşır. Zıplama hissi ancak oynayarak ayarlanır; Play Mode tam da bunun için var.",
+                en: "It works, but finding the right value gets harder. Jump feel can only be tuned by playing, and that is exactly what Play Mode is for.",
               },
             },
           ],
@@ -233,16 +327,16 @@ export const m1l1: Lesson = {
       kind: "summary",
       points: [
         {
-          tr: "Motor çizer, hesaplar ve paketler. Kuralları sen yazarsın.",
-          en: "The engine draws, calculates and packages. You write the rules.",
+          tr: "Motor çizer, hesaplar ve paketler. Oyunun kurallarını sen yazarsın.",
+          en: "The engine draws, calculates and packages. You write the game's rules.",
         },
         {
-          tr: "Unity bir araç; içerik ve tasarım senden gelir.",
-          en: "Unity is a tool; the content and the design come from you.",
+          tr: "Unity bir araçtır. Model, ses ve tasarım başka yerden gelir.",
+          en: "Unity is a tool. Models, sound and design come from elsewhere.",
         },
         {
-          tr: "Play Mode'da yapılan değişiklik Play bitince silinir.",
-          en: "Anything you change in Play Mode is discarded when Play ends.",
+          tr: "Play Mode denemek içindir. Kalıcı her değişiklik Edit Mode'da yapılır.",
+          en: "Play Mode is for trying things. Every lasting change is made in Edit Mode.",
         },
       ],
     },

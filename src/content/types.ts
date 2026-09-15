@@ -64,6 +64,12 @@ export type Exercise =
       feedback: L;
     }
   | {
+      kind: "sim";
+      variant: SimVariant;
+      question: L;
+      feedback: L;
+    }
+  | {
       kind: "code";
       question: L;
       /** Editörde hazır duran başlangıç kodu. */
@@ -77,12 +83,25 @@ export type Exercise =
       solvedMessage: L;
     };
 
+/**
+ * Canlı simülasyonlar. Anlatım yerine denetme: öğrenci değeri değiştirir,
+ * sahneyi çalıştırır, ne olduğunu kendi gözüyle görür.
+ */
+export type SimVariant =
+  | "engine-split"   // motorun işi mi, senin işin mi
+  | "play-mode"      // Play sırasındaki değişiklik neden kayboluyor
+  | "editor-tour"    // altı pencere
+  | "hierarchy-project" // sahne örneği ile disk kalıbı
+  | "console"        // hata satırını okumak
+  | "damage";        // can, hasar ve tamsayı bölmesi
+
 export type TeachBlock =
   | { kind: "text"; text: L }
   | { kind: "list"; items: L[] }
   | { kind: "table"; head: L[]; rows: L[][] }
   | { kind: "code"; code: string; caption?: L }
-  | { kind: "callout"; tone: "info" | "warning"; text: L };
+  | { kind: "callout"; tone: "info" | "warning"; text: L }
+  | { kind: "sim"; variant: SimVariant; caption?: L };
 
 export type Step =
   | { kind: "hook"; title: L; body: L }
