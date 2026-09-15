@@ -103,7 +103,40 @@ export type TeachBlock =
   | { kind: "callout"; tone: "info" | "warning"; text: L }
   | { kind: "sim"; variant: SimVariant; caption?: L };
 
+/**
+ * Öğretici etkinlikler. Bunlar sınav değil: yanlış cevap kavramı yoktur ya da
+ * ikincil kalır. Amaç, kısa bir metinden hemen sonra öğrencinin bir şeye
+ * dokunup öğrenmesi.
+ */
+export type Activity =
+  | {
+      /** Kartlara dokun, arkasındaki açıklama açılsın. Doğru-yanlış yok. */
+      kind: "reveal";
+      question: L;
+      cards: { front: L; back: L }[];
+    }
+  | {
+      /** Öğeleri kutulara ayır. Eşleştirmeden farkı: birden çok öğe aynı kutuya girer. */
+      kind: "sort";
+      question: L;
+      buckets: { id: string; label: L }[];
+      items: { text: L; bucket: string; why: L }[];
+    }
+  | {
+      /** Etiketli bir şemada noktalara dokun. Tur niteliğinde, sınav değil. */
+      kind: "hotspot";
+      question: L;
+      diagram: "editor" | "gameobject" | "frame";
+      points: { id: string; label: L; note: L }[];
+    };
+
 export type Step =
+  /** Tek bir fikri anlatan kısa metin. En fazla üç dört cümle. */
+  | { kind: "read"; title: L; text: L; blocks?: TeachBlock[] }
+  /** Metnin hemen ardından gelen etkinlik. */
+  | { kind: "activity"; activity: Activity }
+  /** Alıştırma adımı: cevabı olan, puan üreten soru. */
+  | { kind: "task"; exercise: Exercise }
   | { kind: "hook"; title: L; body: L }
   | { kind: "predict"; exercise: Exercise }
   | { kind: "teach"; title: L; blocks: TeachBlock[] }

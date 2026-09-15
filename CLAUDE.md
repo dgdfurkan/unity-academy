@@ -116,8 +116,12 @@ Ek kesme işaretiyle bağlanır: `Update`'in içinde, `Rigidbody`'ye, `Prefab`'�
   değiştirir, sonucu kendi gözüyle görür.
 - Örnekler gerçek oyunlardan verilir: mermi ve can, jeton ve sayaç, zıplama
   yüksekliği. Soyut örnek yok.
-- Ders metni tam cümlelerle yazılır. Kısa, devrik, slogan gibi cümle yok.
-  Kanca en az iki paragraf olur ve ne öğrenileceğini söyler.
+- Ders metni tam cümlelerle yazılır. Devrik cümle, slogan, yarım cümle yok.
+- Bir metin adımı en fazla üç dört cümledir ve ardından mutlaka bir etkinlik
+  gelir. Arka arkaya iki metin adımı yazılmaz.
+- Bir derste 12-18 adım bulunur. Beş büyük bölüm değil, çok sayıda küçük vuruş.
+- Hedef kitle hiçbir şey bilmiyor. Terimler ilk geçtikleri yerde tanıtılır;
+  ilk derste Unity'ye özel isim kullanılmaz.
 
 ## Çalışma biçimi
 

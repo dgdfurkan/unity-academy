@@ -35,25 +35,45 @@ tanımla değil. `Update` içinde `Time.deltaTime` kullanmayan bir karakterin 30
 
 ## 2. Ders anatomisi
 
-Her ders aynı yedi adımdan geçer. Adımlar tamamlanmadan sonrakine geçilmez.
+Ders büyük bölümlerden değil, küçük vuruşlardan oluşur. Bir vuruş ya kısa bir
+metin ya da bir etkinliktir ve ekranda tek başına durur.
 
-| Adım | Süre | Ne olur |
+**Metin adımı en fazla üç dört cümledir.** Uzun paragraf okunmuyor. Bir fikir
+anlatılır, biter.
+
+**Her metin adımının ardından bir etkinlik gelir.** Arka arkaya iki metin adımı
+yazılmaz. Öğrenci okur, hemen bir şeye dokunur, sonra devam eder.
+
+**Bir derste 12-18 adım bulunur.** Ders başına 15-25 dakika bu adımlara yayılır.
+
+### Adım tipleri
+
+| Adım | Ne yapar | Devam etmek için |
 | --- | --- | --- |
-| 1. Kanca | ~1 dk | Somut bir problem ya da beklenmedik davranış |
-| 2. Tahmin | ~1 dk | Cevabı görmeden önce bir tahmin sorusu |
-| 3. Anlatım | 3-6 dk | Kavram; yanında 3B sahne, Inspector görüntüsü ya da diyagram |
-| 4. Birlikte yaz | 3-5 dk | Çalışan örnek, satır satır gerekçesiyle |
-| 5. Sen yaz | 4-8 dk | Aynı örneğin boşaltılmış hâli, sonra serbest yazım |
-| 6. Kontrol | 3-5 dk | 3-5 karışık alıştırma, biri önceki modülden |
-| 7. Özet | ~1 dk | Akılda kalacak üç madde + yorum alanı |
+| `read` | Tek bir fikri anlatan kısa metin | Serbest |
+| `activity` | Öğretici etkinlik; doğru-yanlış yok | Serbest |
+| `task` | Cevabı olan, puan üreten alıştırma | Çözülmeli |
+| `summary` | Akılda kalacak üç madde | Dersi bitirir |
 
-Her ders en az iki canlı simülasyon içerir. Bir kavram simülasyonla
-gösterilebiliyorsa paragrafla anlatılmaz: öğrenci sistemi kapatır, değeri
-değiştirir, mermiyi atar ve sonucu kendi gözüyle görür. Yazı simülasyonun
-öncesinde soruyu kurar, sonrasında ne olduğunu bağlar.
+### Öğretici etkinlikler
 
-Ders başına hedef süre 15-25 dakika. Toplam yaklaşık 9 saatlik çekirdek içerik,
-alıştırmalar ve projelerle birlikte 25-30 saate çıkıyor.
+Bunlar sınav değil. Amaç, metinden hemen sonra öğrencinin eli değsin.
+
+| Tip | Ne yapar |
+| --- | --- |
+| `reveal` | Karta dokun, arkasındaki açıklama açılsın |
+| `sort` | Öğeleri kutulara ayır; birden çok öğe aynı kutuya girebilir |
+| `hotspot` | Şemadaki noktalara dokunarak gez |
+| `sim` | Çalışan bir sahneyi kurcala |
+
+### Dil kuralları
+
+- **Hedef kitle hiçbir şey bilmiyor.** İlk derste `Rigidbody`, `Prefab`,
+  `Inspector` gibi isimler geçmez. Her terim ilk geçtiği yerde tanıtılır.
+- **Tam cümle kurulur.** Devrik cümle, slogan, yarım cümle yok.
+- **Örnek gerçek oyundan verilir.** "Bir nişancı oyunu düşün" demeden önce
+  öğrencinin o oyunda neyin nasıl çalıştığını bilmesi gerekir; bilmiyorsa
+  önce basit ve tanıdık bir örnek kullanılır.
 
 ## 3. Alıştırma tipleri
 

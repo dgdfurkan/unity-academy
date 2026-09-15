@@ -6,6 +6,9 @@ import { useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Clock, PartyPopper } from "lucide-react";
 import { m, useReducedMotion } from "motion/react";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { Hotspots } from "@/components/activity/Hotspots";
+import { RevealCards } from "@/components/activity/RevealCards";
+import { SortBuckets } from "@/components/activity/SortBuckets";
 import { ChoiceExercise } from "@/components/lesson/ChoiceExercise";
 import { CodeExercise } from "@/components/lesson/CodeExercise";
 import { FillExercise } from "@/components/lesson/FillExercise";
@@ -17,7 +20,7 @@ import { SpotExercise } from "@/components/lesson/SpotExercise";
 import { TeachBlocks } from "@/components/lesson/TeachBlocks";
 import { SimExercise } from "@/components/lesson/SimExercise";
 import { ArrowBadge, Button } from "@/components/ui/Button";
-import type { Exercise, Lesson, Step } from "@/content/types";
+import type { Activity, Exercise, Lesson, Step } from "@/content/types";
 import { getLesson } from "@/content/lessons";
 import { getDictionary, type Locale } from "@/i18n";
 import { lessonId, useProgress } from "@/lib/progress";
@@ -67,9 +70,14 @@ export function LessonPlayer({ lesson, locale }: { lesson: Lesson; locale: Local
 
   const nextExists = nextId ? getLesson(nextId) !== null : false;
 
-  /** Bu adımdaki bütün alıştırmalar çözüldü mü? */
+  /**
+   * Bu adımdan devam edilebilir mi? Alıştırma adımı çözülmeden geçilmez;
+   * öğretici etkinlik ve metin adımları serbesttir.
+   */
   function stepSolved(current: Step, index: number): boolean {
-    if (current.kind === "predict") return solvedKeys.has(`${index}-0`);
+    if (current.kind === "predict" || current.kind === "task") {
+      return solvedKeys.has(`${index}-0`);
+    }
     if (current.kind === "check") {
       return current.exercises.every((_, i) => solvedKeys.has(`${index}-${i}`));
     }
@@ -86,17 +94,31 @@ export function LessonPlayer({ lesson, locale }: { lesson: Lesson; locale: Local
     });
   }
 
+  /**
+   * Adım değişince sayfa başa döner. Yumuşak kaydırma değil anında:
+   * uzun bir adımdan sonra ekranın yavaşça yukarı süzülmesini beklemek
+   * akışı kesiyor.
+   */
+  function toTop() {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+
   function goNext() {
     if (!isLast) {
       setStepIndex((i) => i + 1);
-      window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+      toTop();
       return;
     }
     if (!progress.completed.includes(lesson.id)) {
       complete(lesson.id, LESSON_XP + earned);
     }
     setFinished(true);
-    window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+    toTop();
+  }
+
+  function goBack() {
+    setStepIndex((i) => Math.max(i - 1, 0));
+    toTop();
   }
 
   if (finished) {
@@ -184,7 +206,7 @@ export function LessonPlayer({ lesson, locale }: { lesson: Lesson; locale: Local
           variant="ghost"
           size="lg"
           disabled={stepIndex === 0}
-          onClick={() => setStepIndex((i) => Math.max(i - 1, 0))}
+          onClick={goBack}
         >
           {t.back}
         </Button>
@@ -204,6 +226,9 @@ export function LessonPlayer({ lesson, locale }: { lesson: Lesson; locale: Local
 /* ------------------------------ parçalar ------------------------------ */
 
 const LABEL_TONE: Record<Step["kind"], string> = {
+  read: "bg-accent-soft text-accent-text",
+  activity: "bg-sky/15 text-sky-text",
+  task: "bg-mint/15 text-mint-text",
   hook: "bg-warm/15 text-warm-text",
   predict: "bg-sky/15 text-sky-text",
   teach: "bg-accent-soft text-accent-text",
@@ -213,7 +238,16 @@ const LABEL_TONE: Record<Step["kind"], string> = {
 
 function StepLabel({ kind, locale }: { kind: Step["kind"]; locale: Locale }) {
   const t = getDictionary(locale).lesson;
-  const text = { hook: t.hook, predict: t.predict, teach: t.teach, check: t.check, summary: t.summary }[kind];
+  const text = {
+    read: t.read,
+    activity: t.activity,
+    task: t.task,
+    hook: t.hook,
+    predict: t.predict,
+    teach: t.teach,
+    check: t.check,
+    summary: t.summary,
+  }[kind];
   return (
     <span
       className={cn(
@@ -242,6 +276,33 @@ function StepBody({
   const t = getDictionary(locale).lesson;
 
   switch (step.kind) {
+    case "read":
+      return (
+        <div>
+          <h2 className="font-display text-[1.3rem]/[1.3] font-semibold tracking-[-0.015em] text-text sm:text-[1.5rem]/[1.25]">
+            {step.title[locale]}
+          </h2>
+          <p className="mt-3 max-w-[40rem] text-[16px]/[1.75] text-text">{step.text[locale]}</p>
+          {step.blocks ? (
+            <div className="mt-6">
+              <TeachBlocks blocks={step.blocks} locale={locale} />
+            </div>
+          ) : null}
+        </div>
+      );
+
+    case "activity":
+      return <ActivityView activity={step.activity} locale={locale} />;
+
+    case "task":
+      return (
+        <ExerciseView
+          exercise={step.exercise}
+          locale={locale}
+          onSolved={(attempts) => onSolved(`${stepIndex}-0`, attempts)}
+        />
+      );
+
     case "hook":
       return (
         <div>
@@ -314,6 +375,17 @@ function StepBody({
           </ul>
         </div>
       );
+  }
+}
+
+function ActivityView({ activity, locale }: { activity: Activity; locale: Locale }) {
+  switch (activity.kind) {
+    case "reveal":
+      return <RevealCards activity={activity} locale={locale} />;
+    case "sort":
+      return <SortBuckets activity={activity} locale={locale} />;
+    case "hotspot":
+      return <Hotspots activity={activity} locale={locale} />;
   }
 }
 
