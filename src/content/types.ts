@@ -34,6 +34,47 @@ export type Exercise =
       lines: string[];
       correctLine: number;
       feedback: L;
+    }
+  | {
+      kind: "fill";
+      question: L;
+      /** `___` geçen her yer bir boşluk. Sıra, `answers` ile aynı. */
+      template: string;
+      answers: string[];
+      /** Havuzda görünecek yanlış seçenekler. */
+      distractors: string[];
+      feedback: L;
+    }
+  | {
+      kind: "order";
+      question: L;
+      /** Doğru sıradaki öğeler. Ekranda karıştırılmış gelir. */
+      items: L[];
+      feedback: L;
+    }
+  | {
+      kind: "inspector";
+      question: L;
+      /** Solda görünen kod. */
+      code: string;
+      /** Inspector'da düzenlenebilir alanlar. */
+      fields: { name: string; type: "float" | "int" | "bool"; value: string }[];
+      /** Öğrencinin ulaşması gereken durum. */
+      target: { name: string; value: string };
+      feedback: L;
+    }
+  | {
+      kind: "code";
+      question: L;
+      /** Editörde hazır duran başlangıç kodu. */
+      starter: string;
+      /**
+       * Yapısal kontroller. Gerçek bir C# derleyicisi çalıştırmıyoruz;
+       * dersin öğrettiği özelliklerin kodda olup olmadığına bakıyoruz.
+       * Her kontrolün kendi hata mesajı var, genel bir "yanlış" yok.
+       */
+      checks: { pattern: string; flags?: string; expect: boolean; message: L }[];
+      solvedMessage: L;
     };
 
 export type TeachBlock =

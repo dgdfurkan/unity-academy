@@ -62,7 +62,7 @@ Tek tip soru yok. Her tipin öğrettiği şey farklı.
 | `fill-blank` | Kelime havuzundan boşluğu doldur | Söz dizimi | M2, M3 |
 | `order-lines` | Satırları ya da olayları sıraya diz | `Awake` → `OnEnable` → `Start` sırası | M3, M6 |
 | `match` | Kavramı karşılığıyla eşleştir | Terim dağarcığı | Tümü, tekrarlarda |
-| `live-code` | Gerçek C# yaz, çalıştır, kontrol et | Üretim | Her modülde |
+| `live-code` | C# yaz, yapısal kontrolden geçir | Üretim | Her modülde |
 | `scenario` | Duruma göre doğru aracı seç | Karar verme | M3, M5, M7 |
 | `scene-tweak` | 3B sahnede değeri değiştir, sonucu gözle | Uzamsal ve fiziksel sezgi | M4, M5 |
 | `perf-audit` | Sorunlu satırları işaretle | Performans gözü | M8 |
@@ -76,8 +76,10 @@ Tasarım kuralları:
 - Yanlış şıklar rastgele değil. Her biri yaygın bir yanlış anlamayı temsil eder
   ve seçilince o yanlış anlamayı düzelten geri bildirim çıkar.
 - Geri bildirim "Yanlış" demez. Neyin neden olduğunu söyler.
-- `live-code` kontrolü çıktı karşılaştırmaz, davranış sınar: metot doğru mu
-  çağrıldı, değer doğru mu ölçeklendi, kare hızından bağımsız mı.
+- `live-code` kontrolü tarayıcıda C# derlemez. Dersin öğrettiği özelliklerin
+  kodda olup olmadığına bakar: `FixedUpdate` kullanılmış mı, `Time.deltaTime`
+  ile çarpılmış mı, alan `private` mı. Her kontrolün kendi mesajı vardır, genel
+  bir "yanlış" yoktur. Bu sınır öğrenciye de yazılı olarak gösterilir.
 
 ## 4. Otuz ders
 
@@ -313,8 +315,7 @@ Beşerli gruplar. Her grup bitince o beş ders uçtan uca oynanabilir olacak.
 
 | Grup | Dersler | Neden bu sıra |
 | --- | --- | --- |
-| 1a | 01-03 | Ders motoru, `choice`, `match` ve `spot` tipleri. **Tamamlandı** |
-| 1b | 04-08 | `fill-blank`, `order-lines`, `inspector` ve `live-code`; ayrıntısı `docs/LESSONS-01-08.md` |
+| 1 | 01-08 | Ders motoru ve altı alıştırma tipi. **Tamamlandı** |
 | 2 | 09-13 | Yaşam döngüsü; `scene-tweak` tipini açar |
 | 3 | 14-18 | Sahne ve fiziğin ilk yarısı, en çok görsel gerektiren grup |
 | 4 | 19-23 | Fiziğin kalanı, girdi ve oyun döngüsü |

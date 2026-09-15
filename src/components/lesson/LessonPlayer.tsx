@@ -7,6 +7,10 @@ import { ArrowLeft, ArrowRight, Check, Clock, PartyPopper } from "lucide-react";
 import { m, useReducedMotion } from "motion/react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { ChoiceExercise } from "@/components/lesson/ChoiceExercise";
+import { CodeExercise } from "@/components/lesson/CodeExercise";
+import { FillExercise } from "@/components/lesson/FillExercise";
+import { InspectorExercise } from "@/components/lesson/InspectorExercise";
+import { OrderExercise } from "@/components/lesson/OrderExercise";
 import { LessonComments } from "@/components/lesson/LessonComments";
 import { MatchExercise } from "@/components/lesson/MatchExercise";
 import { SpotExercise } from "@/components/lesson/SpotExercise";
@@ -328,6 +332,14 @@ function ExerciseView({
       return <MatchExercise exercise={exercise} locale={locale} onSolved={onSolved} />;
     case "spot":
       return <SpotExercise exercise={exercise} locale={locale} onSolved={onSolved} />;
+    case "fill":
+      return <FillExercise exercise={exercise} locale={locale} onSolved={onSolved} />;
+    case "order":
+      return <OrderExercise exercise={exercise} locale={locale} onSolved={onSolved} />;
+    case "inspector":
+      return <InspectorExercise exercise={exercise} locale={locale} onSolved={onSolved} />;
+    case "code":
+      return <CodeExercise exercise={exercise} locale={locale} onSolved={onSolved} />;
   }
 }
 
